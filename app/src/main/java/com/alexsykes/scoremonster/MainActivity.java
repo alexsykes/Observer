@@ -88,10 +88,8 @@ public class MainActivity extends AppCompatActivity {
         clearScore();
         super.onStart();
         getPrefs();
-        if(showDabPad){
+        if (showDabPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
-//            text = (TextView) findViewById(R.id.text);
-//            text.setMovementMethod(new ScrollingMovementMethod());
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
         }
@@ -129,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
                 goSync();
                 return true;
             //case R.id.summary:
-             //   Intent intent = new Intent(this, LayoutActivity.class);
-             //   startActivityForResult(intent, TEXT_REQUEST);
-             //   return true;
+            //   Intent intent = new Intent(this, LayoutActivity.class);
+            //   startActivityForResult(intent, TEXT_REQUEST);
+            //   return true;
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -247,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
             toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
             Toast.makeText(this, "Rider number or Score missing!", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(this).setTitle("Warning").setMessage("Missing rider number or score").setNeutralButton("Close", null).show();
-            return;
         } else {
             // Otherwise enter scores
             int riderNumber = Integer.parseInt(rider);
@@ -312,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         trialid = localPrefs.getInt("trialid", 0);
         numlaps = localPrefs.getInt("numlaps", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
-        showDabPad = localPrefs.getBoolean("showDabPad",true);
+        showDabPad = localPrefs.getBoolean("showDabPad", true);
 
         status = "Trial: " + theTrialName + "\nSection: " + section + "\nObserver: " + observer;
 
