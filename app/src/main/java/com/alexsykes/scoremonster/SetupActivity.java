@@ -1,16 +1,16 @@
 package com.alexsykes.scoremonster;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -52,7 +52,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox;
-    TextView observerTextInput, sectionTextInput, trialDetailView;
+    TextView observerTextInput, sectionTextInput, trialDetailView, warningTextView;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +70,20 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         dabPadSelect = findViewById(R.id.dabPadSelect);
         numberPadSelect = findViewById(R.id.numberPadSelect);
         resetCheckBox = findViewById(R.id.resetCheckBox);
+        warningTextView = findViewById(R.id.warning);
+        warningTextView.setVisibility(View.GONE);
 
-/*        resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(getApplicationContext(), "This will destroy all saved scores!", Toast.LENGTH_LONG).show();
+                    warningTextView.setVisibility(View.VISIBLE);
+                } else {
+
+                    warningTextView.setVisibility(View.GONE);
                 }
             }
-        });*/
+        });
 
 
         // Set up spinner
@@ -250,11 +256,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void setPrefs(View view) {
         boolean reset = resetCheckBox.isChecked();
 
-        if (reset) {
-            resetCheckBox.setChecked(false);
-            reset = false;
-        }
-
         // Field validation routine
         boolean hasErrors = false;
 
@@ -283,7 +284,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         if (hasErrors) {
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
-            // return;
         } else {
 
             localPrefs = getSharedPreferences("monster", MODE_PRIVATE);

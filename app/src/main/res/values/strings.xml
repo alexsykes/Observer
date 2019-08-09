@@ -137,7 +137,7 @@ f) In favour of the rider who completes the course with the least marks lost on 
     <string name="total">Total</string>
     <string name="scores">Scores</string>
     <string name="laps">Laps</string>
-    <string name="warning">Warning</string>
+    <string name="warning">Warning - this will delete all current scores</string>
     <string name="ok">OK</string>
     <string name="number_of_laps">Number of laps</string>
     <string name="number_of_sections">Number of sections</string>
