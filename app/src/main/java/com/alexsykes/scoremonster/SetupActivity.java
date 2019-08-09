@@ -234,11 +234,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         observerTextInput.setText(observer);
         sectionTextInput.setText(String.valueOf(section));
 
-
-        //trialTextInput.setText(String.valueOf(trialid));
-        //numlapsTextInput.setText(String.valueOf(numlaps));
-        //numsectionsTextInput.setText(String.valueOf(numsections));
-
         if (showDabPad) {
             dabPadSelect.setChecked(true);
         } else {
