@@ -1,15 +1,16 @@
 package com.alexsykes.scoremonster;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -35,6 +36,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     int trialid, section, numsections, numlaps;
     boolean showDabPad;
+    boolean deleteScores;
     String observer, theTrialName, detail;
     String[] theTrials, theIDs;
     ArrayList<HashMap<String, String>> theTrialList;
@@ -68,22 +70,21 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numberPadSelect = findViewById(R.id.numberPadSelect);
         resetCheckBox = findViewById(R.id.resetCheckBox);
 
-        resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+/*        resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Toast.makeText(getApplicationContext(), "This will destroy all saved scores!", Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
+
 
         // Set up spinner
         trialSelect = findViewById(R.id.trialSelect);
         trialSelect.setOnItemSelectedListener(this);
 
-        if (checkPrefs()) {
-            // Why is this here?
-        }
+        checkPrefs();
 
         // Get trialList from server
         String URL = BASE_URL + "getTrialList.php";
@@ -247,25 +248,17 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public void setPrefs(View view) {
-        boolean hasErrors = false;
-        String errorMsg = "The following errors need to be corrected:";
-
         boolean reset = resetCheckBox.isChecked();
-/*
+
         if (reset) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Reset Scores")
-                    .setMessage("Your saved scores will be deleted.")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            resetCheckBox.setChecked(false);
+            reset = false;
+        }
 
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            theDB.clearResults();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null).show();
-        }*/
+        // Field validation routine
+        boolean hasErrors = false;
 
+        String errorMsg = "The following error(s) need to be corrected:";
 
         // Check that observer field is complete
         observer = observerTextInput.getText().toString();
@@ -290,7 +283,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         if (hasErrors) {
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
-           // return;
+            // return;
         } else {
 
             localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
@@ -303,8 +296,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putInt("section", section);
             editor.putBoolean("showDabPad", dabPadSelect.isChecked());
             boolean success = editor.commit();
+
+            if (reset) {
+                theDB.clearResults();
+            }
             finish();
         }
+
     }
 
     //Performing action onItemSelected and onNothing selected
