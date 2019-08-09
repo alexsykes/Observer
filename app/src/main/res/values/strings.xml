@@ -1,0 +1,181 @@
+<resources>
+    <string name="app_name">Score Monster</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button">Button</string>
+    <string name="c">C</string>
+    <string name="_0">0</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_10">10</string>
+    <string name="backSpace">⌫</string>
+    <string name="score_entry">Score Entry</string>
+    <string name="riding_number">Riding Number</string>
+    <string name="tsr">TSR22 METHOD OF MARKING
+A machine will be deemed to be in an Observed Section or Sub-Section when the front wheel spindle has passed the ‘Section Begins’ Card and until the front wheel spindle has passed the ‘Section Ends’ Card. Marks will be lost as follows:\n
+A. STOP PERMITTED\n
+0 Clean\n
+1 Footing once\n
+2 Footing twice\n
+3 Footing more than twice\n
+5 Failure\n
+5 When requested by a rider rather than attempt the section\n
+5 Entering a section before being called upon to do so by an official\n
+10 Not attempting a section when called upon to do so by an official\n
+10 For missing a section or failing to have punch card marked.\n\n
+Graded Hills.\nWhere a Section is to be termed a ‘Graded Hill’ a notice to that effect must be displayed at the Section Begins, and the following shall apply: Numbered boards must be placed at defined places along the Section, in order that a rider’s performance may be determined. Marks will be lost in a decreasing manner from 5 to 0 depending on the distance a rider can traverse the Section without failure. The front wheel spindle is the part of the machine to be used in assessing the distance traversed.\nFooting is allowed without penalty.\n0 Clean
+1 Reaching or passing the “1 Board” without Failure
+2 Reaching or passing the “2 Board” without Failure
+3 Reaching or passing the “3 Board” without Failure
+5 Failure to reach the “3 Board”
+5 When requested by a rider rather than attempt the section
+10 Not attempting a Section when called upon to do so by an official
+10 For missing a section or failing to have punch card marked.
+DEFINITIONS
+Clean: A rider traversing a Section as defined above without penalty as described under FOOTING or FAILURE shall be unpenalised and given a “CLEAN”.
+Footing: Footing will be considered to have occurred if any part of the rider’s body or any part of the machine, (with the exception of the tyres or the sump shield) touches the ground or the rider benefit from any part of their body, or any part of the machine, (with the exception of the tyres or the sump shield) leaning on an obstacle (tree, wall etc.)
+Footing outside the lateral limits of a Section does not constitute a failure but should simply be classed as footing.
+Failure: A failure is considered to have occurred if:
+a) The machine moves backwards.
+b) The rider does not have both hands on the handlebar WHEN HE FOOTS WHILST STATIONARY.
+c) The engine stops WHILST ANY PART OF THE MACHINE, WITH THE EXCEPTION OF THE TYRES, TOUCHES THE GROUND OR THE RIDER IS FOOTING.
+d) The rider dismounts from the machine. Dismount will be deemed to have occurred when both of the rider’s feet are on the ground at the same side of, or behind the machine.
+e) A rider is requested to leave the section by the observer for “unnecessary delay”.
+f) A machine does not stay within the intended limits of the section as defined by the Observer.
+g) If any wheel of the machine crosses any boundary tape or goes over or on the wrong side of
+a marker, whether the wheel be on the ground or airborne, before the front wheel spindle
+passes the “Section ends” sign.
+h) The rider is held responsible for displacing a marker or support in an observed section
+whereby the observer considers it necessary to reinstate the flag/marker prior to the passage of the next rider.
+The displacing of any marking not relating to the competitor’s route will be considered to constitute a failure.
+i) Travelling in a forward direction against the direction of the Section. j) The motorcycle crosses its own track with either wheel.
+k) The machine or rider receives outside assistance.
+l) A rider or person having an interest in a rider’s performance, who in any way alters the severity of a section without the authority of an official.
+For all trials other than those for which Championship Regulations apply the organiser may, with the agreement of the Permit Issuing Authority, apply a time limit to each section. The time allowed must be the same for each and every Section and the penalty for a rider not completing the Section within that time would be failure. If a time limit is to be applied to the Sections then this must be clearly stated in the Supplementary Regulations.
+B. NON-STOP
+0 Clean
+1 Footing once
+2 Footing twice
+3 Footing more than twice
+5 Failure
+5 When requested by a rider rather than attempt the section
+5 Entering a section before being called upon to do so by an official
+10 Not attempting a section when called upon to do so by an official
+10 For missing a section or failing to have punch card marked.
+Graded Hills. Where a Section is to be termed a ‘Graded Hill’ a notice to that effect must be displayed at the Section Begins, and the following shall apply: Numbered boards must be placed at defined
+places along the Section, in order that a rider’s performance may be determined. Marks will be lost in
+a decreasing manner from 5 to 0 depending on the distance a rider can traverse the Section without failure. The front wheel spindle is the part of the machine to be used in assessing the distance traversed. Footing is allowed without penalty.
+0 Clean
+1 Reaching or passing the “1 Board” without Failure.
+2 Reaching or passing the “2 Board” without Failure.
+3 Reaching or passing the “3 Board” without Failure.
+5 Failure to reach the “3 Board”.
+5 When requested by a rider rather than attempt the section
+10 Not attempting a Section when called upon to do so by an Official
+10 For missing a section or failing to have punch card marked.
+DEFINITIONS
+Clean: A rider traversing a Section as defined above without penalty as described under FOOTING or FAILURE shall be unpenalised and given a “CLEAN”.
+Footing: Footing will be considered to have occurred if any part of the rider’s body or any part of the machine, (with the exception of the tyres or the sump shield) touches the ground or the rider benefit from any part of their body, or any part of the machine, (with the exception of the tyres or the sump shield) leaning on an obstacle (tree, wall etc.),
+Footing outside the lateral limits of a Section does not constitute a failure but should simply be classed as footing.
+Failure: A failure is considered to have occurred if:
+i) The machine ceases to move in a forward direction.
+ii) The rider dismounts from the machine. Dismount will be deemed to have occurred when both of the rider’s feet are on the ground at the same side of or behind the machine.
+iii) A machine does not stay within the intended limits of the section as defined by the Observer. iv) If any wheel of the machine crosses any boundary tape or goes over or the wrong side of
+a marker, whether the wheel be on the ground or airborne, before the front wheel spindle
+passes the “Section ends” sign.
+v) The rider or passenger is held responsible for displacing any marker or support in an
+
+AUTO CYCLE UNION HANDBOOK 2019 TRIALS 207
+observed section whereby the observer considers it necessary to reinstate the flag/marker prior to the passage of the next rider.
+The displacement of any marking not relating to the competitor’s route will also be considered to warrant a failure.
+vi) The machine or rider travels in a forward direction against the direction of the Section.
+vii) The motorcycle crosses its own track with either wheel.
+viii) The machine, or rider or passenger receives outside assistance.
+ix) A rider or person having an interest in a rider’s performance, in any way alters the severity of
+a section without the authority of an official.
+For Sidecar events only.
+A failure is considered to have occurred if:
+The passenger foots i.e. if any part of the passenger’s body touches the ground, or benefit is gained from any part of his body leaning on an obstacle (tree, wall etc.).
+
+
+TSR23 TIES
+A) Ties in an Event
+Ties will be resolved by the following method in the sequence shown:
+a) In favour of the rider with the highest number of cleans.
+b) In favour of the rider with the highest number of one mark.
+c) In favour of the rider with the highest number of two marks.
+d) In favour of the rider with the highest number of three marks.
+e) In favour of the rider who travelled furthest with the least marks lost.
+f) In favour of the rider who completes the course with the least marks lost on time.</string>
+    <string name="score">Score</string>
+    <string name="rider">Rider</string>
+    <string name="textview">TextView</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="save">Save</string>
+    <string name="rider_number">Riding number</string>
+    <string name="V21">Score Monster - V2.0</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_favorite">Add to Favourites</string>
+    <string name="setup">Select Trial</string>
+    <string name="item1">Item 1</string>
+    <string name="item2">Item 2</string>
+    <string name="switch_item">Switch</string>
+    <string name="section_number">Section number</string>
+    <string name="observer">Observer name</string>
+    <string name="trial_id">Trial ID</string>
+    <string name="export">Upload scores</string>
+    <string name="upload_scores">Upload Scores</string>
+    <string name="process_data">Process Data</string>
+    <string name="sync_status">Sync status</string>
+    <string name="lap">Lap</string>
+    <string name="total">Total</string>
+    <string name="scores">Scores</string>
+    <string name="laps">Laps</string>
+    <string name="warning">Warning</string>
+    <string name="ok">OK</string>
+    <string name="number_of_laps">Number of laps</string>
+    <string name="number_of_sections">Number of sections</string>
+    <string name="clean">Clean</string>
+    <string name="dab">Dab</string>
+    <string name="five">Five</string>
+    <string name="ten">Ten</string>
+    <string name="score_summary">Score summary</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="number_pad">Number Pad</string>
+    <string name="dab_pad">Dab Pad</string>
+    <string name="score_entry_text">"Score Entry\n\nDab - Click for each dab. The score will count up to three dabs. Clicking more than three times will not increase the score.\nFive - will record a Five\nTen - Not attempting a Section when called upon to do so by an Official\nTen - For missing a section or failing to have punch card marked. "</string>
+    <string name="vanilla">vanilla</string>
+    <string name="land">land</string>
+    <string name="page_title">Page Title</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="top">Top</string>
+    <string name="bottom">bottom</string>
+    <string name="large_land">large-land</string>
+    <string name="basic">Basic</string>
+    <string name="unused">unused</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="reset_scores">Reset Scores</string>
+    <string-array name="scores">
+        <item>Clean</item>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Five</item>
+        <item>Ten</item>
+    </string-array>
+</resources>
