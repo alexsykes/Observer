@@ -1,11 +1,9 @@
 package com.alexsykes.scoremonster;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,20 +30,27 @@ import java.util.HashMap;
 
 //TODO Validate section number
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    // Set up data fields
     private static final String BASE_URL = "https://android.trialmonster.uk/";
-    TextView observerTextInput, sectionTextInput, trialDetailView;
     int trialid, section, numsections, numlaps;
     boolean showDabPad;
     String observer, theTrialName, detail;
+    String[] theTrials, theIDs;
+    ArrayList<HashMap<String, String>> theTrialList;
+
     SharedPreferences localPrefs;
+
+    // Database access
     ScoreDbHelper theDB;
+
+    // Interface widgets
     RadioGroup dabPadSwitch;
     RadioButton dabPadSelect, numberPadSelect;
     Spinner trialSelect;
     ProgressDialog dialog = null;
-    ArrayList<HashMap<String, String>> theTrialList;
     CheckBox resetCheckBox;
-    String[] theTrials, theIDs;
+    TextView observerTextInput, sectionTextInput, trialDetailView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +71,18 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     Toast.makeText(getApplicationContext(), "This will destroy all saved scores!", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         // Set up spinner
-        trialSelect = (Spinner) findViewById(R.id.trialSelect);
+        trialSelect = findViewById(R.id.trialSelect);
         trialSelect.setOnItemSelectedListener(this);
 
         if (checkPrefs()) {
-
+            // Why is this here?
         }
 
         // Get trialList from server
@@ -196,9 +201,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
                     //reading until we don't find null
                     while ((json = bufferedReader.readLine()) != null) {
-
+                        json = json + "\n";
                         //appending it to string builder
-                        sb.append(json + "\n");
+                        sb.append(json);
                     }
 
                     //finally returning the read string
@@ -247,37 +252,53 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public void setPrefs(View view) {
-
-        //trialid = Integer.parseInt(trialTextInput.getText().toString());
-        //numsections = Integer.parseInt(numsectionsTextInput.getText().toString());
-        //numlaps = Integer.parseInt(numlapsTextInput.getText().toString());
-        section = Integer.parseInt(sectionTextInput.getText().toString());
-        observer = observerTextInput.getText().toString();
-        // theTrialName = nameTextView.getText().toString();
+        boolean hasErrors = false;
+        String errorMsg = "The following errors need to be corrected:";
 
         boolean reset = resetCheckBox.isChecked();
+/*
+        if (reset) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Reset Scores")
+                    .setMessage("Your saved scores will be deleted.")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-        if(reset){
-        new AlertDialog.Builder(this)
-                .setTitle("Reset Scores")
-                .setMessage("Your saved scores will be deleted.")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            theDB.clearResults();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+        }*/
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        theDB.clearResults();
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
+
+        // Check that observer field is complete
+        observer = observerTextInput.getText().toString();
+        if (observer.equals("")) {
+            hasErrors = true;
+            errorMsg += "\nThe observer field is empty";
+        }
+
+        // Check that section field is populated
+        if (sectionTextInput.getText().toString().equals("")) {
+            hasErrors = true;
+            errorMsg += "\nThe section field is empty";
+        } else {
+            section = Integer.parseInt(sectionTextInput.getText().toString());
+            //
+            if (section > numsections) {
+                hasErrors = true;
+                errorMsg += "\nInvalid section number";
+            }
         }
 
 
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-
-        if (observer.equals("") || section == 0) {
-            Toast.makeText(this, "All fields must be filled!", Toast.LENGTH_LONG).show();
-            return;
+        if (hasErrors) {
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+           // return;
         } else {
 
+            localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
             SharedPreferences.Editor editor = localPrefs.edit();
             editor.putString("theTrialName", theTrialName);
             editor.putInt("trialid", trialid);
