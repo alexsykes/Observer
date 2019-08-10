@@ -37,7 +37,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     int trialid, section, numsections, numlaps;
     boolean showDabPad;
-    boolean deleteScores;
     String observer, theTrialName, detail;
     String[] theTrials, theIDs;
     ArrayList<HashMap<String, String>> theTrialList;
