@@ -54,10 +54,10 @@ public class ScoreListSyncAdapter extends RecyclerView.Adapter<ScoreListSyncAdap
         int backgroundColor = Color.parseColor("#40bdc0d4");
         int white = Color.parseColor("#ffffff");
 
-        scoreHolder.score.setText(theScore.get("score".toString()));
-        scoreHolder.lap.setText(theScore.get("lap".toString()));
-        scoreHolder.rider.setText(theScore.get("rider".toString()));
-        scoreHolder.sync.setText(theScore.get("sync".toString()));;
+        scoreHolder.score.setText(theScore.get("score"));
+        scoreHolder.lap.setText(theScore.get("lap"));
+        scoreHolder.rider.setText(theScore.get("rider"));
+        scoreHolder.sync.setText(theScore.get("sync"));
         scoreHolder.sync.setText(syncState);
         scoreHolder.bind(theScore, listener);
 
@@ -85,10 +85,10 @@ public class ScoreListSyncAdapter extends RecyclerView.Adapter<ScoreListSyncAdap
 
         public ScoreHolder(@NonNull View itemView) {
             super(itemView);
-            score = (TextView) itemView.findViewById(R.id.score);
-            lap = (TextView) itemView.findViewById(R.id.lap);
-            rider = (TextView) itemView.findViewById(R.id.rider);
-            sync = (TextView) itemView.findViewById(R.id.sync);
+            score = itemView.findViewById(R.id.score);
+            lap = itemView.findViewById(R.id.lap);
+            rider = itemView.findViewById(R.id.rider);
+            sync = itemView.findViewById(R.id.sync);
         }
 
         public void bind(final HashMap<String, String> theScore, final OnItemClickListener listener) {

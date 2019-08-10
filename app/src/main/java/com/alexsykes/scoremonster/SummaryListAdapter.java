@@ -38,7 +38,7 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         int white = Color.parseColor("#ffffff");
 
         // Populate TextViews with data
-     //   resultHolder.sectionView.setText(theResultList.get(i).get("section".toString()));
+        //   resultHolder.sectionView.setText(theResultList.get(i).get("section".toString()));
         resultHolder.riderView.setText(theResultList.get(i).get("rider"));
         resultHolder.nameView.setText(theResultList.get(i).get("scores"));
         resultHolder.totalView.setText(theResultList.get(i).get("laps"));
@@ -49,8 +49,6 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.
         } else {
             resultHolder.itemView.setBackgroundColor(white);
         }
-
-
     }
 
     @Override
