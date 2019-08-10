@@ -117,21 +117,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            // Enter andinitialise section details
             case R.id.setup:
                 goSetup();
                 return true;
+
+            // Show scores on remote server
             case R.id.list:
                 goShowScoresFromServer();
                 return true;
 
             // Sync scores with remote db
+            // Shows scores stored on device
             case R.id.upload:
                 goSync();
                 return true;
-            // case R.id.summary:
-            //   Intent intent = new Intent(this, LayoutActivity.class);
-            //   startActivityForResult(intent, TEXT_REQUEST);
-            //   return true;
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -145,13 +145,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SummaryActivity.class);
         intent.putExtra("trialid", trialid);
         intent.putExtra("section", section);
-        startActivityForResult(intent, TEXT_REQUEST);
-        //return true;
-    }
-
-    private void goSummary() {
-        Intent intent = new Intent(this, SummaryActivity.class);
-        intent.putExtra("trialid", trialid);
         startActivityForResult(intent, TEXT_REQUEST);
     }
 
@@ -177,12 +170,6 @@ public class MainActivity extends AppCompatActivity {
         }
         scoreView.setText(String.valueOf(score));
     }
-
-    private void goShowScores() {
-        Intent intent = new Intent(this, ScoreListActivity.class);
-        startActivityForResult(intent, TEXT_REQUEST);
-    }
-
 
     private void goSync() {
         Intent intent = new Intent(this, SyncActivity.class);
@@ -284,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
             currentTimeStamp = dateFormat.format(date);
 
             // Create a ContentValues object where column names are the keys,
-            // and Toto's pet attributes are the values.
+
             ContentValues values = new ContentValues();
             String dateString = currentTimeStamp;
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_OBSERVER, observer);
@@ -300,10 +287,10 @@ public class MainActivity extends AppCompatActivity {
             long newRowId = db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
             toneGen1.startTone(ToneGenerator.TONE_CDMA_CONFIRM, ToneGenerator.MAX_VOLUME);
             Toast.makeText(this, "Score saved", Toast.LENGTH_LONG).show();
-            // return;
         }
     }
 
+    // Reset the  rider/score values
     private void clearScore() {
         score = 0;
         riderNumberView.setText("");
