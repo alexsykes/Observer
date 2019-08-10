@@ -121,12 +121,14 @@ public class MainActivity extends AppCompatActivity {
                 goSetup();
                 return true;
             case R.id.list:
-                goShowScores();
+                goShowScoresFromServer();
                 return true;
+
+            // Sync scores with remote db
             case R.id.upload:
                 goSync();
                 return true;
-            //case R.id.summary:
+            // case R.id.summary:
             //   Intent intent = new Intent(this, LayoutActivity.class);
             //   startActivityForResult(intent, TEXT_REQUEST);
             //   return true;
@@ -137,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void goShowScoresFromServer() {
+        Intent intent = new Intent(this, SummaryActivity.class);
+        intent.putExtra("trialid", trialid);
+        intent.putExtra("section", section);
+        startActivityForResult(intent, TEXT_REQUEST);
+        //return true;
     }
 
     private void goSummary() {

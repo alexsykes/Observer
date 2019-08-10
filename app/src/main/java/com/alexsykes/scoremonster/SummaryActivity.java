@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 
 public class SummaryActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://android.trialmonster.uk/";
-    int trialid;
+    int trialid, section;
     ArrayList<HashMap<String, String>> theResultList;
     RecyclerView rv;
     LinearLayoutManager llm;
@@ -36,8 +35,9 @@ public class SummaryActivity extends AppCompatActivity {
 
 
         trialid = getIntent().getExtras().getInt("trialid");
+        section = getIntent().getExtras().getInt("section");
         // trialid = "35";
-        String URL = BASE_URL + "getTrialScores.php?id=" + trialid;
+        String URL = BASE_URL + "getSectionScores.php?id=" + trialid + "&section=" + section;
         getJSONDataset(URL);
     }
 
@@ -85,12 +85,12 @@ public class SummaryActivity extends AppCompatActivity {
                     for (int index = 0; index < jsonArray.length(); index++) {
                         HashMap<String, String> theResult = new HashMap<>();
                         String rider = jsonArray.getJSONObject(index).getString("rider");
-                        String name = jsonArray.getJSONObject(index).getString("name");
-                        String course = jsonArray.getJSONObject(index).getString("course");
+                        String laps = jsonArray.getJSONObject(index).getString("laps");
+                        String scores = jsonArray.getJSONObject(index).getString("scores");
                         String total = jsonArray.getJSONObject(index).getString("total");
                         theResult.put("rider", rider);
-                        theResult.put("name", name);
-                        theResult.put("course", course);
+                        theResult.put("laps", laps);
+                        theResult.put("scores", scores);
                         theResult.put("total", total);
                         theResultList.add(theResult);
                     }
