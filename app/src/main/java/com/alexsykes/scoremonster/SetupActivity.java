@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -51,8 +52,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     RadioButton dabPadSelect, numberPadSelect;
     Spinner trialSelect;
     ProgressDialog dialog = null;
-    CheckBox resetCheckBox;
-    TextView observerTextInput, sectionTextInput, trialDetailView, warningTextView;
+    CheckBox resetCheckBox, confirmCheckBox;
+    TextView observerTextInput, sectionTextInput, trialDetailView;
+    ImageView warningImageView;
     private Button button;
 
     @Override
@@ -70,17 +72,40 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         dabPadSelect = findViewById(R.id.dabPadSelect);
         numberPadSelect = findViewById(R.id.numberPadSelect);
         resetCheckBox = findViewById(R.id.resetCheckBox);
-        warningTextView = findViewById(R.id.warning);
-        warningTextView.setVisibility(View.GONE);
+        confirmCheckBox = findViewById(R.id.confirmCheckBox);
+        warningImageView = findViewById(R.id.warningImageView);
+        button = findViewById(R.id.button);
 
-       resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        confirmCheckBox.setVisibility(View.GONE);
+        warningImageView.setVisibility(View.GONE);
+
+        resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    warningTextView.setVisibility(View.VISIBLE);
-                } else {
+                    confirmCheckBox.setVisibility(View.VISIBLE);
+                    warningImageView.setVisibility(View.VISIBLE);
+                    button.setEnabled(false);
 
-                    warningTextView.setVisibility(View.GONE);
+                } else {
+                    confirmCheckBox.setVisibility(View.GONE);
+                    warningImageView.setVisibility(View.GONE);
+                    button.setEnabled(true);
+                }
+            }
+        });
+
+
+
+        confirmCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    confirmCheckBox.setVisibility(View.VISIBLE);
+                    button.setEnabled(true);
+
+                } else {
+                    button.setEnabled(false);
                 }
             }
         });
