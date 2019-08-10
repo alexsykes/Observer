@@ -34,7 +34,7 @@ public class ScorePadFragment extends Fragment implements View.OnClickListener {
 
         // Get id from clicked button to get clicked digit
         int intID = view.getId();
-        Button button = (Button) view.findViewById(intID);
+        Button button = view.findViewById(intID);
         String digit = button.getText().toString();
 
         score.setText(digit);

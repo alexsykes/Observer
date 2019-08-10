@@ -60,8 +60,8 @@ public class SyncActivity extends AppCompatActivity {
         mDbHelper = new ScoreDbHelper(this);
         populateScoreList();
 
-        uploadButton = (Button) findViewById(R.id.uploadButton);
-        processButton = (Button) findViewById(R.id.processButton);
+        uploadButton = findViewById(R.id.uploadButton);
+        processButton = findViewById(R.id.processButton);
 
         /************* Php script path ****************/
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
@@ -175,7 +175,7 @@ public class SyncActivity extends AppCompatActivity {
 
     private void populateScoreList() {
         theScoreList = mDbHelper.getScoreList();
-        scoreView = (RecyclerView) findViewById(R.id.scoreView);
+        scoreView = findViewById(R.id.scoreView);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         scoreView.setLayoutManager(llm);
         scoreView.setHasFixedSize(true);
@@ -228,7 +228,7 @@ public class SyncActivity extends AppCompatActivity {
                 sync = curChild.getString(9);
                 score = curChild.getString(10);
 
-                String arrStr[] = {id, section, rider, lap, score, observer, created, updated, edited, trialid, sync
+                String[] arrStr = {id, section, rider, lap, score, observer, created, updated, edited, trialid, sync
                 };
 
                 csvWrite.writeNext(arrStr, false);
@@ -291,7 +291,7 @@ public class SyncActivity extends AppCompatActivity {
                 sync = curChild.getString(9);
                 score = curChild.getString(10);
 
-                String arrStr[] = {id, section, rider, lap, score, observer, created, updated, edited, trialid, sync
+                String[] arrStr = {id, section, rider, lap, score, observer, created, updated, edited, trialid, sync
                 };
 
                 csvWrite.writeNext(arrStr, false);

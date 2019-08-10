@@ -1,7 +1,7 @@
 package com.alexsykes.scoremonster;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -9,7 +9,6 @@ import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ScoreListActivity extends AppCompatActivity {
     // List theScores;
@@ -26,7 +25,7 @@ public class ScoreListActivity extends AppCompatActivity {
         // theScores = mDbHelper.getScores();
         theSummaryScores = mDbHelper.getRidersSummaryScores();
 
-        rv = (RecyclerView) findViewById(R.id.rv);
+        rv = findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);

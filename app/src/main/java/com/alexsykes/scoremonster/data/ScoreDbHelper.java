@@ -111,39 +111,11 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         sql = "DROP TABLE IF EXISTS " + NoteContract.NoteEntry.TABLE_NAME;
         db.execSQL(sql);
         sql = "DROP TABLE IF EXISTS " + ScoreContract.ScoreEntry.TABLE_NAME;
-        ;
         db.execSQL(sql);
 
         onCreate(db);
     }
 
-
-    public Cursor getScoredata() {
-
-        SQLiteDatabase db = getReadableDatabase();
-        String[] projection = {
-                ScoreEntry._ID,
-                ScoreEntry.COLUMN_SCORE_RIDER,
-                ScoreEntry.COLUMN_SCORE_CREATED,
-                ScoreEntry.COLUMN_SCORE_SECTION,
-                ScoreEntry.COLUMN_SCORE_LAP,
-                ScoreEntry.COLUMN_SCORE_OBSERVER,
-                ScoreEntry.COLUMN_SCORE_TRIALID,
-                ScoreEntry.COLUMN_SCORE_SYNC,
-                ScoreEntry.COLUMN_SCORE_SCORE
-        };
-
-        // Perform a query on the score table
-        Cursor cursor = db.query(
-                ScoreEntry.TABLE_NAME,   // The table to query
-                projection,            // The columns to return
-                null,                  // The columns for the WHERE clause
-                null,                  // The values for the WHERE clause
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                ScoreEntry.COLUMN_SCORE_CREATED + " DESC  LIMIT 100");                   // The sort order
-        return cursor;
-    }
 
     /**
      * Section imported from tutlane
@@ -167,6 +139,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
             scores.put("edited", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_EDITED)));
             scoreList.add(scores);
         }
+        cursor.close();
         return scoreList;
     }
 
