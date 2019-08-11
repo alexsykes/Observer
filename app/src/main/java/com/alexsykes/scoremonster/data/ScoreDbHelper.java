@@ -49,7 +49,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
                 + ScoreEntry.COLUMN_SCORE_SECTION + " INTEGER NOT NULL, "
                 + ScoreEntry.COLUMN_SCORE_RIDER + " INTEGER NOT NULL, "
                 + ScoreEntry.COLUMN_SCORE_LAP + " INTEGER NOT NULL DEFAULT 0, "
-                + ScoreEntry.COLUMN_SCORE_CREATED + " TEXT NOT NULL, "
+                + ScoreEntry.COLUMN_SCORE_CREATED + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, "
                 + ScoreEntry.COLUMN_SCORE_UPDATED + " TEXT , "
                 + ScoreEntry.COLUMN_SCORE_EDITED + " INTEGER NOT NULL DEFAULT 0, "
                 + ScoreEntry.COLUMN_SCORE_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
@@ -169,6 +169,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
             theScore = new Score(section, score, rider, lap, Integer.parseInt(_id), observer, created, sync);
             theScores.add(theScore);
         }
+        cursor.close();
         return theScores;
     }
 
@@ -191,6 +192,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
             scores.put("edited", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_EDITED)));
             scoreList.add(scores);
         }
+        cursor.close();
         return scoreList;
     }
 
@@ -224,6 +226,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
             scores.put("sync", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_SYNC)));
             scoreList.add(scores);
         }
+        cursor.close();
         return scoreList;
     }
 
@@ -248,8 +251,9 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
 
     public Cursor getUnSynced() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED, new String[]{});
-        return res;
+        //Cursor res = db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED, new String[]{});
+        //return res;
+        return db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED, new String[]{});
     }
 
     public void delete(int id) {
@@ -263,7 +267,8 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
     public void update(String scoreid, String score) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "UPDATE scores SET score = " + score + ", edited = 1, sync = " + NOT_SYNCED + " WHERE _id = " + scoreid;
+        // String query = "UPDATE scores SET score = " + score + ", edited = 1, updated = DATETIME('now','localtime'), sync = " + NOT_SYNCED + " WHERE _id = " + scoreid;
+        String query = "UPDATE scores SET score = " + score + ", edited = 1, updated = DATETIME('now'), sync = " + NOT_SYNCED + " WHERE _id = " + scoreid;
         db.execSQL(query);
 
     }
