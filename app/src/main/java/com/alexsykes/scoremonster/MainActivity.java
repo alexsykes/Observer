@@ -261,11 +261,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Already completed " + numlaps + " laps", Toast.LENGTH_LONG).show();
         } else {
 
-//            String currentTimeStamp;
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-//            Date date = new Date();
-//            currentTimeStamp = dateFormat.format(date);
-
             // Create a ContentValues object where column names are the keys,
             ContentValues values = new ContentValues();
             // String dateString = currentTimeStamp;
@@ -275,8 +270,6 @@ public class MainActivity extends AppCompatActivity {
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SECTION, section);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_LAP, lap);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_TRIALID, trialid);
-            // values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_CREATED, dateString);
-            // values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_UPDATED, dateString);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SYNC, NOT_SYNCED);
 
             long newRowId = db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
