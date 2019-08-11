@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private String observer;
     private int section;
     private int trialid;
-    private int numlaps;
+    private int numlaps, numsections;
     private int score;
     private boolean showDabPad;
 
@@ -120,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
             // Show scores on remote server
             case R.id.list:
-                goShowScoresFromServer();
+                // goShowScoresFromServer();
+                goShowSummaryScores();
                 return true;
 
             // Sync scores with remote db
@@ -135,6 +136,14 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void goShowSummaryScores() {
+        Intent intent = new Intent(this, SummaryScoreActivity.class);
+        intent.putExtra("trialid", trialid);
+        intent.putExtra("section", section);
+        startActivityForResult(intent, TEXT_REQUEST);
+
     }
 
     private void goShowScoresFromServer() {
@@ -293,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
         section = localPrefs.getInt("section", 0);
         trialid = localPrefs.getInt("trialid", 0);
         numlaps = localPrefs.getInt("numlaps", 0);
+        numsections = localPrefs.getInt("numsections", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         showDabPad = localPrefs.getBoolean("showDabPad", true);
 
