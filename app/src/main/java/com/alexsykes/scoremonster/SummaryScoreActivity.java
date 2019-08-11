@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SummaryScoreActivity extends AppCompatActivity {
+    private static final String BASE_URL = "https://android.trialmonster.uk/";
     TableLayout resultTable;
     int trialid, numsections, numlaps;
     ArrayList<HashMap<String, String>> theResultList;
@@ -28,8 +29,6 @@ public class SummaryScoreActivity extends AppCompatActivity {
     SharedPreferences localPrefs;
     int backgroundColor = Color.parseColor("#40bdc0d4");
     int white = Color.parseColor("#ffffff");
-
-    private static final String BASE_URL = "https://android.trialmonster.uk/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +150,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         int numRiders = theResultList.size();
 
         // Iterate through result list
-// Adding a row for each one
+        // Adding a row for each one
         for (int index = 0; index < numRiders; index++) {
 
             TableRow tr = new TableRow(this);
@@ -160,26 +159,58 @@ public class SummaryScoreActivity extends AppCompatActivity {
             } else {
                 tr.setBackgroundColor(white);
             }
+
+            HashMap<String, String> theResult = theResultList.get(index);
+
+            // Get data from arraylist
+            String rider = theResult.get("rider");
+            String sections = theResult.get("sections");
+            String scorelist = theResult.get("scorelist");
+
+            // Then split to create arrays for section scores
+            // and create a pointer to go through arrays
+            // // to take account of missing sections
+
+            int pointer = 0;
+            int numscores;
+            String[] theSectionArray = sections.split(",");
+            String[] theScoreArray = scorelist.split(",");
+            String[] theScoreValues = new String[numsections];
+
+            numscores = theSectionArray.length;
+
+            //
+            for (int i = 0; i < numscores; i++) {
+                pointer = Integer.valueOf(theSectionArray[i]);
+                theScoreValues[pointer] = theScoreArray[i];
+            }
+
+
             // Add rider number at start of each line
             TextView cell = new TextView(this);
-            cell.setText("Rider: " + index);
+            cell.setText(rider);
             cell.setPadding(8, 8, 8, 8);
             tr.addView(cell);
 
             // Iterate through sections, adding rider number, section scores, total
             for (int section = 0; section < numsections; section++) {
-
-
                 cell = new TextView(this);
-                cell.setText("Section score: " + index);
-                cell.setPadding(8, 8, 8, 8);
 
+
+                if (theScoreValues[section] != null) {
+                    cell.setText(theScoreValues[section] + "|");
+                } else {
+                    cell.setText("|");
+                }
+                cell.setPadding(8, 8, 8, 8);
+                cell.setWidth(120);
                 tr.addView(cell);
             }
 
             // Add cell for total
             cell = new TextView(this);
-            cell.setText("Total: " + index);
+            String total = theResult.get("totalscore");
+            cell.setText(total);
             cell.setPadding(8, 8, 8, 8);
             tr.addView(cell);
 
