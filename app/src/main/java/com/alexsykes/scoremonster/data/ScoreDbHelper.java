@@ -13,8 +13,8 @@ import java.util.HashMap;
 public class ScoreDbHelper extends SQLiteOpenHelper {
 
 
-    public static final int SYNCED = 0;
-    public static final int NOT_SYNCED = -1;
+    private static final int SYNCED = 0;
+    private static final int NOT_SYNCED = -1;
     /**
      * Name of the database file
      */
