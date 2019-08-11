@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.icu.text.SimpleDateFormat;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -20,9 +19,6 @@ import android.widget.Toast;
 
 import com.alexsykes.scoremonster.data.ScoreContract;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
-
-import java.util.Date;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -240,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (score.equals("") || rider.equals("")) {
             toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
-            Toast.makeText(this, "Rider number or Score missing!", Toast.LENGTH_LONG).show();
+            // Toast.makeText(this, "Rider number or Score missing!", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(this).setTitle("Warning").setMessage("Missing rider number or score").setNeutralButton("Close", null).show();
         } else {
             // Otherwise enter scores
@@ -265,23 +261,22 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Already completed " + numlaps + " laps", Toast.LENGTH_LONG).show();
         } else {
 
-            String currentTimeStamp;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date date = new Date();
-            currentTimeStamp = dateFormat.format(date);
+//            String currentTimeStamp;
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//            Date date = new Date();
+//            currentTimeStamp = dateFormat.format(date);
 
             // Create a ContentValues object where column names are the keys,
-
             ContentValues values = new ContentValues();
-            String dateString = currentTimeStamp;
+            // String dateString = currentTimeStamp;
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_OBSERVER, observer);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_RIDER, rider);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SCORE, score);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SECTION, section);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_LAP, lap);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_TRIALID, trialid);
-            values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_CREATED, dateString);
-            values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_UPDATED, dateString);
+            // values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_CREATED, dateString);
+            // values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_UPDATED, dateString);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SYNC, NOT_SYNCED);
 
             long newRowId = db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
