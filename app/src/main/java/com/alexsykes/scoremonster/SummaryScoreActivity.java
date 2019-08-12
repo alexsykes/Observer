@@ -21,6 +21,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+// TODO modify to take account of o and x
+
+
 public class SummaryScoreActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     TableLayout resultTable;
@@ -77,6 +81,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
                 // Define table for results
                 resultTable = findViewById(R.id.result_table);
                 displayResultTable(theResultList);
+
+                resultTable = findViewById(R.id.result_table);
             }
 
             private ArrayList<HashMap<String, String>> populateResultArrayList(String json) {

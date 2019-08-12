@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         // Check for numberof completed laps
         // Gets the database in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        int lap = 1 + mDbHelper.getRiderLap(rider);
+        int lap = 1 + mDbHelper.getRiderLap(rider, section, trialid);
 
         if (lap > numlaps) {
             toneGen1.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 150);

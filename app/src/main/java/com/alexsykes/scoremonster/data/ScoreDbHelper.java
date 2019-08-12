@@ -232,9 +232,9 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
 
     // method to count lap number for current rider
 
-    public int getRiderLap(int rider) {
+    public int getRiderLap(int rider, int section, int trialid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT score AS numLaps FROM scores WHERE rider = " + rider;
+        String query = "SELECT score AS numLaps FROM scores WHERE rider = " + rider + " AND section = " + section + " AND trialid = " + trialid;
         Cursor cursor = db.rawQuery(query, null);
         int numLaps = cursor.getCount();
         cursor.close();
