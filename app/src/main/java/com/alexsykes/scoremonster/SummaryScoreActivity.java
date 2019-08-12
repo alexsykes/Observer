@@ -96,7 +96,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
                         HashMap<String, String> theResult = new HashMap<>();
                         String rider = jsonArray.getJSONObject(index).getString("rider");
                         String sections = jsonArray.getJSONObject(index).getString("sections");
-                        String scorelist = jsonArray.getJSONObject(index).getString("scorelist");
+                        String scorelist = jsonArray.getJSONObject(index).getString("scorelists");
                         String totalscore = jsonArray.getJSONObject(index).getString("totalscore");
                         theResult.put("rider", rider);
                         theResult.put("scorelist", scorelist);
@@ -237,8 +237,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
                     //   cell.setText("|");
                 }
 
-                cell.setPadding(8, 8, 40, 8);
-                cell.setGravity(Gravity.END);
+                cell.setPadding(40, 8, 8, 8);
+                //cell.setGravity(Gravity.END);
                 tr.addView(cell);
             }
 
@@ -250,7 +250,6 @@ public class SummaryScoreActivity extends AppCompatActivity {
             cell.setPadding(24, 8, 40, 8);
             tr.addView(cell);
 
-            //resultTable.setColumnShrinkable(0,false);
             resultTable.addView(tr);
         }
     }
