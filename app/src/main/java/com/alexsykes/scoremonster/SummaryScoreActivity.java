@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,9 +41,6 @@ public class SummaryScoreActivity extends AppCompatActivity {
         numlaps = localPrefs.getInt("numlaps", 0);
         numsections = localPrefs.getInt("numsections", 0);
 
-        // Define table for results
-        resultTable = findViewById(R.id.result_table);
-
         trialid = getIntent().getExtras().getInt("trialid");
         String URL = BASE_URL + "getSummaryScores.php?id=" + trialid;
         getJSONDataset(URL);
@@ -76,6 +74,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 dialog.dismiss();
                 theResultList = populateResultArrayList(s);
+                // Define table for results
+                resultTable = findViewById(R.id.result_table);
                 displayResultTable(theResultList);
             }
 
@@ -147,13 +147,41 @@ public class SummaryScoreActivity extends AppCompatActivity {
     }
 
     private void displayResultTable(ArrayList<HashMap<String, String>> theResultList) {
+        TableRow tr = new TableRow(this);
+        TextView cell = new TextView(this);
+        cell.setText("Rider");
+        cell.setGravity(Gravity.CENTER);
+        cell.setPadding(8, 8, 8, 8);
+        tr.addView(cell);
+
+
+        for (int col = 1; col < numsections + 1; col++) {
+            cell = new TextView(this);
+            cell.setText("" + col);
+            cell.setGravity(Gravity.CENTER);
+            resultTable.setColumnShrinkable(col, true);
+
+            cell.setWidth(2000);
+            cell.setPadding(8, 8, 8, 8);
+            tr.addView(cell);
+        }
+        cell = new TextView(this);
+        cell.setText("Total");
+        cell.setPadding(8, 8, 8, 8);
+        cell.setWidth(120);
+        cell.setGravity(Gravity.CENTER);
+        tr.addView(cell);
+
+        resultTable.addView(tr);
+
+
         int numRiders = theResultList.size();
 
         // Iterate through result list
         // Adding a row for each one
         for (int index = 0; index < numRiders; index++) {
 
-            TableRow tr = new TableRow(this);
+            tr = new TableRow(this);
             if (index % 2 != 0) {
                 tr.setBackgroundColor(backgroundColor);
             } else {
@@ -181,14 +209,14 @@ public class SummaryScoreActivity extends AppCompatActivity {
 
             //
             for (int i = 0; i < numscores; i++) {
-                pointer = Integer.valueOf(theSectionArray[i]);
+                pointer = Integer.valueOf(theSectionArray[i]) - 1;
                 theScoreValues[pointer] = theScoreArray[i];
             }
 
-
             // Add rider number at start of each line
-            TextView cell = new TextView(this);
+            cell = new TextView(this);
             cell.setText(rider);
+            cell.setGravity(Gravity.END);
             cell.setPadding(8, 8, 8, 8);
             tr.addView(cell);
 
@@ -198,12 +226,13 @@ public class SummaryScoreActivity extends AppCompatActivity {
 
 
                 if (theScoreValues[section] != null) {
-                    cell.setText(theScoreValues[section] + "|");
+                    cell.setText(theScoreValues[section]);
                 } else {
-                    cell.setText("|");
+                    //   cell.setText("|");
                 }
-                cell.setPadding(8, 8, 8, 8);
-                cell.setWidth(120);
+
+                cell.setPadding(8, 8, 40, 8);
+                cell.setGravity(Gravity.END);
                 tr.addView(cell);
             }
 
@@ -211,9 +240,11 @@ public class SummaryScoreActivity extends AppCompatActivity {
             cell = new TextView(this);
             String total = theResult.get("totalscore");
             cell.setText(total);
-            cell.setPadding(8, 8, 8, 8);
+            cell.setGravity(Gravity.END);
+            cell.setPadding(24, 8, 40, 8);
             tr.addView(cell);
 
+            //resultTable.setColumnShrinkable(0,false);
             resultTable.addView(tr);
         }
     }
