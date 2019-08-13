@@ -295,7 +295,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean getPrefs() {
-
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
 
         observer = localPrefs.getString("observer", "");

@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-//TODO Validate section number
+
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Set up data fields
