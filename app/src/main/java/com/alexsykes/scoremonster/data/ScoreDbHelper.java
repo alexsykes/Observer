@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class ScoreDbHelper extends SQLiteOpenHelper {
 
 
+
     private static final int SYNCED = 0;
     private static final int NOT_SYNCED = -1;
     /**
@@ -121,13 +122,15 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
      * Section imported from tutlane
      *
      * @return ArrayList of Score data
+     * @param trialid the trial id
+     * @param section the section
      */
 
     // Get Score Details
-    public ArrayList<HashMap<String, String>> getScoreList() {
+    public ArrayList<HashMap<String, String>> getScoreList(int trialid, int section) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> scoreList = new ArrayList<>();
-        String query = "SELECT * FROM scores ORDER BY _id DESC";
+        String query = "SELECT * FROM scores WHERE trialid =" + trialid + " AND section = " + section + " ORDER BY _id DESC";
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             HashMap<String, String> scores = new HashMap<>();
@@ -135,6 +138,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
             scores.put("rider", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_RIDER)));
             scores.put("lap", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_LAP)));
             scores.put("score", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_SCORE)));
+            scores.put("trialid", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_TRIALID)));
             scores.put("sync", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_SYNC)));
             scores.put("edited", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_EDITED)));
             scoreList.add(scores);
@@ -243,17 +247,15 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void markAsDone() {
+    public void markAsDone(int trialid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "UPDATE scores SET sync = " + SYNCED + " WHERE sync = " + NOT_SYNCED;
+        String query = "UPDATE scores SET sync = " + SYNCED + " WHERE sync = " + NOT_SYNCED + " AND trialid = " + trialid;
         db.execSQL(query);
     }
 
-    public Cursor getUnSynced() {
+    public Cursor getUnSynced(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        //Cursor res = db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED, new String[]{});
-        //return res;
-        return db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED, new String[]{});
+        return db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED + " AND trialid=" + id, new String[]{});
     }
 
     public void delete(int id) {

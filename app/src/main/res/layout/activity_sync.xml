@@ -39,7 +39,7 @@
             android:id="@+id/textView"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/rider"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp" />
@@ -61,10 +61,18 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/trialid"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:text="@string/trialid" />
+
+        <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:text="@string/sync_status"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp" />
