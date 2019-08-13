@@ -1,12 +1,5 @@
 <?php
-//these are the server details
-//the username is root by default in case of xampp
-//password is nothing by default
-//and lastly we have the database named android. if your database name is different you have to change it 
-$servername = "trialmonster.uk";
-$username = "monster_android";
-$password = "mU@09hQQwkKY";
-$database = "monster_joom";
+require("conf.php");
  
 $trialid = $_GET['id'];
 $section = $_GET['section'];
@@ -23,7 +16,7 @@ if ($conn->connect_error) {
 $result = array(); 
  
 
-$sql = "SELECT rider, GROUP_CONCAT(score SEPARATOR '') as scores, SUM(score) AS total, COUNT(score) AS laps  FROM up93k_entryman_score s WHERE s.trialid = $trialid AND s.section = $section GROUP BY rider ORDER BY rider, lap";
+$sql = "SELECT rider, GROUP_CONCAT(score ORDER BY lap SEPARATOR '') as scores, SUM(score) AS total, COUNT(score) AS laps  FROM up93k_entryman_score s WHERE s.trialid = $trialid AND s.section = $section GROUP BY rider ORDER BY rider, lap";
 
 
 
