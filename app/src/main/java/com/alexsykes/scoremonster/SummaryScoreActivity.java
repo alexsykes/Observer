@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-// TODO modify to take account of o and x
+// TODO modify to take account of o and x - ?done in SQL
 
 
 public class SummaryScoreActivity extends AppCompatActivity {
