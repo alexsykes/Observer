@@ -5,6 +5,7 @@
       <mapping pattern="charger" type="PLAIN_TEXT" />
       <mapping ext="dex" type="PLAIN_TEXT" />
       <mapping ext="db-journal" type="PLAIN_TEXT" />
+      <mapping ext="php" type="PLAIN_TEXT" />
       <mapping pattern="word_database" type="SQL" />
       <mapping ext="db" type="SQL" />
     </extensionMap>
