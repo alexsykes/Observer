@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -79,10 +80,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
                 dialog.dismiss();
                 theResultList = populateResultArrayList(s);
                 // Define table for results
-                resultTable = findViewById(R.id.result_table);
                 displayResultTable(theResultList);
 
-                resultTable = findViewById(R.id.result_table);
             }
 
             private ArrayList<HashMap<String, String>> populateResultArrayList(String json) {
@@ -143,7 +142,6 @@ public class SummaryScoreActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     return null;
                 }
-
             }
         }
 
@@ -152,7 +150,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         getJSON.execute();
     }
 
-    private void displayResultTable(ArrayList<HashMap<String, String>> theResultList) {
+    private void displayResultTableOld(ArrayList<HashMap<String, String>> theResultList) {
         TableRow tr = new TableRow(this);
         TextView cell = new TextView(this);
         cell.setText("Rider");
@@ -251,6 +249,105 @@ public class SummaryScoreActivity extends AppCompatActivity {
             tr.addView(cell);
 
             resultTable.addView(tr);
+        }
+    }
+
+    private void displayResultTable(ArrayList<HashMap<String, String>> theResultList) {
+
+        TableLayout resultTable;
+        TableRow row;
+        TextView cell;
+        String section, text, rider, total;
+        int numResults;
+        HashMap<String, String> theResult;
+
+        resultTable = findViewById(R.id.result_table);
+
+        // Setup header row
+        row = new TableRow(this);
+        cell = new TextView(this);
+
+        cell.setText("Rider");
+        cell.setPadding(20, 8, 20, 8);
+        cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        row.addView(cell);
+
+        // Setup section header
+        for (int sect = 0; sect < numsections; sect++) {
+            cell = new TextView(this);
+            section = String.valueOf(sect + 1);
+            cell.setText(section);
+            cell.setMinWidth(40);
+            cell.setPadding(20, 8, 20, 8);
+            cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            resultTable.setColumnStretchable(sect + 1, true);
+            row.addView(cell);
+        }
+        cell = new TextView(this);
+        cell.setText("Total");
+        cell.setPadding(20, 8, 20, 8);
+        cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        row.addView(cell);
+
+        // Add row to table
+        resultTable.addView(row);
+
+
+        // Set up data table
+        numResults = theResultList.size();
+
+
+        // Setup one row for each result
+        for (int rowIndex = 0; rowIndex < numResults; rowIndex++) {
+            // Get current result
+            theResult = theResultList.get(rowIndex);
+            rider = theResult.get("rider");
+            total = theResult.get("totalscore");
+            row = new TableRow(this);
+
+            // Add riding number
+            cell = new TextView(this);
+            cell.setText(rider);
+            cell.setPadding(20, 8, 20, 8);
+            row.addView(cell);
+            for (int sect = 0; sect < numsections; sect++) {
+                cell = new TextView(this);
+                row.addView(cell);
+            }
+
+            // Add totals
+            cell = new TextView(this);
+            cell.setText(total);
+            cell.setPadding(20, 8, 20, 8);
+            cell.setGravity(View.TEXT_ALIGNMENT_TEXT_END);
+            row.addView(cell);
+            resultTable.addView(row);
+        }
+
+        // Prepare array of scores
+        String[][] theScoreArray = new String[numResults][numsections];
+        String sectionList, scoreList;
+        String theScore;
+
+        for (int index = 0; index < numResults; index++) {
+            theResult = theResultList.get(index);
+            sectionList = theResult.get("sections");
+            scoreList = theResult.get("scorelist");
+            String[] theSectionArray = sectionList.split(",");
+            String[] theSectionScoreArray = scoreList.split(",");
+            int numItems = theSectionScoreArray.length;
+
+            // Get row for result insertion
+            row = (TableRow) resultTable.getChildAt(index + 1);
+
+            // Populate row from result list
+            for (int sec = 0; sec < numItems; sec++) {
+
+                int sectionNumber = Integer.valueOf(theSectionArray[sec]);
+                theScore = theSectionScoreArray[sec];
+                cell = (TextView) row.getChildAt(sectionNumber);
+                cell.setText(theScore);
+            }
         }
     }
 }
