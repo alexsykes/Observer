@@ -170,6 +170,7 @@ f) In favour of the rider who completes the course with the least marks lost on 
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="reset_scores">Reset Scores</string>
+    <string name="trialid">TrialID</string>
     <string-array name="scores">
         <item>Clean</item>
         <item>One</item>
