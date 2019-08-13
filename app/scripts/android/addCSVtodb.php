@@ -1,11 +1,5 @@
 <?php
-
-// Database conection
-$host = 'localhost';
-$user = 'monster_joom';
-$password = 'qNg1UrpmLvnh';
-$db = 'monster_joom';
-
+require("conf.php");
 $mysqli = new mysqli($host, $user, $password, $db);
 
 if ($mysqli->connect_error) {
