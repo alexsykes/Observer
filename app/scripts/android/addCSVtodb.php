@@ -1,5 +1,11 @@
 <?php
-require("conf.php");
+
+// Database conection
+$host = 'localhost';
+$user = 'us****er';
+$password = 'pa****rd';
+$db = 'da****se';
+
 $mysqli = new mysqli($host, $user, $password, $db);
 
 if ($mysqli->connect_error) {
@@ -12,7 +18,7 @@ $lockQuery = "LOCK TABLE up93k_entryman_score WRITE";
 $unlockQuery = "UNLOCK TABLE up93k_entryman_score WRITE";
 
 $header = fgetcsv($handle,1000,",");
-	
+
 $stmt = $mysqli->stmt_init();
 //$stmt->prepare($lockQuery);
 // $stmt->execute();
@@ -28,16 +34,16 @@ while($data = fgetcsv($handle,1000,",")){
 	$trialid = $data[9]; // trialid
 
 	$query = "SELECT id FROM up93k_entryman_score WHERE `trialid` = $trialid AND `rider` = $rider AND `section` = $section AND `lap` = $lap";
-	
-	
+
+
 	if(!$stmt->prepare($query))
 	{
 		print "Failed to prepare statement\n";
 	}
-	
+
 	$stmt->execute();
 	$result = $stmt->get_result();
-	
+
 	if ($row = $result->fetch_array(MYSQLI_NUM))
 	{
 	if ($row){
@@ -52,12 +58,12 @@ while($data = fgetcsv($handle,1000,",")){
 
 		$update = "INSERT INTO up93k_entryman_score (section, rider, lap, score, trialid, created, modified) VALUES ($section, $rider, $lap, $score, $trialid, STR_TO_DATE('$created',  '%Y-%m-%d %H:%i:%s'),STR_TO_DATE('$updated',  '%Y-%m-%d %H:%i:%s'))";
 	}
-	print "Update: " . $update."<br />";
+	//print "Update: " . $update."<br />";
 	if(!$stmt->prepare($update))
 	{
 		print "Failed to prepare statement\n";
 	}
-	
+
 	$stmt->execute();
 	$result = $stmt->get_result();
 }
