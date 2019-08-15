@@ -133,8 +133,9 @@ public class SummaryScoreActivity extends AppCompatActivity {
                     //reading until we don't find null
                     while ((json = bufferedReader.readLine()) != null) {
 
+                        json = json + "\n";
                         //appending it to string builder
-                        sb.append(json + "\n");
+                        sb.append(json);
                     }
 
                     //finally returning the read string
@@ -151,9 +152,10 @@ public class SummaryScoreActivity extends AppCompatActivity {
     }
 
     private void displayResultTableOld(ArrayList<HashMap<String, String>> theResultList) {
+        String colStr;
         TableRow tr = new TableRow(this);
         TextView cell = new TextView(this);
-        cell.setText("Rider");
+        cell.setText(R.string.rider);
         cell.setGravity(Gravity.CENTER);
         cell.setPadding(8, 8, 8, 8);
         tr.addView(cell);
@@ -161,7 +163,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
 
         for (int col = 1; col < numsections + 1; col++) {
             cell = new TextView(this);
-            cell.setText("" + col);
+            colStr = String.valueOf(col);
+            cell.setText(colStr);
             cell.setGravity(Gravity.CENTER);
             resultTable.setColumnShrinkable(col, true);
 
@@ -170,7 +173,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             tr.addView(cell);
         }
         cell = new TextView(this);
-        cell.setText("Total");
+        cell.setText(R.string.total);
         cell.setPadding(8, 8, 8, 8);
         cell.setWidth(120);
         cell.setGravity(Gravity.CENTER);
@@ -203,7 +206,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             // and create a pointer to go through arrays
             // // to take account of missing sections
 
-            int pointer = 0;
+            int pointer;
             int numscores;
             String[] theSectionArray = sections.split(",");
             String[] theScoreArray = scorelist.split(",");
@@ -231,9 +234,10 @@ public class SummaryScoreActivity extends AppCompatActivity {
 
                 if (theScoreValues[section] != null) {
                     cell.setText(theScoreValues[section]);
-                } else {
-                    //   cell.setText("|");
                 }
+/*                else {
+                    //   cell.setText("|");
+                }*/
 
                 cell.setPadding(40, 8, 8, 8);
                 //cell.setGravity(Gravity.END);
@@ -268,7 +272,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         row = new TableRow(this);
         cell = new TextView(this);
 
-        cell.setText("Rider");
+        cell.setText(R.string.rider);
         cell.setPadding(20, 8, 20, 8);
         cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
         cell.setTextColor(textColor);
@@ -287,7 +291,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             row.addView(cell);
         }
         cell = new TextView(this);
-        cell.setText("Total");
+        cell.setText(R.string.total);
         cell.setTextColor(textColor);
         cell.setPadding(20, 8, 20, 8);
         cell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
