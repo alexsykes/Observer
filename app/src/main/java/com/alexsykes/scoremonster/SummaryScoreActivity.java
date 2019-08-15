@@ -262,6 +262,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         HashMap<String, String> theResult;
 
         resultTable = findViewById(R.id.result_table);
+        int textColor = getColor(R.color.colorPrimaryDark);
 
         // Setup header row
         row = new TableRow(this);
@@ -270,6 +271,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         cell.setText("Rider");
         cell.setPadding(20, 8, 20, 8);
         cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        cell.setTextColor(textColor);
         row.addView(cell);
 
         // Setup section header
@@ -277,6 +279,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             cell = new TextView(this);
             section = String.valueOf(sect + 1);
             cell.setText(section);
+            cell.setTextColor(textColor);
             cell.setMinWidth(40);
             cell.setPadding(20, 8, 20, 8);
             cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
@@ -285,8 +288,9 @@ public class SummaryScoreActivity extends AppCompatActivity {
         }
         cell = new TextView(this);
         cell.setText("Total");
+        cell.setTextColor(textColor);
         cell.setPadding(20, 8, 20, 8);
-        cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        cell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         row.addView(cell);
 
         // Add row to table
@@ -296,6 +300,9 @@ public class SummaryScoreActivity extends AppCompatActivity {
         // Set up data table
         numResults = theResultList.size();
 
+        // Define colours for stripes
+        int backgroundColor = Color.parseColor("#40bdc0d4");
+        int white = Color.parseColor("#ffffff");
 
         // Setup one row for each result
         for (int rowIndex = 0; rowIndex < numResults; rowIndex++) {
@@ -305,10 +312,19 @@ public class SummaryScoreActivity extends AppCompatActivity {
             total = theResult.get("totalscore");
             row = new TableRow(this);
 
+            if (rowIndex % 2 != 0) {
+                row.setBackgroundColor(backgroundColor);
+            } else {
+                row.setBackgroundColor(white);
+            }
+
             // Add riding number
             cell = new TextView(this);
             cell.setText(rider);
             cell.setPadding(20, 8, 20, 8);
+            cell.setWidth(80);
+            cell.setTextColor(textColor);
+            cell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
             row.addView(cell);
             for (int sect = 0; sect < numsections; sect++) {
                 cell = new TextView(this);
@@ -318,8 +334,11 @@ public class SummaryScoreActivity extends AppCompatActivity {
             // Add totals
             cell = new TextView(this);
             cell.setText(total);
+            cell.setWidth(80);
             cell.setPadding(20, 8, 20, 8);
-            cell.setGravity(View.TEXT_ALIGNMENT_TEXT_END);
+            cell.setTextColor(textColor);
+            cell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+
             row.addView(cell);
             resultTable.addView(row);
         }
@@ -347,6 +366,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
                 theScore = theSectionScoreArray[sec];
                 cell = (TextView) row.getChildAt(sectionNumber);
                 cell.setText(theScore);
+                cell.setTextColor(textColor);
             }
         }
     }
