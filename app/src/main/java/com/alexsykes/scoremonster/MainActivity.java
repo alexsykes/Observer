@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         showDabPad = localPrefs.getBoolean("showDabPad", true);
 
-        status = "Trial: " + theTrialName + "\nSection: " + section + "\nObserver: " + observer;
+        status = "Trial: " + theTrialName + " - Section: " + section + " - Observer: " + observer;
 
         statusLine.setText(status);
 
