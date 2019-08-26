@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         scorePadFragment = new ScorePadFragment();
         numberPadFragment = new NumberPadFragment();
         touchFragment = new TouchFragment();
-        riderNumberView = findViewById(R.id.riderNumberView);
-        scoreView = findViewById(R.id.scoreView);
+        riderNumberView = findViewById(R.id.numberLabel);
+        scoreView = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
 
 
@@ -194,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void addDigit(View view) {
         // Get length of rider riderNumber
-        riderNumberView = findViewById(R.id.riderNumberView);
+        //riderNumberView = findViewById(R.id.riderNumberView);
+        riderNumberView = findViewById(R.id.numberLabel);
         riderNumber = riderNumberView.getText().toString();
         int len = riderNumber.length();
 
@@ -223,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterScore(View view) {
-        scoreView = findViewById(R.id.scoreView);
+        // scoreView = findViewById(R.id.scoreView);
+        scoreView = findViewById(R.id.scoreLabel);
 
         // Get id from clicked button to get clicked digit
         int intID = view.getId();
