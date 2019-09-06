@@ -48,7 +48,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     // Interface widgets
     RadioGroup dabPadSwitch;
-    RadioButton dabPadSelect, numberPadSelect;
+    RadioButton dabPadSelect, numberPadSelect, timingModeSelect;
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
@@ -70,6 +70,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         dabPadSwitch = findViewById(R.id.padViewGroup);
         dabPadSelect = findViewById(R.id.dabPadSelect);
         numberPadSelect = findViewById(R.id.numberPadSelect);
+        timingModeSelect = findViewById(R.id.timingModeSelect);
         resetCheckBox = findViewById(R.id.resetCheckBox);
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
@@ -319,6 +320,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putString("observer", observer);
             editor.putInt("section", section);
             editor.putBoolean("showDabPad", dabPadSelect.isChecked());
+            editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
+            editor.putBoolean("timingModeSelect", timingModeSelect.isChecked());
             boolean success = editor.commit();
 
             if (reset) {

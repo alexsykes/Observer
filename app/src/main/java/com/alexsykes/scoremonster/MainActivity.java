@@ -26,11 +26,12 @@ public class MainActivity extends AppCompatActivity {
     public static final int TEXT_REQUEST = 1;
     public static final int NOT_SYNCED = -1;
 
-    TextView riderNumberView, scoreView, statusLine, text;
+    TextView riderNumberView, scoreView, statusLine;
     String riderNumber, status, theTrialName;
     ScorePadFragment scorePadFragment;
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
+    TimingButtonFragment timingButtonFragment;
     SharedPreferences localPrefs;
     private ScoreDbHelper mDbHelper;
     private String observer;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private int trialid;
     private int numlaps, numsections;
     private int score;
-    private boolean showDabPad;
+    private boolean showDabPad, showNumberPad, timingModeSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         scorePadFragment = new ScorePadFragment();
         numberPadFragment = new NumberPadFragment();
         touchFragment = new TouchFragment();
+        timingButtonFragment = new TimingButtonFragment();
         riderNumberView = findViewById(R.id.riderNumberView);
         scoreView = findViewById(R.id.scoreView);
         statusLine = findViewById(R.id.statusLine);
@@ -86,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
         getPrefs();
         if (showDabPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
-        } else {
+        } else if (showNumberPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
+        } else if (timingModeSelect) {
+
         }
     }
 
@@ -304,6 +308,10 @@ public class MainActivity extends AppCompatActivity {
         numsections = localPrefs.getInt("numsections", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         showDabPad = localPrefs.getBoolean("showDabPad", true);
+        showNumberPad = localPrefs.getBoolean("showNumberPad", true);
+        showDabPad = localPrefs.getBoolean("showDabPad", true);
+        showNumberPad = localPrefs.getBoolean("showNumberPad", true);
+        timingModeSelect = localPrefs.getBoolean("timingModeSelect", true);
 
         status = "Trial: " + theTrialName + "\nSection: " + section + "\nObserver: " + observer;
 
