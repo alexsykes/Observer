@@ -1,10 +1,18 @@
 package com.alexsykes.scoremonster;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alexsykes.scoremonster.data.FinishTimeContract;
+import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +23,7 @@ public class TimerActivity extends AppCompatActivity {
     TextView numberLabel, timeLabel;
     String riderNumber;
     Button finishButton;
+    private FinishTimeDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +34,7 @@ public class TimerActivity extends AppCompatActivity {
         numberLabel = findViewById(R.id.numberLabel);
         timeLabel = findViewById(R.id.timeLabel);
         finishButton = findViewById(R.id.finishButton);
-
+        mDbHelper = new FinishTimeDbHelper(this);
         finishButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -42,6 +51,17 @@ public class TimerActivity extends AppCompatActivity {
         timeLabel.setText(finishTime);
 
 
+        ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+        // Check for numberof completed laps
+        // Gets the database in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER,riderNumber);
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME,finishTime);
+
+        long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null,values);
+        Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
         numberLabel.setText("");
     }
 

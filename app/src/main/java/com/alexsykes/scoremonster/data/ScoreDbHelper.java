@@ -43,6 +43,16 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // New stuff going here
 
+        // Create a String that contains the SQL statement to create the finishtimes table
+        String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
+                + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " INTEGER NOT NULL);";
+
+        // Execute the SQL statement
+        db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
+        // New stuff going here
+
         // Create a String that contains the SQL statement to create the scores table
         String SQL_CREATE_SCORES_TABLE = "CREATE TABLE " + ScoreEntry.TABLE_NAME + " ("
                 + ScoreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "

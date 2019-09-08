@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.alexsykes.scoremonster.data.ScoreContract;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
-
+// TODO Important - move database setup method from ScoreDbHelper
 public class MainActivity extends AppCompatActivity {
 
     public static final int TEXT_REQUEST = 1;
