@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int TEXT_REQUEST = 1;
     public static final int NOT_SYNCED = -1;
 
-    TextView riderNumberView, scoreView, statusLine;
+    TextView numberLabel, scoreLabel, statusLine;
     String riderNumber, status, theTrialName;
     ScorePadFragment scorePadFragment;
     NumberPadFragment numberPadFragment;
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         numberPadFragment = new NumberPadFragment();
         touchFragment = new TouchFragment();
         timingButtonFragment = new TimingButtonFragment();
-        riderNumberView = findViewById(R.id.riderNumberView);
-        scoreView = findViewById(R.id.scoreView);
+        numberLabel = findViewById(R.id.numberLabel);
+        scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
 
 
@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         // Save the state of item position
-        outState.putString("rider", riderNumberView.getText().toString());
-        outState.putString("score", scoreView.getText().toString());
+        outState.putString("rider", numberLabel.getText().toString());
+        outState.putString("score", scoreLabel.getText().toString());
     }
 
     @Override
@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         // Read the state of item position
-        riderNumberView.setText(savedInstanceState.getString("rider"));
-        scoreView.setText(savedInstanceState.getString("score"));
+        numberLabel.setText(savedInstanceState.getString("rider"));
+        scoreLabel.setText(savedInstanceState.getString("score"));
     }
 
     @Override
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     score++;
                 break;
         }
-        scoreView.setText(String.valueOf(score));
+        scoreLabel.setText(String.valueOf(score));
     }
 
     private void goSync() {
@@ -198,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void addDigit(View view) {
         // Get length of rider riderNumber
-        riderNumberView = findViewById(R.id.riderNumberView);
-        riderNumber = riderNumberView.getText().toString();
+        numberLabel = findViewById(R.id.numberLabel);
+        riderNumber = numberLabel.getText().toString();
         int len = riderNumber.length();
 
         // Get id from clicked button to get clicked digit
@@ -223,27 +223,27 @@ public class MainActivity extends AppCompatActivity {
         if (riderNumber.equals("0")) {
             riderNumber = "";
         }
-        riderNumberView.setText(riderNumber);
+        numberLabel.setText(riderNumber);
     }
 
     public void enterScore(View view) {
-        scoreView = findViewById(R.id.scoreView);
+        scoreLabel = findViewById(R.id.scoreLabel);
 
         // Get id from clicked button to get clicked digit
         int intID = view.getId();
         Button button = view.findViewById(intID);
         String digit = button.getText().toString();
 
-        scoreView.setText(digit);
+        scoreLabel.setText(digit);
     }
 
     private void save(View.OnLongClickListener view) {
         // TODO improve sound feedback
 
         ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-        // Get String values for rider and scoreView
-        String rider = riderNumberView.getText().toString();
-        String score = scoreView.getText().toString();
+        // Get String values for rider and scoreLabel
+        String rider = numberLabel.getText().toString();
+        String score = scoreLabel.getText().toString();
 
         // NOTE Do NOT use null
 
@@ -294,8 +294,8 @@ public class MainActivity extends AppCompatActivity {
     // Reset the  rider/score values
     private void clearScore() {
         score = 0;
-        riderNumberView.setText("");
-        scoreView.setText("0");
+        numberLabel.setText("");
+        scoreLabel.setText("0");
     }
 
     private boolean getPrefs() {
