@@ -14,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".TimerActivity"
+            android:label="Timer"
+            android:parentActivityName=".MainActivity" ></activity>
         <activity
             android:name=".SummaryScoreActivity"
             android:label="Leaderboard"

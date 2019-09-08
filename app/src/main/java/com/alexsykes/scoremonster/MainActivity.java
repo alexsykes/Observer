@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     ScorePadFragment scorePadFragment;
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
-    TimingButtonFragment timingButtonFragment;
     SharedPreferences localPrefs;
     private ScoreDbHelper mDbHelper;
     private String observer;
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         scorePadFragment = new ScorePadFragment();
         numberPadFragment = new NumberPadFragment();
         touchFragment = new TouchFragment();
-        timingButtonFragment = new TimingButtonFragment();
         numberLabel = findViewById(R.id.numberLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
@@ -91,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (showNumberPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
         } else if (timingModeSelect) {
-
+            Intent intent = new Intent(this, TimerActivity.class);
+            intent.putExtra("trialid", trialid);
+            startActivityForResult(intent, TEXT_REQUEST);
         }
     }
 
