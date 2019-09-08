@@ -6,25 +6,49 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TimerActivity extends AppCompatActivity {
 
     NumberPadFragment numberPadFragment;
-    TextView numberLabel;
+    TextView numberLabel, timeLabel;
     String riderNumber;
+    Button finishButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
         numberPadFragment = new NumberPadFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
+        numberLabel = findViewById(R.id.numberLabel);
+        timeLabel = findViewById(R.id.timeLabel);
+        finishButton = findViewById(R.id.finishButton);
+
+        finishButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                saveFinishTime();
+                return false;
+            }
+        });
+
+    }
+
+    private void saveFinishTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String finishTime  = dateFormat.format(new Date());
+        timeLabel.setText(finishTime);
+
+
+        numberLabel.setText("");
     }
 
     @Override
     protected void onStart() {
 
         super.onStart();
-        getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
-        numberLabel = findViewById(R.id.numberLabel);
     }
 
 
