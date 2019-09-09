@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Create database connection
+        mDbHelper = new ScoreDbHelper(this);
+
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -70,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        // Create database connection
-        mDbHelper = new ScoreDbHelper(this);
 
         if (!getPrefs()) {
             goSetup();
