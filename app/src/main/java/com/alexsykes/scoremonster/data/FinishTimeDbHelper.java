@@ -31,29 +31,11 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getFinishTimes() {
-        SQLiteDatabase db = getReadableDatabase();
-
-        String[] projection = {
-                FinishTimeEntry._ID,
-                FinishTimeEntry.COLUMN_FINISHTIME_RIDER,
-                FinishTimeEntry.COLUMN_FINISHTIME_TIME
-        };
-        Cursor cursor = db.query(
-                FinishTimeEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                FinishTimeEntry._ID + " ASC");
-        return cursor;
-    }
 
     public ArrayList<HashMap<String, String>> getTimes() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
-        String query = "SELECT _id, finishtime, rider FROM finishTimes ORDER BY _id DESC ";
+        String query = "SELECT * FROM finishTimes ORDER BY _id DESC ";
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             HashMap<String, String> times = new HashMap<>();
@@ -61,8 +43,10 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
             times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
             times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+            times.put("timestamp", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
             theTimes.add(times);
         }
+        cursor.close();
         return theTimes;
     }
 }

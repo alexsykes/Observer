@@ -350,5 +350,4 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> arg0) {
 // TODO Auto-generated method stub
     }
-
 }

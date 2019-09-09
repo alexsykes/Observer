@@ -48,6 +48,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIMESTAMP + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
 
         // Execute the SQL statement

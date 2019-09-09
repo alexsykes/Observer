@@ -29,8 +29,8 @@ public class TimerActivity extends AppCompatActivity {
     String riderNumber;
     Button finishButton;
     private FinishTimeDbHelper mDbHelper;
-    ArrayList<HashMap<String, String>> theTimes;
     Cursor theTimesCursor;
+    ArrayList<HashMap<String, String>> theFinishTimes;
     RecyclerView rv;
 
     @Override
@@ -55,7 +55,9 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        theTimesCursor = mDbHelper.getFinishTimes();
+        //theTimesCursor = mDbHelper.getFinishTimes();
+        theFinishTimes = mDbHelper.getTimes();
+
         rv = findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -66,8 +68,8 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void initializeAdapter() {
-      //  ScoreListAdapter adapter = new TimerAdapter(theTimes);
-       // rv.setAdapter(adapter);
+        TimerAdapter adapter = new TimerAdapter(theFinishTimes);
+        rv.setAdapter(adapter);
     }
 
     private void saveFinishTime() {
