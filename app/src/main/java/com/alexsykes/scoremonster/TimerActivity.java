@@ -58,7 +58,7 @@ public class TimerActivity extends AppCompatActivity {
         //theTimesCursor = mDbHelper.getFinishTimes();
         theFinishTimes = mDbHelper.getTimes();
 
-        rv = findViewById(R.id.rv);
+        rv = findViewById(R.id.rvTimer);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
