@@ -349,4 +349,16 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    public void startClock(View view) {
+        // Get time to start the clock
+        long time = System.currentTimeMillis();
+
+        // Save in Prefs
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = localPrefs.edit();
+        editor.putLong("startTime", time);
+
+        editor.commit();
+    }
 }

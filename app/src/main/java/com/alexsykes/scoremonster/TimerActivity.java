@@ -34,7 +34,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class TimerActivity extends AppCompatActivity {
@@ -44,6 +43,7 @@ public class TimerActivity extends AppCompatActivity {
     ProgressDialog dialog = null;
     String upLoadServerUri = null;
     String processURL = null;
+    long startTime;
 
     NumberPadFragment numberPadFragment;
     TextView numberLabel, timeLabel;
@@ -69,6 +69,7 @@ public class TimerActivity extends AppCompatActivity {
         // Get shared preferences for trialid, section
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 999);
+        startTime = localPrefs.getLong("startTime", 0);
 
         numberPadFragment = new NumberPadFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
@@ -80,7 +81,7 @@ public class TimerActivity extends AppCompatActivity {
         //
         processButton = findViewById(R.id.processButton);
 
-        /*  Php script path  */
+        /*  PHP script path  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
         processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
 
@@ -125,7 +126,16 @@ public class TimerActivity extends AppCompatActivity {
 
     private void saveFinishTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        String finishTime  = dateFormat.format(new Date());
+        // Date finish = new Date();
+        // String finishTime  = dateFormat.format(finish);
+
+
+        // Get time to start the clock
+        long time = System.currentTimeMillis();
+        String finishTime = dateFormat.format(time);
+        long ridertime = time - startTime;
+        String elapsedtime = dateFormat.format(ridertime);
+
         timeLabel.setText(finishTime);
         riderNumber = numberLabel.getText().toString();
 
