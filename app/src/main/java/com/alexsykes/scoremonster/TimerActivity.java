@@ -134,7 +134,6 @@ public class TimerActivity extends AppCompatActivity {
         long time = System.currentTimeMillis();
         String finishTime = dateFormat.format(time);
         long ridertime = time - startTime;
-        String elapsedtime = dateFormat.format(ridertime);
 
         timeLabel.setText(finishTime);
         riderNumber = numberLabel.getText().toString();
@@ -146,7 +145,8 @@ public class TimerActivity extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER,riderNumber);
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME,finishTime);
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, time);
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME, String.valueOf(ridertime));
 
         long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null,values);
         Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
@@ -191,7 +191,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private boolean saveToCSV() {
-        String number, finishtime;
+        String number, finishtime, ridetime;
 
         filename = "times.csv";
 
@@ -213,8 +213,9 @@ public class TimerActivity extends AppCompatActivity {
                 // Check for accidental clicks (no rider number)
                 if (!number.isEmpty()) {
                     finishtime = cursor.getString(1);
+                    ridetime = cursor.getString(2);
 
-                    String[] arrStr = {number, finishtime
+                    String[] arrStr = {number, finishtime, ridetime
                     };
 
                     csvWrite.writeNext(arrStr, false);

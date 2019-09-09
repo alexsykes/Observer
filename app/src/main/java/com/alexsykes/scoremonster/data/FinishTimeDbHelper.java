@@ -29,12 +29,11 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIMESTAMP + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, "
+                + FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
-        // New stuff going here
 
 
         // Create a String that contains the SQL statement to create the scores table
@@ -84,7 +83,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         Cursor cursor;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
-        String query = "SELECT rider, finishtime FROM finishTimes ORDER BY _id DESC ";
+        String query = "SELECT rider, finishtime, ridetime FROM finishTimes ORDER BY _id DESC ";
         cursor = db.rawQuery(query, null);
         return cursor;
     }
