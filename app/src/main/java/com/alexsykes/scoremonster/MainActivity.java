@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
         } else if (showNumberPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
-        } else if (timingModeSelect) {
+        } /*else if (timingModeSelect) {
             Intent intent = new Intent(this, TimerActivity.class);
             intent.putExtra("trialid", trialid);
             startActivityForResult(intent, TEXT_REQUEST);
-        }
+        }*/
     }
 
     @Override
@@ -134,12 +134,22 @@ public class MainActivity extends AppCompatActivity {
                 goSync();
                 return true;
 
+            case R.id.timeMode:
+                goTimingMode();
+                return true;
+
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void goTimingMode() {
+        Intent intent = new Intent(this, TimerActivity.class);
+        intent.putExtra("trialid", trialid);
+        startActivityForResult(intent, TEXT_REQUEST);
     }
 
     private void goShowSummaryScores() {

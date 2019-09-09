@@ -52,6 +52,7 @@ public class TimerActivity extends AppCompatActivity {
             }
         });
 
+        updateList();
     }
 
     private void updateList() {

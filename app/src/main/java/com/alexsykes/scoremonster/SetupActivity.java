@@ -329,7 +329,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
             finish();
         }
-
     }
 
     //Performing action onItemSelected and onNothing selected
@@ -347,7 +346,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-// TODO Auto-generated method stub
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
