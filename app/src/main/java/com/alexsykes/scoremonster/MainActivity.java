@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         showNumberPad = localPrefs.getBoolean("showNumberPad", true);
         timingModeSelect = localPrefs.getBoolean("timingModeSelect", true);
 
-        status = "Trial: " + theTrialName + "\nSection: " + section + "\nObserver: " + observer;
+        status = theTrialName + " - Section: " + section + " - Observer: " + observer;
 
         statusLine.setText(status);
 

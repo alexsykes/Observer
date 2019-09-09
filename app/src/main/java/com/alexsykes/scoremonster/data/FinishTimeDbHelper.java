@@ -32,6 +32,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
     }
 
 
+
     public ArrayList<HashMap<String, String>> getTimes() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
@@ -48,5 +49,14 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return theTimes;
+    }
+
+    public Cursor getTimesForUpload() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
+        String query = "SELECT rider, finishtime FROM finishTimes ORDER BY _id DESC ";
+        Cursor cursor = db.rawQuery(query, null);
+        //cursor.close();
+        return cursor;
     }
 }

@@ -70,14 +70,14 @@ public class SyncActivity extends AppCompatActivity {
         mDbHelper = new ScoreDbHelper(this);
         populateScoreList();
 
-        uploadButton = findViewById(R.id.uploadButton);
+        // uploadButton = findViewById(R.id.uploadButton);
         processButton = findViewById(R.id.processButton);
 
         /*  Php script path  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
         processURL = "http://www.trialmonster.uk/android/addCSVtodb.php";
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+       /* uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -95,7 +95,7 @@ public class SyncActivity extends AppCompatActivity {
                     }
                 }).start();
             }
-        });
+        }); */
 
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +198,7 @@ public class SyncActivity extends AppCompatActivity {
         scoreView.setAdapter(adapter);
     }
 
-    public boolean saveToCSV() {
+    private boolean saveToCSV() {
         String id, observer, section, rider, lap, created, updated, edited, sync, score, thetrialid;
 
         // Get timestamp and add to filename
