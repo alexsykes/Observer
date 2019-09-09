@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexsykes.scoremonster.data.FinishTimeContract.FinishTimeEntry;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class FinishTimeDbHelper extends SQLiteOpenHelper {
     /**
      * Name of the database file
@@ -45,5 +48,21 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
                 null,
                 FinishTimeEntry._ID + " ASC");
         return cursor;
+    }
+
+    public ArrayList<HashMap<String, String>> getTimes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
+        String query = "SELECT _id, finishtime, rider FROM finishTimes ORDER BY _id DESC ";
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            HashMap<String, String> times = new HashMap<>();
+
+            times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
+            times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
+            times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+            theTimes.add(times);
+        }
+        return theTimes;
     }
 }

@@ -1,11 +1,14 @@
 package com.alexsykes.scoremonster;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,7 +18,9 @@ import com.alexsykes.scoremonster.data.FinishTimeContract;
 import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class TimerActivity extends AppCompatActivity {
 
@@ -24,6 +29,9 @@ public class TimerActivity extends AppCompatActivity {
     String riderNumber;
     Button finishButton;
     private FinishTimeDbHelper mDbHelper;
+    ArrayList<HashMap<String, String>> theTimes;
+    Cursor theTimesCursor;
+    RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +47,34 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 saveFinishTime();
+                updateList();
                 return false;
             }
         });
 
     }
 
+    private void updateList() {
+        theTimesCursor = mDbHelper.getFinishTimes();
+        rv = findViewById(R.id.rv);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+        initializeAdapter();
+    }
+
+    private void initializeAdapter() {
+      //  ScoreListAdapter adapter = new TimerAdapter(theTimes);
+       // rv.setAdapter(adapter);
+    }
+
     private void saveFinishTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String finishTime  = dateFormat.format(new Date());
         timeLabel.setText(finishTime);
-
+        riderNumber = numberLabel.getText().toString();
 
         ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
         // Check for numberof completed laps
