@@ -72,7 +72,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
             times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
             times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
-            times.put("timestamp", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+            times.put("ridetime", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME)));
             theTimes.add(times);
         }
         cursor.close();

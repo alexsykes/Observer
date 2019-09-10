@@ -145,7 +145,7 @@ public class TimerActivity extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER,riderNumber);
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, time);
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME, String.valueOf(ridertime));
 
         long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null,values);
@@ -201,7 +201,7 @@ public class TimerActivity extends AppCompatActivity {
             exportDir.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(exportDir));
 
-            String[] header = {"rider", "finishtime", String.valueOf(trialid)};
+            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(startTime)};
 
             csvWrite.writeNext(header, false);
 
