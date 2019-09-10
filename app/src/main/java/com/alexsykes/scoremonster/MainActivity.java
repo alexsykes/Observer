@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create database connection
         mDbHelper = new ScoreDbHelper(this);
+        mDbHelper.getWritableDatabase();
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);

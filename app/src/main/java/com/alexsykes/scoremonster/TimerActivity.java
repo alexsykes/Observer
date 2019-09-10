@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TimerActivity extends AppCompatActivity {
-    /**********  File Path *************/
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
     final String uploadFileName = "times.csv";
     ProgressDialog dialog = null;

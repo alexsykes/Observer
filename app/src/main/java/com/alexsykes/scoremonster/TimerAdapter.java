@@ -47,7 +47,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
         long number = new Long(theTimes.get(i).get("ridetime")).longValue();
 
         //
-        SimpleDateFormat sdf = new SimpleDateFormat("H:mm:ss.S");
+        SimpleDateFormat sdf = new SimpleDateFormat("H:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String strDate = sdf.format(number);
 
