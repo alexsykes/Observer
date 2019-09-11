@@ -254,7 +254,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     private boolean checkPrefs() {
         // set error flag to true
         boolean prefsSet = true;
-
+        String sectionNumber;
         // Get localPrefs and read values
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 0);
@@ -265,9 +265,15 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         section = localPrefs.getInt("section", 0);
         showDabPad = localPrefs.getBoolean("showDabPad", false);
 
+        if (section == 0) {
+            sectionNumber = "";
+        } else {
+            sectionNumber = String.valueOf(section);
+        }
+
         // Sync inputs to saved values
         observerTextInput.setText(observer);
-        sectionTextInput.setText(String.valueOf(section));
+        sectionTextInput.setText(sectionNumber);
 
         if (showDabPad) {
             dabPadSelect.setChecked(true);
@@ -307,7 +313,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             // Check section number validity against numsections
             section = Integer.parseInt(sectionTextInput.getText().toString());
             // If out of range, then append message
-            if (section > numsections || numsections < 0) {
+            if (section > numsections || section <= 0) {
                 hasErrors = true;
                 errorMsg += "\nInvalid section number";
             }

@@ -87,4 +87,10 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         cursor = db.rawQuery(query, null);
         return cursor;
     }
+
+    public void clearTimes() {
+        String clearAll = "DELETE FROM finishTimes; ";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(clearAll);
+    }
 }

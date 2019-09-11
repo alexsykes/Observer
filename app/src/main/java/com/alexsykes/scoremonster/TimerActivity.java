@@ -36,6 +36,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/* TODO Add sync status to only show pending data
+    Upload on close
+    Add timeout / warning on upload failure
+ */
+
+
 public class TimerActivity extends AppCompatActivity {
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
     final String uploadFileName = "times.csv";
@@ -65,11 +71,6 @@ public class TimerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_timer_alt);
 
-        // Get shared preferences for trialid, section
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        trialid = localPrefs.getInt("trialid", 999);
-        startTime = localPrefs.getLong("startTime", 0);
-
         numberPadFragment = new NumberPadFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
 
@@ -80,8 +81,23 @@ public class TimerActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         processButton = findViewById(R.id.processButton);
 
-        mDbHelper = new FinishTimeDbHelper(this);
+        // TODO add toolbar to layout
+//        // Add custom ActionBar
+//        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+//        setSupportActionBar(myToolbar);
+//        myToolbar.getMenu();
 
+        // Get shared preferences for trialid, section
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        trialid = localPrefs.getInt("trialid", 999);
+        startTime = localPrefs.getLong("startTime", 0);
+
+        // Hide startButton if clock already started
+        if (startTime > 0) {
+            startButton.setVisibility(View.GONE);
+        }
+
+        mDbHelper = new FinishTimeDbHelper(this);
 
 
         /*  PHP script path  */
@@ -257,7 +273,7 @@ public class TimerActivity extends AppCompatActivity {
 
             Log.e("uploadFile", "Source File not exist :"
                     + uploadFilePath + "" + uploadFileName);
-// TODO change numberLabel to something better
+
             runOnUiThread(new Runnable() {
                 public void run() {
                     numberLabel.setText("Source File not exist :"
@@ -437,5 +453,8 @@ public class TimerActivity extends AppCompatActivity {
         editor.putLong("startTime", time);
 
         editor.commit();
+        startButton.setEnabled(false);
+        startButton.setVisibility(View.GONE);
+        mDbHelper.clearTimes();
     }
 }

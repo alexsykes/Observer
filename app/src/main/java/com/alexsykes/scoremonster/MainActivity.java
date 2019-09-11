@@ -89,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
         } else if (showNumberPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
-        } /*else if (timingModeSelect) {
+        } else if (timingModeSelect) {
             Intent intent = new Intent(this, TimerActivity.class);
             intent.putExtra("trialid", trialid);
             startActivityForResult(intent, TEXT_REQUEST);
-        }*/
+        }
     }
 
     @Override
