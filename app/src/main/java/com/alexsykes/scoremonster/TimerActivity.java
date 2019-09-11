@@ -63,7 +63,7 @@ public class TimerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_timer);
+        setContentView(R.layout.activity_timer_alt);
 
         // Get shared preferences for trialid, section
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
@@ -77,7 +77,7 @@ public class TimerActivity extends AppCompatActivity {
         finishButton = findViewById(R.id.finishButton);
         mDbHelper = new FinishTimeDbHelper(this);
 
-        //
+
         processButton = findViewById(R.id.processButton);
 
         /*  PHP script path  */
@@ -212,9 +212,9 @@ public class TimerActivity extends AppCompatActivity {
                 // Check for accidental clicks (no rider number)
                 if (!number.isEmpty()) {
                     finishtime = cursor.getString(1);
-                    ridetime = cursor.getString(2);
+                    //ridetime = cursor.getString(2);
 
-                    String[] arrStr = {number, finishtime, ridetime
+                    String[] arrStr = {number, finishtime
                     };
 
                     csvWrite.writeNext(arrStr, false);
@@ -229,7 +229,6 @@ public class TimerActivity extends AppCompatActivity {
             return false;
         }
     }
-
 
     public int uploadFile(String sourceFileUri) {
         File directory = getFilesDir();

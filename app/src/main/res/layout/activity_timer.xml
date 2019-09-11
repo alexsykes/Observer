@@ -19,11 +19,14 @@
         android:textStyle="bold" />
 
     <Button
-        android:text="@string/sync_status"
-        android:layout_width="match_parent"
+        android:text="@string/process_data"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/processButton"
-        android:onClick="uploadTimes" />
+        android:onClick="uploadTimes"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorButtonBlue"
+        style="@android:style/Widget.Button" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
