@@ -206,29 +206,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:text="@string/timing_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/confirmCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
-        android:textSize="18sp" />
-
-    <Button
-        android:text="@string/start_clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/startButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        style="@style/Widget.AppCompat.Button"
-        android:onClick="startClock" />
-
 </android.support.constraint.ConstraintLayout>

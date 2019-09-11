@@ -22,14 +22,6 @@
             android:id="@+id/dataEntry"
             android:layout_weight="1">
 
-            <Button
-                android:text="@string/finish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/finishButton"
-                android:textColor="@color/colorButtonBlue"
-                style="@android:style/Widget.Button" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,6 +47,14 @@
                 android:textSize="36sp"
                 android:textStyle="bold"
                 android:textColor="@color/design_default_color_primary_dark" />
+
+            <Button
+                android:text="@string/finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/finishButton"
+                android:textColor="@color/colorButtonBlue"
+                style="@android:style/Widget.Button" />
 
             <Button
                 android:text="@string/process_data"
@@ -84,10 +84,11 @@
                 android:text="@string/start_clock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button12"
+                android:id="@+id/startButton"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorButtonBlue"
-                style="@android:style/Widget.Button" />
+                style="@android:style/Widget.Button"
+                android:onClick="startClock" />
         </LinearLayout>
 
     </LinearLayout>

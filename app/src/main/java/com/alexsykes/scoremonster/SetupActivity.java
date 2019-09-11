@@ -96,7 +96,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         });
 
 
-
         confirmCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -253,7 +252,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private boolean checkPrefs() {
+        // set error flag to true
         boolean prefsSet = true;
+
+        // Get localPrefs and read values
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 0);
         theTrialName = localPrefs.getString("theTrialName", null);
@@ -263,6 +265,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         section = localPrefs.getInt("section", 0);
         showDabPad = localPrefs.getBoolean("showDabPad", false);
 
+        // Sync inputs to saved values
         observerTextInput.setText(observer);
         sectionTextInput.setText(String.valueOf(section));
 
@@ -272,44 +275,49 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             numberPadSelect.setChecked(true);
         }
 
+        // Check for missing values
         if (observer.equals("") || section == 0 || trialid == 0 || numlaps == 0 || numsections == 0) {
+            // If incomplete, set flag to false
             prefsSet = false;
         }
         return prefsSet;
     }
 
     public void setPrefs(View view) {
-        boolean reset = resetCheckBox.isChecked();
-
         // Field validation routine
         boolean hasErrors = false;
 
+        // Set errorMsg with initial message
         String errorMsg = "The following error(s) need to be corrected:";
 
         // Check that observer field is complete
         observer = observerTextInput.getText().toString();
         if (observer.equals("")) {
+            // If empty, then append message
             hasErrors = true;
             errorMsg += "\nThe observer field is empty";
         }
 
         // Check that section field is populated
         if (sectionTextInput.getText().toString().equals("")) {
+            // If empty, then append message
             hasErrors = true;
             errorMsg += "\nThe section field is empty";
         } else {
+            // Check section number validity against numsections
             section = Integer.parseInt(sectionTextInput.getText().toString());
-            //
-            if (section > numsections) {
+            // If out of range, then append message
+            if (section > numsections || numsections < 0) {
                 hasErrors = true;
                 errorMsg += "\nInvalid section number";
             }
         }
 
-
+        // Inform user if errors
         if (hasErrors) {
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
         } else {
+            // otherwise save values
 
             localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
             SharedPreferences.Editor editor = localPrefs.edit();
@@ -323,6 +331,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
             editor.putBoolean("timingModeSelect", timingModeSelect.isChecked());
             boolean success = editor.commit();
+
+
+            // Read resetCheckBox
+            boolean reset = resetCheckBox.isChecked();
 
             if (reset) {
                 theDB.clearResults();
@@ -347,18 +359,5 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    public void startClock(View view) {
-        // Get time to start the clock
-        long time = System.currentTimeMillis();
-
-        // Save in Prefs
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        SharedPreferences.Editor editor = localPrefs.edit();
-        editor.putLong("startTime", time);
-
-        editor.commit();
     }
 }

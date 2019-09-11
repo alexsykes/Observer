@@ -49,7 +49,7 @@ public class TimerActivity extends AppCompatActivity {
     String riderNumber;
     int trialid;
     int serverResponseCode = 0;
-    Button finishButton, processButton;
+    Button finishButton, processButton, startButton;
     private FinishTimeDbHelper mDbHelper;
     private String filename;
     Cursor theTimesCursor;
@@ -72,13 +72,17 @@ public class TimerActivity extends AppCompatActivity {
 
         numberPadFragment = new NumberPadFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
+
+        // Local widgets
         numberLabel = findViewById(R.id.numberLabel);
         timeLabel = findViewById(R.id.timeLabel);
         finishButton = findViewById(R.id.finishButton);
+        startButton = findViewById(R.id.startButton);
+        processButton = findViewById(R.id.processButton);
+
         mDbHelper = new FinishTimeDbHelper(this);
 
 
-        processButton = findViewById(R.id.processButton);
 
         /*  PHP script path  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
@@ -421,5 +425,17 @@ public class TimerActivity extends AppCompatActivity {
         }
         ProcessCSV processCSV = new ProcessCSV();
         processCSV.execute();
+    }
+
+    public void startClock(View view) {
+        // Get time to start the clock
+        long time = System.currentTimeMillis();
+
+        // Save in Prefs
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = localPrefs.edit();
+        editor.putLong("startTime", time);
+
+        editor.commit();
     }
 }
