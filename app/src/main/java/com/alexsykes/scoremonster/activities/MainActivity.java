@@ -1,4 +1,4 @@
-package com.alexsykes.scoremonster;
+package com.alexsykes.scoremonster.activities;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -17,10 +17,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexsykes.scoremonster.NumberPadFragment;
+import com.alexsykes.scoremonster.R;
+import com.alexsykes.scoremonster.ScorePadFragment;
+import com.alexsykes.scoremonster.TouchFragment;
 import com.alexsykes.scoremonster.data.ScoreContract;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
 // TODO Important - move database setup method from ScoreDbHelper
+// TODO Important - check why scorePad sometime hidden
+
 public class MainActivity extends AppCompatActivity {
 
     public static final int TEXT_REQUEST = 1;
@@ -89,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
         } else if (showNumberPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
-        } else if (timingModeSelect) {
+        }
+/*        else if (timingModeSelect) {
             Intent intent = new Intent(this, TimerActivity.class);
             intent.putExtra("trialid", trialid);
             startActivityForResult(intent, TEXT_REQUEST);
-        }
+        }*/
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alexsykes.scoremonster.activities.SyncActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,11 +19,11 @@ public class ScoreListSyncAdapter extends RecyclerView.Adapter<ScoreListSyncAdap
     HashMap<String, String> theScore;
     OnItemClickListener listener;
 
-    ScoreListSyncAdapter(ArrayList<HashMap<String, String>> theScores) {
+    public ScoreListSyncAdapter(ArrayList<HashMap<String, String>> theScores) {
         this.theScores = theScores;
     }
 
-    ScoreListSyncAdapter(ArrayList<HashMap<String, String>> theScores, OnItemClickListener listener) {
+    public ScoreListSyncAdapter(ArrayList<HashMap<String, String>> theScores, OnItemClickListener listener) {
         this.theScores = theScores;
         this.listener = listener;
     }

@@ -19,7 +19,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
 
     ArrayList<HashMap<String, String>> theTimes;
 
-    TimerAdapter(ArrayList<HashMap<String, String>> theTimes) {
+    public TimerAdapter(ArrayList<HashMap<String, String>> theTimes) {
         this.theTimes = theTimes;
     }
 
@@ -63,12 +63,18 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
         // Get ride and format as hh:mm:ss
         number = new Long(theTimes.get(i).get("ridetime")).longValue();
         date = new Date(number);
-        String ridetime = DateFormat.format("h:mm:ss", date).toString();
+        // String ridetime = DateFormat.format("h:mm:ss", date).toString();
+
+        String syncState;
+        if (theTimes.get(i).get("sync").equals("-1")) {
+            syncState = "Pending";
+        } else {
+            syncState = "OK";
+        }
 
         timeHolder.riderTextView.setText(theTimes.get(i).get("rider"));
         timeHolder.timeTextView.setText(finishtime);
-        timeHolder.elapsedTextView.setText(strDate);
-        timeHolder.syncTextView.setText(theTimes.get(i).get("sync"));
+        timeHolder.syncTextView.setText(syncState);
 
         if (i % 2 != 0) {
             timeHolder.itemView.setBackgroundColor(backgroundColor);
@@ -85,7 +91,6 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
     public static class TimeHolder extends RecyclerView.ViewHolder {
         TextView riderTextView;
         TextView timeTextView;
-        TextView elapsedTextView;
         TextView syncTextView;
 
 
@@ -94,7 +99,6 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
 
             riderTextView = itemView.findViewById(R.id.riderTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
-            elapsedTextView = itemView.findViewById(R.id.elapsedTextView);
             syncTextView = itemView.findViewById(R.id.syncTextView);
 
         }

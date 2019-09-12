@@ -1,4 +1,4 @@
-package com.alexsykes.scoremonster;
+package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -21,6 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexsykes.scoremonster.NumberPadFragment;
+import com.alexsykes.scoremonster.R;
+import com.alexsykes.scoremonster.TimerAdapter;
 import com.alexsykes.scoremonster.data.FinishTimeContract;
 import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 import com.opencsv.CSVWriter;

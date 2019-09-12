@@ -16,7 +16,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
 
     ArrayList<HashMap<String, String>> theSummaryScores;
 
-    ScoreListAdapter(ArrayList<HashMap<String, String>> theSummaryScores) {
+    public ScoreListAdapter(ArrayList<HashMap<String, String>> theSummaryScores) {
         this.theSummaryScores = theSummaryScores;
     }
 

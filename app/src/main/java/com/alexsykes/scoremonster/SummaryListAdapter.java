@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class SummaryListAdapter extends RecyclerView.Adapter<SummaryListAdapter.ResultHolder> {
     ArrayList<HashMap<String, String>> theResultList;
 
-    SummaryListAdapter(ArrayList<HashMap<String, String>> theResultList) {
+    public SummaryListAdapter(ArrayList<HashMap<String, String>> theResultList) {
         this.theResultList = theResultList;
     }
 

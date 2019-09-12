@@ -1,4 +1,4 @@
-package com.alexsykes.scoremonster;
+package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexsykes.scoremonster.R;
+import com.alexsykes.scoremonster.ScoreListSyncAdapter;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 import com.opencsv.CSVWriter;
 

@@ -1,4 +1,4 @@
-package com.alexsykes.scoremonster;
+package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.alexsykes.scoremonster.R;
+import com.alexsykes.scoremonster.SummaryListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.alexsykes.scoremonster;
+package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexsykes.scoremonster.R;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
 import org.json.JSONArray;

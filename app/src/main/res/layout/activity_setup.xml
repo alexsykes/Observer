@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:theme="@style/AppTheme"
-    tools:context=".SetupActivity">
+    tools:context=".activities.SetupActivity">
 
     <TextView
         android:id="@+id/selectLabel"
