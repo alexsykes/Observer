@@ -14,15 +14,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.TimeSheetActivity"></activity>
+
+        <activity
+            android:name=".activities.TimeSheetActivity"
+            android:label="@string/timesheet"
+            android:parentActivityName=".activities.TimerActivity" />
+
         <activity
             android:name=".activities.TimerActivity"
             android:label="Timer"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
+
         <activity
             android:name=".activities.SummaryScoreActivity"
             android:label="Leaderboard"
             android:parentActivityName=".activities.MainActivity" />
+
         <activity
             android:name=".activities.SummaryActivity"
             android:label="Leaderboard"

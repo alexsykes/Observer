@@ -14,7 +14,10 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -51,6 +54,7 @@ public class TimerActivity extends AppCompatActivity {
     final String uploadFileName = "times.csv";
     private static final int SYNCED = 0;
     private static final int NOT_SYNCED = -1;
+    public static final int TEXT_REQUEST = 1;
 
     ProgressDialog dialog = null;
     String upLoadServerUri = null;
@@ -79,6 +83,12 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_timer_alt);
+
+
+        // Add custom ActionBar
+        Toolbar myToolbar = findViewById(R.id.timer_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.getMenu();
 
         numberPadFragment = new NumberPadFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
@@ -138,6 +148,30 @@ public class TimerActivity extends AppCompatActivity {
         });
 
         updateList();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Enter andinitialise section details
+            case R.id.timesheet:
+                Intent intent = new Intent(this, TimeSheetActivity.class);
+                intent.putExtra("trialid", trialid);
+                startActivityForResult(intent, TEXT_REQUEST);
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timer_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void updateList() {
