@@ -18,7 +18,9 @@
         <activity
             android:name=".activities.TimeSheetActivity"
             android:label="@string/timesheet"
-            android:parentActivityName=".activities.TimerActivity" />
+            android:parentActivityName=".activities.TimerActivity">
+
+        </activity>
 
         <activity
             android:name=".activities.TimerActivity"

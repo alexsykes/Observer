@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.AsyncTask;
@@ -87,8 +88,11 @@ public class TimerActivity extends AppCompatActivity {
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.timer_toolbar);
+        myToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(myToolbar);
         myToolbar.getMenu();
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         numberPadFragment = new NumberPadFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();

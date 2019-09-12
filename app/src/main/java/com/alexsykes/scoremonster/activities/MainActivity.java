@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -42,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private String observer;
     private int section;
     private int trialid;
-    private int numlaps, numsections;
+    private int numlaps;
     private int score;
-    private boolean showDabPad, showNumberPad, timingModeSelect;
+    private boolean showDabPad;
+    private boolean showNumberPad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        myToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(myToolbar);
         myToolbar.getMenu();
 
@@ -323,13 +326,12 @@ public class MainActivity extends AppCompatActivity {
         section = localPrefs.getInt("section", 0);
         trialid = localPrefs.getInt("trialid", 0);
         numlaps = localPrefs.getInt("numlaps", 0);
-        numsections = localPrefs.getInt("numsections", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         showDabPad = localPrefs.getBoolean("showDabPad", true);
         showNumberPad = localPrefs.getBoolean("showNumberPad", true);
         showDabPad = localPrefs.getBoolean("showDabPad", true);
         showNumberPad = localPrefs.getBoolean("showNumberPad", true);
-        timingModeSelect = localPrefs.getBoolean("timingModeSelect", true);
+        boolean timingModeSelect = localPrefs.getBoolean("timingModeSelect", true);
 
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
 
