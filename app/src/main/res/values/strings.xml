@@ -175,6 +175,7 @@ f) In favour of the rider who completes the course with the least marks lost on 
     <string name="finish">Finish</string>
     <string name="start_clock">Start clock</string>
     <string name="timesheet">Time Sheet</string>
+    <string name="latest_times">Latest Times</string>
     <string-array name="scores">
         <item>Clean</item>
         <item>One</item>

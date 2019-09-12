@@ -39,7 +39,6 @@ public class SummaryActivity extends AppCompatActivity {
 
         trialid = getIntent().getExtras().getInt("trialid");
         section = getIntent().getExtras().getInt("section");
-        // trialid = "35";
         String URL = BASE_URL + "getSectionScores.php?id=" + trialid + "&section=" + section;
         getJSONDataset(URL);
     }
@@ -136,10 +135,8 @@ public class SummaryActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     return null;
                 }
-
             }
         }
-
         //creating asynctask object and executing it
         GetData getJSON = new GetData();
         getJSON.execute();
