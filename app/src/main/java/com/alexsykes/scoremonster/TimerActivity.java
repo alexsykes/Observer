@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,10 +46,15 @@ import java.util.HashMap;
 public class TimerActivity extends AppCompatActivity {
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
     final String uploadFileName = "times.csv";
+    private static final int SYNCED = 0;
+    private static final int NOT_SYNCED = -1;
+
     ProgressDialog dialog = null;
     String upLoadServerUri = null;
     String processURL = null;
     long startTime;
+
+    LinearLayout dataEntry, setUp;
 
     NumberPadFragment numberPadFragment;
     TextView numberLabel, timeLabel;
@@ -80,6 +86,8 @@ public class TimerActivity extends AppCompatActivity {
         finishButton = findViewById(R.id.finishButton);
         startButton = findViewById(R.id.startButton);
         processButton = findViewById(R.id.processButton);
+        dataEntry = findViewById(R.id.dataEntry);
+        setUp = findViewById(R.id.setUp);
 
         // TODO add toolbar to layout
 //        // Add custom ActionBar
@@ -94,7 +102,11 @@ public class TimerActivity extends AppCompatActivity {
 
         // Hide startButton if clock already started
         if (startTime > 0) {
-            startButton.setVisibility(View.GONE);
+            setUp.setVisibility(View.GONE);
+            dataEntry.setVisibility(View.VISIBLE);
+        } else {
+            dataEntry.setVisibility(View.GONE);
+            setUp.setVisibility(View.VISIBLE);
         }
 
         mDbHelper = new FinishTimeDbHelper(this);
@@ -166,6 +178,7 @@ public class TimerActivity extends AppCompatActivity {
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER,riderNumber);
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME, String.valueOf(ridertime));
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
 
         long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null,values);
         Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
@@ -417,6 +430,8 @@ public class TimerActivity extends AppCompatActivity {
 
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                mDbHelper.markUploaded();
+                updateList();
                 dialog.dismiss();
             }
 

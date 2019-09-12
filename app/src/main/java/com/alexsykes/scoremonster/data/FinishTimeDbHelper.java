@@ -16,6 +16,8 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
      */
     private static final String DATABASE_NAME = "monster.db";
     private static final int DATABASE_VERSION = 2;
+    private static final int SYNCED = 0;
+    private static final int NOT_SYNCED = -1;
 
     public FinishTimeDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,6 +32,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
                 + FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
+                + FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
 
         // Execute the SQL statement
@@ -73,6 +76,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
             times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
             times.put("ridetime", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME)));
+            times.put("sync", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_SYNC)));
             theTimes.add(times);
         }
         cursor.close();
@@ -83,9 +87,16 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         Cursor cursor;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
-        String query = "SELECT rider, finishtime, ridetime FROM finishTimes ORDER BY _id DESC ";
+        String query = "SELECT rider, finishtime, ridetime FROM finishTimes WHERE sync = " + NOT_SYNCED + " ORDER BY _id DESC ";
         cursor = db.rawQuery(query, null);
         return cursor;
+    }
+
+    public void markUploaded() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE finishTimes SET sync = " + SYNCED + " WHERE sync = " + NOT_SYNCED;
+        db.execSQL(query);
+
     }
 
     public void clearTimes() {

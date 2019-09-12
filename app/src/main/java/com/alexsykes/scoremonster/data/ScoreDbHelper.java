@@ -66,6 +66,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
 
         // Execute the SQL statement

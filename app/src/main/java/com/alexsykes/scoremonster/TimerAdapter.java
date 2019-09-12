@@ -68,6 +68,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
         timeHolder.riderTextView.setText(theTimes.get(i).get("rider"));
         timeHolder.timeTextView.setText(finishtime);
         timeHolder.elapsedTextView.setText(strDate);
+        timeHolder.syncTextView.setText(theTimes.get(i).get("sync"));
 
         if (i % 2 != 0) {
             timeHolder.itemView.setBackgroundColor(backgroundColor);
@@ -85,6 +86,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
         TextView riderTextView;
         TextView timeTextView;
         TextView elapsedTextView;
+        TextView syncTextView;
 
 
         public TimeHolder(@NonNull View itemView) {
@@ -93,6 +95,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
             riderTextView = itemView.findViewById(R.id.riderTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
             elapsedTextView = itemView.findViewById(R.id.elapsedTextView);
+            syncTextView = itemView.findViewById(R.id.syncTextView);
 
         }
     }
