@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ResultHolder> {
     ArrayList<HashMap<String, String>> theResultList;
@@ -38,10 +41,20 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.Result
         int backgroundColor = Color.parseColor("#40bdc0d4");
         int white = Color.parseColor("#ffffff");
 
+        // Get time as String
+        String ridetime = theResultList.get(i).get("ridetime");
+
+        // Construct new Date
+        Date date = new Date(Long.valueOf(ridetime));
+
+        // Define formatting and apply
+        SimpleDateFormat dateFormatGmt = new SimpleDateFormat("H:mm:ss");
+        dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String dateUTC = dateFormatGmt.format(date);
+
         // Populate TextViews with data
-        //   resultHolder.sectionView.setText(theResultList.get(i).get("section".toString()));
         resultHolder.nameView.setText(theResultList.get(i).get("name"));
-        resultHolder.timeView.setText(theResultList.get(i).get("ridetime"));
+        resultHolder.timeView.setText(dateUTC);
         resultHolder.penaltyView.setText(theResultList.get(i).get("timepenalty"));
 
         if (i % 2 != 0) {
