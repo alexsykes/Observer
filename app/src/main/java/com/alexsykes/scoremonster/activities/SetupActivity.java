@@ -39,6 +39,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     int trialid, section, numsections, numlaps;
     boolean showDabPad;
     String observer, theTrialName, detail;
+    long startTime;
     String[] theTrials, theIDs;
     ArrayList<HashMap<String, String>> theTrialList;
 
@@ -179,7 +180,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
              */
             private ArrayList<HashMap<String, String>> populateResultArrayList(String json) {
                 ArrayList<HashMap<String, String>> theTrialList = new ArrayList<>();
-                String date, name, id, club, numsections, numlaps;
+                String date, name, id, club, numsections, numlaps, starttime;
 
                 try {
                     // Parse string data into JSON
@@ -193,6 +194,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         name = jsonArray.getJSONObject(index).getString("name");
                         numsections = jsonArray.getJSONObject(index).getString("numsections");
                         numlaps = jsonArray.getJSONObject(index).getString("numlaps");
+                        starttime = jsonArray.getJSONObject(index).getString("starttime");
 
                         // trial = club + " - " + name;
                         theTrial.put("id", id);
@@ -201,6 +203,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         theTrial.put("name", name);
                         theTrial.put("numsections", numsections);
                         theTrial.put("numlaps", numlaps);
+                        theTrial.put("starttime", starttime);
                         theTrialList.add(theTrial);
                     }
 
@@ -338,7 +341,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putInt("section", section);
             editor.putBoolean("showDabPad", dabPadSelect.isChecked());
             editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
+            editor.putLong("starttime", startTime);
             editor.putInt("modeIndex", idx);
+            if (startTime > 0) {
+                editor.putBoolean("isStartTimeSet", true);
+            } else {
+                editor.putBoolean("isStartTimeSet", false);
+            }
+
             boolean success = editor.commit();
 
 
@@ -361,7 +371,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
         trialid = Integer.parseInt(theTrial.get("id").toString());
         theTrialName = theTrial.get("name").toString();
-
+        try {
+            startTime = Long.valueOf(theTrial.get("starttime").toString());
+        } catch (Exception e) {
+            startTime = -1;
+        }
         detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
         trialDetailView.setText(detail);
     }

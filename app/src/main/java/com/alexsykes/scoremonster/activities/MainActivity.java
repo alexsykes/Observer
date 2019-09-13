@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+/*
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -178,8 +179,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = localPrefs.edit();
         editor.putBoolean("isStartTimeSet", false);
         editor.putLong("startTime", 0);
-        editor.commit();
+        //editor.commit();
     }
+*/
 
     private void goTimingMode() {
         Intent intent = new Intent(this, TimerActivity.class);
@@ -330,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_TRIALID, trialid);
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SYNC, NOT_SYNCED);
 
-            long newRowId = db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
+            db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
             toneGen1.startTone(ToneGenerator.TONE_CDMA_CONFIRM, ToneGenerator.MAX_VOLUME);
             Toast.makeText(this, "Score saved", Toast.LENGTH_LONG).show();
         }

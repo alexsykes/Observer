@@ -51,34 +51,35 @@ import java.util.HashMap;
 
 
 public class TimerActivity extends AppCompatActivity {
-    final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
-    final String uploadFileName = "times.csv";
+    public static final int TEXT_REQUEST = 1;
     private static final int SYNCED = 0;
     private static final int NOT_SYNCED = -1;
-    public static final int TEXT_REQUEST = 1;
+    // Constants
+    final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
+    final String uploadFileName = "times.csv";
+    File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
 
-    ProgressDialog dialog = null;
-    String upLoadServerUri = null;
-    String processURL = null;
-    long startTime;
-
-    LinearLayout dataEntry, setUp;
-
+    // Layout components
     NumberPadFragment numberPadFragment;
     TextView numberLabel, timeLabel;
-    String riderNumber;
+    Button finishButton, processButton, startButton;
+    LinearLayout dataEntry, setUp;
+    RecyclerView rv;
+    ProgressDialog dialog = null;
+
+    // Variables
     int trialid;
     int serverResponseCode = 0;
-    Button finishButton, processButton, startButton;
-    private FinishTimeDbHelper mDbHelper;
-    private String filename;
-    Cursor theTimesCursor;
-    ArrayList<HashMap<String, String>> theFinishTimes;
-    RecyclerView rv;
-    File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
-    Intent intent;
-    SharedPreferences localPrefs;
+    long starttime;
+    String upLoadServerUri = null;
+    String processURL = null;
+    String riderNumber;
     boolean isStartTimeSet;
+    SharedPreferences localPrefs;
+    ArrayList<HashMap<String, String>> theFinishTimes;
+    private String filename;
+    // Data handling
+    private FinishTimeDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class TimerActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Add numberPad fragment
         numberPadFragment = new NumberPadFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.top, numberPadFragment).commit();
 
@@ -137,7 +139,7 @@ public class TimerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            // Enter andinitialise section details
+            // Switch to timesheet Activity
             case R.id.timesheet:
                 Intent intent = new Intent(this, TimeSheetActivity.class);
                 intent.putExtra("trialid", trialid);
@@ -184,7 +186,7 @@ public class TimerActivity extends AppCompatActivity {
         // Get time to start the clock
         long time = System.currentTimeMillis();
         String finishTime = dateFormat.format(time);
-        long ridertime = time - startTime;
+        long ridertime = time - starttime;
 
         timeLabel.setText(finishTime);
         riderNumber = numberLabel.getText().toString();
@@ -195,12 +197,12 @@ public class TimerActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER,riderNumber);
+        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME, String.valueOf(ridertime));
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
 
-        long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null,values);
+        long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
         Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
         numberLabel.setText("");
     }
@@ -266,7 +268,7 @@ public class TimerActivity extends AppCompatActivity {
             exportDir.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(exportDir));
 
-            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(startTime)};
+            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(starttime)};
 
             csvWrite.writeNext(header, false);
 
@@ -432,10 +434,10 @@ public class TimerActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadTimes(View view) {
+    /*public void uploadTimes(View view) {
         saveToCSV();
         uploadFile(uploadFilePath + "" + uploadFileName);
-    }
+    } */
 
     private void processCSV(final String urlWebService) {
         /*
@@ -498,12 +500,14 @@ public class TimerActivity extends AppCompatActivity {
         // Save in Prefs
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = localPrefs.edit();
-        editor.putLong("startTime", time);
+        editor.putLong("starttime", time);
         editor.putBoolean("isStartTimeSet", true);
 
         editor.commit();
         startButton.setEnabled(false);
         startButton.setVisibility(View.GONE);
         mDbHelper.clearTimes();
+        setUp.setVisibility(View.GONE);
+        dataEntry.setVisibility(View.VISIBLE);
     }
 }

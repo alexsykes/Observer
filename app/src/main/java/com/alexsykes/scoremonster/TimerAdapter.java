@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.TimeZone;
 
 public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> {
 
@@ -44,15 +42,15 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
         int white = Color.parseColor("#ffffff");
 
         // Get ride and format as hh:mm:ss
-        long number = new Long(theTimes.get(i).get("ridetime")).longValue();
+        long number; // = new Long(theTimes.get(i).get("ridetime")).longValue();
 
-        //
+        /*
         SimpleDateFormat sdf = new SimpleDateFormat("H:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String strDate = sdf.format(number);
 
 
-        //
+        */
 
 
         // Get finishtime and format as hh:mm:ss
@@ -60,10 +58,12 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.TimeHolder> 
         Date date = new Date(number);
         String finishtime = DateFormat.format("h:mm:ss", date).toString();
 
-        // Get ride and format as hh:mm:ss
+        /* Get ride and format as hh:mm:ss
         number = new Long(theTimes.get(i).get("ridetime")).longValue();
         date = new Date(number);
         // String ridetime = DateFormat.format("h:mm:ss", date).toString();
+
+         */
 
         String syncState;
         if (theTimes.get(i).get("sync").equals("-1")) {
