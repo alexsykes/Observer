@@ -24,7 +24,8 @@ public class ScoreListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score_list);
         // Create database connection
         mDbHelper = new ScoreDbHelper(this);
-        // theScores = mDbHelper.getScores();
+
+        //
         theSummaryScores = mDbHelper.getRidersSummaryScores();
 
         rv = findViewById(R.id.rv);
