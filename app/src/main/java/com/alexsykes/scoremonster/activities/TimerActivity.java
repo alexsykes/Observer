@@ -78,13 +78,13 @@ public class TimerActivity extends AppCompatActivity {
     File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
     Intent intent;
     SharedPreferences localPrefs;
+    boolean isStartTimeSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_timer_alt);
-
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.timer_toolbar);
@@ -106,28 +106,7 @@ public class TimerActivity extends AppCompatActivity {
         dataEntry = findViewById(R.id.dataEntry);
         setUp = findViewById(R.id.setUp);
 
-        // TODO add toolbar to layout
-//        // Add custom ActionBar
-//        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-//        setSupportActionBar(myToolbar);
-//        myToolbar.getMenu();
-
-        // Get shared preferences for trialid, section
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        trialid = localPrefs.getInt("trialid", 999);
-        startTime = localPrefs.getLong("startTime", 0);
-
-        // Hide startButton if clock already started
-        if (startTime > 0) {
-            setUp.setVisibility(View.GONE);
-            dataEntry.setVisibility(View.VISIBLE);
-        } else {
-            dataEntry.setVisibility(View.GONE);
-            setUp.setVisibility(View.VISIBLE);
-        }
-
         mDbHelper = new FinishTimeDbHelper(this);
-
 
         /*  PHP script path  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
@@ -228,8 +207,21 @@ public class TimerActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-
         super.onStart();
+
+        // Get shared preferences for trialid, section
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        trialid = localPrefs.getInt("trialid", 999);
+        isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
+
+        // Hide startButton if clock already started
+        if (isStartTimeSet) {
+            setUp.setVisibility(View.GONE);
+            dataEntry.setVisibility(View.VISIBLE);
+        } else {
+            dataEntry.setVisibility(View.GONE);
+            setUp.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -507,6 +499,7 @@ public class TimerActivity extends AppCompatActivity {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = localPrefs.edit();
         editor.putLong("startTime", time);
+        editor.putBoolean("isStartTimeSet", true);
 
         editor.commit();
         startButton.setEnabled(false);

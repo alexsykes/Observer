@@ -151,13 +151,6 @@
             android:text="@string/dab_pad"
             android:textColor="@color/colorPrimaryDark" />
 
-        <RadioButton
-            android:id="@+id/timingModeSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/timing_mode"
-            android:textColor="@color/colorPrimaryDark" />
     </RadioGroup>
 
     <CheckBox

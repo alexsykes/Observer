@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private int score;
     private boolean showDabPad;
     private boolean showNumberPad;
+    int modeIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +95,25 @@ public class MainActivity extends AppCompatActivity {
         clearScore();
         super.onStart();
         getPrefs();
-        if (showDabPad) {
+        switch (modeIndex) {
+            case 1:
+                getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
+                break;
+            case 0:
+                getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
+                break;
+            /*case 2:
+                Intent intent = new Intent(this, TimerActivity.class);
+                intent.putExtra("trialid", trialid);
+                startActivityForResult(intent, TEXT_REQUEST);
+                break;*/
+        }
+       /* if (showDabPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
         } else if (showNumberPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
         }
-/*        else if (timingModeSelect) {
+       else if (timingModeSelect) {
             Intent intent = new Intent(this, TimerActivity.class);
             intent.putExtra("trialid", trialid);
             startActivityForResult(intent, TEXT_REQUEST);
@@ -155,6 +169,16 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = localPrefs.edit();
+        editor.putBoolean("isStartTimeSet", false);
+        editor.putLong("startTime", 0);
+        editor.commit();
     }
 
     private void goTimingMode() {
@@ -331,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
         showNumberPad = localPrefs.getBoolean("showNumberPad", true);
         showDabPad = localPrefs.getBoolean("showDabPad", true);
         showNumberPad = localPrefs.getBoolean("showNumberPad", true);
-        boolean timingModeSelect = localPrefs.getBoolean("timingModeSelect", true);
+        modeIndex = localPrefs.getInt("modeIndex", 0);
 
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
 

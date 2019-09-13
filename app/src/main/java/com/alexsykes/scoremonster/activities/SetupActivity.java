@@ -48,8 +48,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ScoreDbHelper theDB;
 
     // Interface widgets
-    RadioGroup dabPadSwitch;
-    RadioButton dabPadSelect, numberPadSelect, timingModeSelect;
+    RadioGroup modeSwitch;
+    RadioButton dabPadSelect, numberPadSelect;
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
@@ -68,10 +68,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         observerTextInput = findViewById(R.id.observerTextInput);
         sectionTextInput = findViewById(R.id.sectionTextInput);
         trialDetailView = findViewById(R.id.trialDetailView);
-        dabPadSwitch = findViewById(R.id.padViewGroup);
+        modeSwitch = findViewById(R.id.padViewGroup);
         dabPadSelect = findViewById(R.id.dabPadSelect);
         numberPadSelect = findViewById(R.id.numberPadSelect);
-        timingModeSelect = findViewById(R.id.timingModeSelect);
         resetCheckBox = findViewById(R.id.resetCheckBox);
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
@@ -325,6 +324,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
         } else {
             // otherwise save values
+            int radioButtonID = modeSwitch.getCheckedRadioButtonId();
+            View radioButton = modeSwitch.findViewById(radioButtonID);
+            int idx = modeSwitch.indexOfChild(radioButton);
 
             localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
             SharedPreferences.Editor editor = localPrefs.edit();
@@ -336,7 +338,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putInt("section", section);
             editor.putBoolean("showDabPad", dabPadSelect.isChecked());
             editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
-            editor.putBoolean("timingModeSelect", timingModeSelect.isChecked());
+            editor.putInt("modeIndex", idx);
             boolean success = editor.commit();
 
 
@@ -350,7 +352,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         }
     }
 
-    //Performing action onItemSelected and onNothing selected
+    // Reading trial details into variables
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
 

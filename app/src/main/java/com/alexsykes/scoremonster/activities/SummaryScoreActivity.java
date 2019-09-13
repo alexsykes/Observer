@@ -3,6 +3,7 @@ package com.alexsykes.scoremonster.activities;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -268,7 +269,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         HashMap<String, String> theResult;
 
         resultTable = findViewById(R.id.result_table);
-        int textColor = getColor(R.color.colorPrimaryDark);
+        int textColor = getColor(R.color.colorButtonBlue);
 
         // Setup header row
         row = new TableRow(this);
@@ -278,6 +279,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         cell.setPadding(20, 8, 20, 8);
         cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
         cell.setTextColor(textColor);
+        cell.setTypeface(null, Typeface.BOLD);
         row.addView(cell);
 
         // Setup section header
@@ -286,6 +288,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             section = String.valueOf(sect + 1);
             cell.setText(section);
             cell.setTextColor(textColor);
+            cell.setTypeface(null, Typeface.BOLD);
             cell.setMinWidth(40);
             cell.setPadding(20, 8, 20, 8);
             cell.setGravity(View.TEXT_ALIGNMENT_CENTER);
@@ -295,6 +298,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         cell = new TextView(this);
         cell.setText(R.string.total);
         cell.setTextColor(textColor);
+        cell.setTypeface(null, Typeface.BOLD);
         cell.setPadding(20, 8, 20, 8);
         cell.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         row.addView(cell);
