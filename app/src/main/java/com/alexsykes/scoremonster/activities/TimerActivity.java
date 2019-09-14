@@ -132,7 +132,7 @@ public class TimerActivity extends AppCompatActivity {
             }
         });
 
-        updateList();
+        // updateList();
     }
 
     @Override
@@ -215,6 +215,7 @@ public class TimerActivity extends AppCompatActivity {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 999);
         isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
+        starttime = localPrefs.getLong("starttime", -1);
 
         // Hide startButton if clock already started
         if (isStartTimeSet) {
