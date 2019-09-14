@@ -26,6 +26,9 @@ public class ScorePadFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    public void addDigit(View view) {
+    }
+
 /*
     public void enterScore(View view) {
         score = view.findViewById(R.id.numberLabel);
