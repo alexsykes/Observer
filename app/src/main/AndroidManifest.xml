@@ -34,10 +34,6 @@
             android:parentActivityName=".activities.MainActivity" />
 
         <activity
-            android:name=".activities.SummaryActivity"
-            android:label="Leaderboard"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
             android:name=".activities.SyncActivity"
             android:label="Upload Scores"
             android:parentActivityName=".activities.MainActivity" />
