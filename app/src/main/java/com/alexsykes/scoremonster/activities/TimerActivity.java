@@ -202,7 +202,7 @@ public class TimerActivity extends AppCompatActivity {
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
 
         long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
-        Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
         numberLabel.setText("");
     }
 
@@ -390,8 +390,7 @@ public class TimerActivity extends AppCompatActivity {
 
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            Toast.makeText(TimerActivity.this, "Score Upload Complete",
-                                    Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(TimerActivity.this, "Score Upload Complete",Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

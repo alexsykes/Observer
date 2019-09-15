@@ -26,7 +26,6 @@ import com.alexsykes.scoremonster.data.ScoreContract;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
 // TODO Important - move database setup method from ScoreDbHelper
-// TODO Important - check why scorePad sometime hidden
 
 public class MainActivity extends AppCompatActivity {
 
@@ -197,13 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void goShowScoresFromServer() {
-        Intent intent = new Intent(this, SummaryActivity.class);
-        intent.putExtra("trialid", trialid);
-        intent.putExtra("section", section);
-        startActivityForResult(intent, TEXT_REQUEST);
-    }
-
     public void countDabs(View view) {
         int intID = view.getId();
         Button button = view.findViewById(intID);
@@ -285,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void save(View.OnLongClickListener view) {
-        // TODO improve sound feedback
 
         ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
         // Get String values for rider and scoreLabel

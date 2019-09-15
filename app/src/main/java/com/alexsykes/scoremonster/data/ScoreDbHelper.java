@@ -273,7 +273,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
     }
 
     public void delete(int id) {
-// TODO Update
+        // Unused
         SQLiteDatabase db = this.getReadableDatabase();
         //String query = "DELETE FROM scores WHERE _id = " + id;
         String query = "UPDATE scores SET edited = 1 WHERE _id = " + id;

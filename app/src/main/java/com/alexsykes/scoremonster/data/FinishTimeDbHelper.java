@@ -66,7 +66,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
     public ArrayList<HashMap<String, String>> getTimes() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
-        String query = "SELECT * FROM finishTimes ORDER BY _id DESC ";
+        String query = "SELECT * FROM finishTimes WHERE sync = " + NOT_SYNCED + " ORDER BY _id DESC ";
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             HashMap<String, String> times = new HashMap<>();
