@@ -25,10 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-// TODO modify to take account of o and x - ?done in SQL
-
-
 public class SummaryScoreActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     TableLayout resultTable;

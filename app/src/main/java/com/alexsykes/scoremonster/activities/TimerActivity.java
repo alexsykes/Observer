@@ -43,8 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/* TODO Add sync status to only show pending data
-    Upload on close
+/* TODO Upload on close
     Add timeout / warning on upload failure
  */
 
