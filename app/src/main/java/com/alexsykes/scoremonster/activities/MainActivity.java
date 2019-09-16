@@ -88,15 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Check notwork connectivity
-        checkConnection();
-
-        if (isOnline()) {
-            statusLine.setText("online");
-        } else {
-            statusLine.setText("offline");
-        }
-
         if (!getPrefs()) {
             //  goSetup();
         }
@@ -104,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        // Check notwork connectivity and set Prefs
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = localPrefs.edit();
+        editor.putBoolean("canConnect", isOnline());
+        editor.commit();
+
+
         clearScore();
         super.onStart();
         getPrefs();
