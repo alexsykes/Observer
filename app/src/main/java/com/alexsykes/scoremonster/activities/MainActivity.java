@@ -2,12 +2,15 @@ package com.alexsykes.scoremonster.activities;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Create database connection
         mDbHelper = new ScoreDbHelper(this);
         mDbHelper.getWritableDatabase();
@@ -84,8 +88,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Check notwork connectivity
+        checkConnection();
+
+        if (isOnline()) {
+            statusLine.setText("online");
+        } else {
+            statusLine.setText("offline");
+        }
+
         if (!getPrefs()) {
-            goSetup();
+            //  goSetup();
         }
     }
 
@@ -355,5 +368,31 @@ public class MainActivity extends AppCompatActivity {
         statusLine.setText(status);
 
         return trialid != 0;
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void checkConnection() {
+
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = localPrefs.edit();
+
+        if (isOnline()) {
+            editor.putBoolean("canConnect", true);
+            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_LONG).show();
+        } else {
+            editor.putBoolean("canConnect", false);
+            Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_LONG).show();
+        }
+        editor.commit();
     }
 }

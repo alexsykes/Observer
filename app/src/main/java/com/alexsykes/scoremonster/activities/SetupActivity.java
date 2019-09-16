@@ -216,14 +216,15 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             //in this method we are fetching the json string
             @Override
             protected String doInBackground(Void... voids) {
-
+                int TIMEOUT_VALUE = 1000;
                 try {
                     //creating a URL
                     URL url = new URL(urlWebService);
 
                     //Opening the URL using HttpURLConnection
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
+                    con.setConnectTimeout(TIMEOUT_VALUE);
+                    con.setReadTimeout(TIMEOUT_VALUE);
                     //StringBuilder object to read the string from the service
                     StringBuilder sb = new StringBuilder();
 
