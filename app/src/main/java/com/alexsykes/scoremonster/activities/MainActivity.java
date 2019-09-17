@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        // Check notwork connectivity and set Prefs
+        // Check network connectivity and set Prefs
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = localPrefs.edit();
         editor.putBoolean("canConnect", isOnline());

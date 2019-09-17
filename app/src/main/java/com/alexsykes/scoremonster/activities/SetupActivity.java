@@ -27,6 +27,7 @@ import org.json.JSONException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +51,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     // Interface widgets
     RadioGroup modeSwitch;
+    int modeIdx;
+
     RadioButton dabPadSelect, numberPadSelect;
     Spinner trialSelect;
     ProgressDialog dialog = null;
@@ -119,7 +122,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Get trialList from server
         String URL = BASE_URL + "getTrialList.php";
-        getJSONDataset(URL);
+        try {
+            getJSONDataset(URL);
+        } catch (NullPointerException e) {
+            Toast.makeText(SetupActivity.this, "Empty data", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void getJSONDataset(final String urlWebService) {
@@ -243,10 +250,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
                     //finally returning the read string
                     return sb.toString().trim();
+                } catch (SocketTimeoutException e) {
+                    Toast.makeText(SetupActivity.this, "SocketTimeoutException", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    return null;
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return null;
                 }
-
             }
         }
 
@@ -267,7 +278,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numlaps = localPrefs.getInt("numlaps", 0);
         observer = localPrefs.getString("observer", "");
         section = localPrefs.getInt("section", 0);
-        showDabPad = localPrefs.getBoolean("showDabPad", false);
+        //showDabPad = localPrefs.getBoolean("showDabPad", false);
+        modeIdx = localPrefs.getInt("modeIndex", 0);
 
         if (section == 0) {
             sectionNumber = "";
@@ -279,11 +291,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         observerTextInput.setText(observer);
         sectionTextInput.setText(sectionNumber);
 
+        RadioButton selected = (RadioButton) modeSwitch.getChildAt(modeIdx);
+        selected.setChecked(true);
+/*
         if (showDabPad) {
             dabPadSelect.setChecked(true);
         } else {
             numberPadSelect.setChecked(true);
-        }
+        }*/
 
         // Check for missing values
         if (observer.equals("") || section == 0 || trialid == 0 || numlaps == 0 || numsections == 0) {
@@ -340,8 +355,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putInt("numlaps", numlaps);
             editor.putString("observer", observer);
             editor.putInt("section", section);
-            editor.putBoolean("showDabPad", dabPadSelect.isChecked());
-            editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
+            //editor.putBoolean("showDabPad", dabPadSelect.isChecked());
+            //editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
             editor.putLong("starttime", startTime);
             editor.putInt("modeIndex", idx);
             if (startTime > 0) {
