@@ -1,6 +1,7 @@
 package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -68,7 +69,18 @@ public class SummaryScoreActivity extends AppCompatActivity {
             protected void onPreExecute() {
 
                 super.onPreExecute();
-                dialog = ProgressDialog.show(SummaryScoreActivity.this, "Scoremonster", "Getting leaderboard…", true);
+                //dialog = ProgressDialog.show(SummaryScoreActivity.this, "Scoremonster", "Getting leaderboard…", true);
+
+                dialog = new ProgressDialog(SummaryScoreActivity.this);
+                dialog.setMessage("Loading…");
+                dialog.setCancelable(false);
+                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
 
             //this method will be called after execution
@@ -85,6 +97,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
 
             private ArrayList<HashMap<String, String>> populateResultArrayList(String json) {
                 ArrayList<HashMap<String, String>> theResultList = new ArrayList<>();
+                final int TIMEOUT = 5000;
 
                 try {
                     // Parse string data into JSON
@@ -112,6 +125,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             //in this method we are fetching the json string
             @Override
             protected String doInBackground(Void... voids) {
+                final int TIMEOUT = 5000;
 
                 try {
                     //creating a URL
@@ -119,6 +133,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
 
                     //Opening the URL using HttpURLConnection
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setConnectTimeout(TIMEOUT);
+                    con.setReadTimeout(TIMEOUT);
 
                     //StringBuilder object to read the string from the service
                     StringBuilder sb = new StringBuilder();
@@ -140,7 +156,8 @@ public class SummaryScoreActivity extends AppCompatActivity {
                     //finally returning the read string
                     return sb.toString().trim();
                 } catch (Exception e) {
-                    return null;
+                    e.printStackTrace();
+                    return "";
                 }
             }
         }

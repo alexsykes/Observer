@@ -1,6 +1,7 @@
 package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -148,8 +149,19 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 super.onPreExecute();
                 // Show dialog during server transaction
-                dialog = ProgressDialog.show(SetupActivity.this, "Scoremonster", "Getting trial list", true);
+                // dialog = ProgressDialog.show(SetupActivity.this, "Scoremonster", "Getting trial list", true);
+                dialog = new ProgressDialog(SetupActivity.this);
+                dialog.setMessage("Loading…");
+                dialog.setCancelable(false);
+                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
+
 
             /* this method will be called after execution
 
