@@ -137,7 +137,7 @@ f) In favour of the rider who completes the course with the least marks lost on 
     <string name="total">Total</string>
     <string name="scores">Scores</string>
     <string name="laps">Laps</string>
-    <string name="warning">Confirmation needed - this will permanently delete all current scores. \nTo proceed, check the box!</string>
+    <string name="warning">Confirmation needed - this will permanently delete all current data. \nTo proceed, check the box!</string>
     <string name="ok">OK</string>
     <string name="number_of_laps">Number of laps</string>
     <string name="number_of_sections">Number of sections</string>
@@ -169,7 +169,7 @@ f) In favour of the rider who completes the course with the least marks lost on 
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="reset_scores">Reset Scores</string>
+    <string name="reset_scores">Reset</string>
     <string name="trialid">TrialID</string>
     <string name="timing_mode">Timing mode</string>
     <string name="finish">Finish</string>

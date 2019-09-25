@@ -1,4 +1,4 @@
-package com.alexsykes.scoremonster.activities;
+package com.alexsykes.scoremonster;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.alexsykes.scoremonster.R;
 
 import java.util.ArrayList;
 import java.util.Date;

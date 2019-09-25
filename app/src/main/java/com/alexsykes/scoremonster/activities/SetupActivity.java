@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexsykes.scoremonster.R;
+import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
 import org.json.JSONArray;
@@ -48,7 +49,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     SharedPreferences localPrefs;
 
     // Database access
-    ScoreDbHelper theDB;
+    ScoreDbHelper theScoreDB;
+    FinishTimeDbHelper theFinishTimeDB;
 
     // Interface widgets
     RadioGroup modeSwitch;
@@ -67,8 +69,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        theDB = new ScoreDbHelper(this);
-
+        theScoreDB = new ScoreDbHelper(this);
+        theFinishTimeDB = new FinishTimeDbHelper(this);
         // Set up activity fields
         observerTextInput = findViewById(R.id.observerTextInput);
         sectionTextInput = findViewById(R.id.sectionTextInput);
@@ -384,7 +386,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             boolean reset = resetCheckBox.isChecked();
 
             if (reset) {
-                theDB.clearResults();
+                theScoreDB.clearResults();
+                theFinishTimeDB.clearTimes();
             }
             finish();
         }

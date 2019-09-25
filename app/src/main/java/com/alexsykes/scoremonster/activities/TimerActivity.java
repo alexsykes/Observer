@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.alexsykes.scoremonster.NumberPadFragment;
 import com.alexsykes.scoremonster.R;
+import com.alexsykes.scoremonster.TimerAdapter;
 import com.alexsykes.scoremonster.data.FinishTimeContract;
 import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 import com.opencsv.CSVWriter;
