@@ -53,6 +53,7 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.Result
         String dateUTC = dateFormatGmt.format(date);
 
         // Populate TextViews with data
+        resultHolder.numberView.setText(theResultList.get(i).get("number"));
         resultHolder.nameView.setText(theResultList.get(i).get("name"));
         resultHolder.timeView.setText(dateUTC);
         resultHolder.penaltyView.setText(theResultList.get(i).get("timepenalty"));
@@ -71,6 +72,7 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.Result
 
     class ResultHolder extends RecyclerView.ViewHolder {
 
+        TextView numberView;
         TextView nameView;
         TextView timeView;
         TextView penaltyView;
@@ -78,6 +80,7 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.Result
         ResultHolder(@NonNull View itemView) {
             super(itemView);
             // Instantiate fields to be populated
+            numberView = itemView.findViewById(R.id.numberView);
             nameView = itemView.findViewById(R.id.nameView);
             timeView = itemView.findViewById(R.id.timeView);
             penaltyView = itemView.findViewById(R.id.penaltyView);

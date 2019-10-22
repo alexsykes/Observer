@@ -80,10 +80,12 @@ public class TimeSheetActivity extends AppCompatActivity {
                     for (int index = 0; index < jsonArray.length(); index++) {
                         HashMap<String, String> theResult = new HashMap<>();
                         String name = jsonArray.getJSONObject(index).getString("name");
+                        String number = jsonArray.getJSONObject(index).getString("number");
                         String ridetime = jsonArray.getJSONObject(index).getString("ridetime");
                         String timepenalty = jsonArray.getJSONObject(index).getString("timepenalty");
 
                         theResult.put("name", name);
+                        theResult.put("number", number);
                         theResult.put("ridetime", ridetime);
                         theResult.put("timepenalty", timepenalty);
                         theList.add(theResult);
