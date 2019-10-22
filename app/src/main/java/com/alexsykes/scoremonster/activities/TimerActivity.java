@@ -84,7 +84,7 @@ public class TimerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_timer_alt);
+        setContentView(R.layout.activity_timer);
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.timer_toolbar);
@@ -306,8 +306,8 @@ public class TimerActivity extends AppCompatActivity {
 
         String fileName = sourceFileUri;
 
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
+        HttpURLConnection conn;
+        DataOutputStream dos;
         String lineEnd = "\r\n";
         String twoHyphens = "--";
         String boundary = "*****";
@@ -509,5 +509,5 @@ public class TimerActivity extends AppCompatActivity {
         mDbHelper.clearTimes();
         setUp.setVisibility(View.GONE);
         dataEntry.setVisibility(View.VISIBLE);
-    }
+}
 }

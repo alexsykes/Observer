@@ -405,7 +405,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         try {
             startTime = Long.valueOf(theTrial.get("starttime").toString());
         } catch (Exception e) {
-            startTime = -1;
+            // startTime = -1;
         }
         detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
         trialDetailView.setText(detail);
