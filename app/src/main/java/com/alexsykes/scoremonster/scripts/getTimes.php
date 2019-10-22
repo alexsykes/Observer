@@ -15,22 +15,23 @@ if ($conn->connect_error) {
 $result = array(); 
  
 // Get result set
-$sql="SELECT CONCAT(firstname,' ',lastname) AS name, ridetime, timepenalty FROM up93k_entryman_entry WHERE trialid='$trialid' AND ridetime > 0 ORDER by timepenalty ASC";
+$sql="SELECT CONCAT(firstname,' ',lastname) AS name, number, ridetime, timepenalty FROM up93k_entryman_entry WHERE trialid='$trialid' AND ridetime > 0 ORDER by timepenalty ASC";
 
 //creating an statment with the query
 $stmt = $conn->prepare($sql);
- 
+
 //executing that statment
 $stmt->execute();
- 
-//binding results for that statment 
-$stmt->bind_result($name, $ridetime, $timepenalty);
+
+//binding results for that statment
+$stmt->bind_result($name, $number, $ridetime, $timepenalty);
 
 //looping through all the records
 while($stmt->fetch()){
 
  $temp = [
  'name'=>$name,
+ 'number'=>$number,
  'ridetime'=>$ridetime,
  'timepenalty'=>$timepenalty
  ];
