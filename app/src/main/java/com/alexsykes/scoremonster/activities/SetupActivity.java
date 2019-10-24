@@ -42,7 +42,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     int trialid, section, numsections, numlaps;
     boolean showDabPad;
     String observer, theTrialName, detail;
-    long startTime;
+    // long startTime;
     String[] theTrials, theIDs;
     ArrayList<HashMap<String, String>> theTrialList;
 
@@ -371,13 +371,17 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putInt("section", section);
             //editor.putBoolean("showDabPad", dabPadSelect.isChecked());
             //editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
-            editor.putLong("starttime", startTime);
+            // editor.putLong("starttime", startTime);
             editor.putInt("modeIndex", idx);
+
+            /* Moving time setting to TimerActivity
             if (startTime > 0) {
                 editor.putBoolean("isStartTimeSet", true);
             } else {
                 editor.putBoolean("isStartTimeSet", false);
             }
+
+             */
 
             boolean success = editor.commit();
 
@@ -402,11 +406,14 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
         trialid = Integer.parseInt(theTrial.get("id").toString());
         theTrialName = theTrial.get("name").toString();
-        try {
-            startTime = Long.valueOf(theTrial.get("starttime").toString());
-        } catch (Exception e) {
-            // startTime = -1;
-        }
+
+//         Moving startTime to TimerActivity
+//        try {
+//             startTime = Long.valueOf(theTrial.get("starttime").toString());
+//        } catch (Exception e) {
+//             startTime = -1;
+//         }
+
         detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
         trialDetailView.setText(detail);
     }

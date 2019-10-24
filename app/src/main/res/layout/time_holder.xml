@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/timeView"
-        android:layout_width="48dp"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
@@ -42,7 +42,7 @@
         android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:gravity="end"
         android:textAlignment="textEnd"
         android:textColor="@color/colorButtonBlue"

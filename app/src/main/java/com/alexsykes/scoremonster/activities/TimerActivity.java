@@ -50,14 +50,13 @@ import java.util.HashMap;
 
 
 public class TimerActivity extends AppCompatActivity {
-    public static final int TEXT_REQUEST = 1;
-    private static final int SYNCED = 0;
-    private static final int NOT_SYNCED = -1;
     // Constants
+    public static final int TEXT_REQUEST = 1;
+    // private static final int SYNCED = 0; unused -
+    private static final int NOT_SYNCED = -1;
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
     final String uploadFileName = "times.csv";
     File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
-
     // Layout components
     NumberPadFragment numberPadFragment;
     TextView numberLabel, timeLabel;
@@ -65,13 +64,13 @@ public class TimerActivity extends AppCompatActivity {
     LinearLayout dataEntry, setUp;
     RecyclerView rv;
     ProgressDialog dialog = null;
-
-    // Variables
+    // Global variables
     int trialid;
     int serverResponseCode = 0;
     long starttime;
     String upLoadServerUri = null;
     String processURL = null;
+    String getTrialsURL = null;
     String riderNumber;
     boolean isStartTimeSet;
     SharedPreferences localPrefs;
@@ -84,6 +83,7 @@ public class TimerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Set Activity
         setContentView(R.layout.activity_timer);
 
         // Add custom ActionBar
@@ -109,9 +109,10 @@ public class TimerActivity extends AppCompatActivity {
 
         mDbHelper = new FinishTimeDbHelper(this);
 
-        /*  PHP script path  */
+        /*  PHP script paths  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
         processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
+        getTrialsURL = "http://www.trialmonster.uk/android/getTrialList.php";
 
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +132,15 @@ public class TimerActivity extends AppCompatActivity {
             }
         });
 
+        checkPrefs();
         // updateList();
+    }
+
+    private void checkPrefs() {
+        // Get localPrefs and read values
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        trialid = localPrefs.getInt("trialid", 999);
+        starttime = localPrefs.getLong("starttime", -1);
     }
 
     @Override
@@ -206,6 +215,7 @@ public class TimerActivity extends AppCompatActivity {
         numberLabel.setText("");
     }
 
+    // Check for startTime already set in preferences
     @Override
     protected void onStart() {
         super.onStart();
@@ -220,9 +230,11 @@ public class TimerActivity extends AppCompatActivity {
         if (isStartTimeSet) {
             setUp.setVisibility(View.GONE);
             dataEntry.setVisibility(View.VISIBLE);
+            processButton.setVisibility(View.VISIBLE);
             updateList();
         } else {
             dataEntry.setVisibility(View.GONE);
+            processButton.setVisibility(View.GONE);
             setUp.setVisibility(View.VISIBLE);
         }
     }
@@ -494,6 +506,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     public void startClock(View view) {
+
         // Get time to start the clock
         long time = System.currentTimeMillis();
 
@@ -502,12 +515,14 @@ public class TimerActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = localPrefs.edit();
         editor.putLong("starttime", time);
         editor.putBoolean("isStartTimeSet", true);
-
         editor.commit();
+
+        // Set up activity for data entry
         startButton.setEnabled(false);
         startButton.setVisibility(View.GONE);
         mDbHelper.clearTimes();
         setUp.setVisibility(View.GONE);
         dataEntry.setVisibility(View.VISIBLE);
-}
+        processButton.setVisibility(View.VISIBLE);
+    }
 }

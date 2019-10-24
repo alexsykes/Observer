@@ -131,7 +131,7 @@ f) In favour of the rider who completes the course with the least marks lost on 
     <string name="trial_id">Trial ID</string>
     <string name="export">Upload scores</string>
     <string name="upload_scores">Upload Scores</string>
-    <string name="process_data">Process Data</string>
+    <string name="process_data">Upload Data</string>
     <string name="sync_status">Status</string>
     <string name="lap">Lap</string>
     <string name="total">Total</string>
