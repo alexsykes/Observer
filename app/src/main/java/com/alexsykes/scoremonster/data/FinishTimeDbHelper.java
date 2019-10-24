@@ -31,7 +31,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
-               // + FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
+                + FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
                 + FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
 
@@ -74,7 +74,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
             times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
             times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
-           // times.put("ridetime", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME)));
+            times.put("ridetime", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME)));
             times.put("sync", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_SYNC)));
             theTimes.add(times);
         }

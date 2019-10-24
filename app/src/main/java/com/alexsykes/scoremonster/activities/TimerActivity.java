@@ -612,7 +612,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
                 aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 // Setting the ArrayAdapter data on the Spinner
-               trialSelect.setAdapter(aa);
+                trialSelect.setAdapter(aa);
             }
 
             /*
