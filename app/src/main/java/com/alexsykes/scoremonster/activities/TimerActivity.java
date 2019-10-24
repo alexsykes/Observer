@@ -225,7 +225,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         ContentValues values = new ContentValues();
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME, String.valueOf(ridertime));
+        //values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME, String.valueOf(ridertime));
         values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
 
         long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
@@ -296,7 +296,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private boolean saveToCSV() {
-        String number, finishtime, ridetime;
+        String number, finishtime;
 
         filename = "times.csv";
 
@@ -318,7 +318,6 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
                 // Check for accidental clicks (no rider number)
                 if (!number.isEmpty()) {
                     finishtime = cursor.getString(1);
-                    //ridetime = cursor.getString(2);
 
                     String[] arrStr = {number, finishtime
                     };
@@ -541,6 +540,8 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         SharedPreferences.Editor editor = localPrefs.edit();
         editor.putLong("starttime", time);
         editor.putBoolean("isStartTimeSet", true);
+        editor.putString("trialName", theTrialName);
+        editor.putInt("trialid", trialid);
         editor.commit();
 
         // Set up activity for data entry
@@ -697,7 +698,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         trialid = Integer.parseInt(theTrial.get("id").toString());
         theTrialName = theTrial.get("name").toString();
 
-        //Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
+        // Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
 
     }
 
@@ -705,6 +706,6 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> parent) {
         trialid = 999;
         theTrialName ="None selected";
-        //Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
+        // Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
     }
 }

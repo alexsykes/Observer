@@ -42,8 +42,6 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-
         // Create a String that contains the SQL statement to create the scores table
         String SQL_CREATE_SCORES_TABLE = "CREATE TABLE " + ScoreEntry.TABLE_NAME + " ("
                 + ScoreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -65,54 +63,13 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
+               // + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDE_TIME + " TEXT , "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
 
-        // Create a String that contains the SQL statement to create the notes table
-        /*String SQL_CREATE_NOTES_TABLE = "CREATE TABLE " + NoteContract.NoteEntry.TABLE_NAME + " ("
-                + NoteContract.NoteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NoteContract.NoteEntry.COLUMN_NOTE_OBSERVER + " TEXT NOT NULL, "
-                + NoteContract.NoteEntry.COLUMN_NOTE_SECTION + " INTEGER NOT NULL, "
-                + NoteContract.NoteEntry.COLUMN_NOTE_CREATED + " TEXT NOT NULL, "
-                + NoteContract.NoteEntry.COLUMN_NOTE_NOTE + " INTEGER NOT NULL);";
-
-         */
-
-        // Execute the SQL statement
-        // db.execSQL(SQL_CREATE_NOTES_TABLE);
-
-
-        // Create a String that contains the SQL statement to create the entries table
-        /*String SQL_CREATE_ENTRIES_TABLE = "CREATE TABLE " + EntryContract.EntryEntry.TABLE_NAME + " ("
-                + EntryContract.EntryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_SURNAME + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_FIRSTNAME + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_ADDRESS + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_POSTCODE + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_TELEPHONE + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_DOB + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_CLUB + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_ACU + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_COURSE + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_CLASS + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_MAKE + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_SIZE + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_TYPE + " TEXT , "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_ISYOUTH + " INT NOT NULL DEFAULT 0, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_NUMBER + " INT NOT NULL DEFAULT 0, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_EMAIL + " TEXT NOT NULL, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_GUARDIAN + " TEXT, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_GUARDIANADDRESS + " TEXT, "
-                + EntryContract.EntryEntry.COLUMN_ENTRY_CREATED + " TEXT);";
-                */
-
-
-        // Execute the SQL statement
-        //db.execSQL(SQL_CREATE_ENTRIES_TABLE);
     }
 
     /**
@@ -120,11 +77,6 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-/*        // The database is still at version 1, so there's nothing to do be done here.
-        String sql = "DROP TABLE IF EXISTS " + EntryContract.EntryEntry.TABLE_NAME;
-        db.execSQL(sql);
-        sql = "DROP TABLE IF EXISTS " + NoteContract.NoteEntry.TABLE_NAME;
-        db.execSQL(sql);*/
         String sql = "DROP TABLE IF EXISTS " + ScoreContract.ScoreEntry.TABLE_NAME;
         db.execSQL(sql);
 
