@@ -2,6 +2,7 @@ package com.alexsykes.scoremonster.activities;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -20,8 +21,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,13 +36,19 @@ import com.alexsykes.scoremonster.data.FinishTimeContract;
 import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 import com.opencsv.CSVWriter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +59,7 @@ import java.util.HashMap;
  */
 
 
-public class TimerActivity extends AppCompatActivity {
+public class TimerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     // Constants
     public static final int TEXT_REQUEST = 1;
     // private static final int SYNCED = 0; unused -
@@ -64,7 +74,10 @@ public class TimerActivity extends AppCompatActivity {
     LinearLayout dataEntry, setUp;
     RecyclerView rv;
     ProgressDialog dialog = null;
+    Spinner trialSelect;
+
     // Global variables
+    String[] theTrials, theIDs;
     int trialid;
     int serverResponseCode = 0;
     long starttime;
@@ -72,9 +85,11 @@ public class TimerActivity extends AppCompatActivity {
     String processURL = null;
     String getTrialsURL = null;
     String riderNumber;
+    String theTrialName;
     boolean isStartTimeSet;
     SharedPreferences localPrefs;
     ArrayList<HashMap<String, String>> theFinishTimes;
+    ArrayList<HashMap<String, String>> theTrialList;
     private String filename;
     // Data handling
     private FinishTimeDbHelper mDbHelper;
@@ -132,8 +147,11 @@ public class TimerActivity extends AppCompatActivity {
             }
         });
 
+        // Set up spinner
+        trialSelect = findViewById(R.id.trialSelect);
+        trialSelect.setOnItemSelectedListener(this);
+
         checkPrefs();
-        // updateList();
     }
 
     private void checkPrefs() {
@@ -236,6 +254,13 @@ public class TimerActivity extends AppCompatActivity {
             dataEntry.setVisibility(View.GONE);
             processButton.setVisibility(View.GONE);
             setUp.setVisibility(View.VISIBLE);
+            // Get trialList from server
+            String URL = getTrialsURL;
+            try {
+                getJSONDataset(URL);
+            } catch (NullPointerException e) {
+                Toast.makeText(TimerActivity.this, "Empty data", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -507,6 +532,7 @@ public class TimerActivity extends AppCompatActivity {
 
     public void startClock(View view) {
 
+
         // Get time to start the clock
         long time = System.currentTimeMillis();
 
@@ -524,5 +550,161 @@ public class TimerActivity extends AppCompatActivity {
         setUp.setVisibility(View.GONE);
         dataEntry.setVisibility(View.VISIBLE);
         processButton.setVisibility(View.VISIBLE);
+    }
+
+    private void getJSONDataset(final String urlWebService) {
+        /*
+         * As fetching the json string is a network operation
+         * And we cannot perform a network operation in main thread
+         * so we need an AsyncTask
+         * The constrains defined here are
+         * Void -> We are not passing anything
+         * Void -> Nothing at progress update as well
+         * String -> After completion it should return a string and it will be the json string
+         * */
+        class GetData extends AsyncTask<Void, Void, String> {
+
+            //this method will be called before execution
+
+            @Override
+            protected void onPreExecute() {
+
+                super.onPreExecute();
+                // Show dialog during server transaction
+                // dialog = ProgressDialog.show(SetupActivity.this, "Scoremonster", "Getting trial list", true);
+                dialog = new ProgressDialog(TimerActivity.this);
+                dialog.setMessage("Loading…");
+                dialog.setCancelable(false);
+                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+
+
+            /* this method will be called after execution
+
+                s contains trial details in JSON string
+             */
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                dialog.dismiss();
+
+                // Populate ArrayList with JSON data
+                theTrialList = populateResultArrayList(s);
+
+                theTrials = new String[theTrialList.size()];
+                theIDs = new String[theTrialList.size()];
+
+                for (int index = 0; index < theTrialList.size(); index++) {
+                    theTrials[index] = theTrialList.get(index).get("name");
+                    theIDs[index] = theTrialList.get(index).get("id");
+                }
+
+                // Set up Spinner
+                ArrayAdapter aa = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, theTrials);
+                aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                // Setting the ArrayAdapter data on the Spinner
+               trialSelect.setAdapter(aa);
+            }
+
+            /*
+            @param String json JSON string returned from MySQL
+            @return ArrayList of trials data
+             */
+            private ArrayList<HashMap<String, String>> populateResultArrayList(String json) {
+                ArrayList<HashMap<String, String>> theTrialList = new ArrayList<>();
+                String date, name, id, club, numsections, numlaps, starttime;
+
+                try {
+                    // Parse string data into JSON
+                    JSONArray jsonArray = new JSONArray(json);
+
+                    for (int index = 0; index < jsonArray.length(); index++) {
+                        HashMap<String, String> theTrial = new HashMap<>();
+                        id = jsonArray.getJSONObject(index).getString("id");
+                        name = jsonArray.getJSONObject(index).getString("name");
+                        starttime = jsonArray.getJSONObject(index).getString("starttime");
+
+                        theTrial.put("id", id);
+                        theTrial.put("name", name);
+                        theTrial.put("starttime", starttime);
+                        theTrialList.add(theTrial);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return theTrialList;
+            }
+
+            //in this method we are fetching the json string
+            @Override
+            protected String doInBackground(Void... voids) {
+                int TIMEOUT_VALUE = 1000;
+                try {
+                    //creating a URL
+                    URL url = new URL(urlWebService);
+
+                    //Opening the URL using HttpURLConnection
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setConnectTimeout(TIMEOUT_VALUE);
+                    con.setReadTimeout(TIMEOUT_VALUE);
+                    //StringBuilder object to read the string from the service
+                    StringBuilder sb = new StringBuilder();
+
+                    //We will use a buffered reader to read the string from service
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    //A simple string to read values from each line
+                    String json;
+
+                    //reading until we don't find null
+                    while ((json = bufferedReader.readLine()) != null) {
+                        json = json + "\n";
+                        //appending it to string builder
+                        sb.append(json);
+                    }
+
+                    //finally returning the read string
+                    return sb.toString().trim();
+                } catch (SocketTimeoutException e) {
+                    Toast.makeText(TimerActivity.this, "SocketTimeoutException", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        }
+
+        //creating asynctask object and executing it
+        GetData getJSON = new GetData();
+        getJSON.execute();
+    }
+
+    // Reading trial details into variables
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        HashMap theTrial = theTrialList.get(position);
+        trialid = Integer.parseInt(theTrial.get("id").toString());
+        theTrialName = theTrial.get("name").toString();
+
+        //Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        trialid = 999;
+        theTrialName ="None selected";
+        //Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
     }
 }
