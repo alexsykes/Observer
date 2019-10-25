@@ -25,6 +25,7 @@ import com.alexsykes.scoremonster.NumberPadFragment;
 import com.alexsykes.scoremonster.R;
 import com.alexsykes.scoremonster.ScorePadFragment;
 import com.alexsykes.scoremonster.TouchFragment;
+import com.alexsykes.scoremonster.data.FinishTimeDbHelper;
 import com.alexsykes.scoremonster.data.ScoreContract;
 import com.alexsykes.scoremonster.data.ScoreDbHelper;
 
@@ -41,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
     SharedPreferences localPrefs;
+
+    // Databases
     private ScoreDbHelper mDbHelper;
+    private FinishTimeDbHelper timeDbHelper;
+
     private String observer;
     private int section;
     private int trialid;
@@ -56,10 +61,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // Create database connection
         mDbHelper = new ScoreDbHelper(this);
         mDbHelper.getWritableDatabase();
+        timeDbHelper = new FinishTimeDbHelper(this);
+        timeDbHelper.getWritableDatabase();
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -298,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (score.equals("") || rider.equals("")) {
             toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
-            // Toast.makeText(this, "Rider number or Score missing!", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(this).setTitle("Warning").setMessage("Missing rider number or score").setNeutralButton("Close", null).show();
         } else {
             // Otherwise enter scores
@@ -336,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
 
             db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
             toneGen1.startTone(ToneGenerator.TONE_CDMA_CONFIRM, ToneGenerator.MAX_VOLUME);
-            Toast.makeText(this, "Score saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Score saved", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -386,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (isOnline()) {
             editor.putBoolean("canConnect", true);
-            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
         } else {
             editor.putBoolean("canConnect", false);
             Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_LONG).show();
