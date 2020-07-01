@@ -132,6 +132,7 @@
         android:layout_marginTop="8dp"
         android:baselineAligned="true"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numSectionsInput">
 
@@ -162,7 +163,7 @@
         android:text="@string/reset_scores"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/padViewGroup" />
+        app:layout_constraintBottom_toTopOf="@id/warningImageView" />
 
     <ImageView
         android:id="@+id/warningImageView"
@@ -172,7 +173,7 @@
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/warning"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetCheckBox"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:srcCompat="@drawable/ic_warning_red_48dp" />
 
     <CheckBox
@@ -186,17 +187,18 @@
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@+id/warningImageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetCheckBox" />
+        app:layout_constraintBottom_toTopOf="@+id/button" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:onClick="setPrefs"
         android:text="@string/save"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/colorButtonBlue"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
