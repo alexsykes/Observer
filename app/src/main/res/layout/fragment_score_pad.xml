@@ -14,7 +14,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/scoreButton0"
             style="@android:style/Widget.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/scoreButton1"
             style="@android:style/Widget.Button"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -42,7 +40,6 @@
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/scoreButton2"
             style="@android:style/Widget.Button"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -53,7 +50,6 @@
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/scoreButton3"
             style="@android:style/Widget.Button"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -71,7 +67,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/scoreButton5"
             style="@android:style/Widget.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,7 +84,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/scoreButton10"
             style="@android:style/Widget.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

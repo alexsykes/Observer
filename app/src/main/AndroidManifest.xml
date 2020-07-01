@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alexsykes.scoremonster">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.alexsykes.observer"
+    android:versionCode="1"
+    android:versionName="1.0.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,36 +17,37 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="n">
         <activity
-            android:name=".activities.TimeSheetActivity"
+            android:name="com.alexsykes.observer.activities.TimeSheetActivity"
             android:label="@string/timesheet"
-            android:parentActivityName=".activities.TimerActivity"></activity>
+            android:parentActivityName="com.alexsykes.observer.activities.TimerActivity" />
         <activity
-            android:name=".activities.TimerActivity"
+            android:name="com.alexsykes.observer.activities.TimerActivity"
             android:label="Timer"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName="com.alexsykes.observer.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SummaryScoreActivity"
+            android:name="com.alexsykes.observer.activities.SummaryScoreActivity"
             android:label="Leaderboard"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName="com.alexsykes.observer.activities.MainActivity" />
         <activity
-            android:name=".activities.SyncActivity"
+            android:name="com.alexsykes.observer.activities.SyncActivity"
             android:label="Upload Scores"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName="com.alexsykes.observer.activities.MainActivity" />
         <activity
-            android:name=".activities.ScoreListActivity"
+            android:name="com.alexsykes.observer.activities.ScoreListActivity"
             android:label="Score list"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName="com.alexsykes.observer.activities.MainActivity" />
         <activity
-            android:name=".activities.SetupActivity"
+            android:name="com.alexsykes.observer.activities.SetupActivity"
             android:label="Set up"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName="com.alexsykes.observer.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.alexsykes.observer.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
