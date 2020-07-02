@@ -40,4 +40,8 @@ public class NumberPadFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    public void addDigit(View v){
+
+    }
+
 }

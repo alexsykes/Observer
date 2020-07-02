@@ -100,59 +100,50 @@
         tools:layout_editor_absoluteY="72dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/numLapsInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trialIDTextView"/>
-
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/numSectionsInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:hint="@string/number_of_sections"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numLapsInput"/>
+        app:layout_constraintTop_toBottomOf="@+id/trialIDTextView" >
 
-    <RadioGroup
-        android:id="@+id/padViewGroup"
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/numSectionsTextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorButtonBrightRed" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/numLapsInput"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:baselineAligned="true"
-        android:orientation="horizontal"
-        android:visibility="gone"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/number_of_laps"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numSectionsInput">
+        app:layout_constraintTop_toBottomOf="@+id/numSectionsInput" >
 
-        <RadioButton
-            android:id="@+id/numberPadSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/number_pad"
-            android:textColor="@color/colorPrimaryDark" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/numLapsTextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorButtonBrightRed" />
 
-        <RadioButton
-            android:id="@+id/dabPadSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/dab_pad"
-            android:textColor="@color/colorPrimaryDark" />
-
-    </RadioGroup>
+</com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/resetCheckBox"

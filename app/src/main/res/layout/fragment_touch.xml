@@ -46,6 +46,7 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <Button
+        android:id="@+id/tenButton"
         style="@android:style/Widget.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

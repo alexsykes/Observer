@@ -41,4 +41,8 @@ public class TouchFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_touch, container, false);
     }
 
+    public void countDabs(View v){
+
+    }
+
 }

@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+// TODO Manual entry needs fields unhiding
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Set up data fields
@@ -53,10 +53,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     FinishTimeDbHelper theFinishTimeDB;
 
     // Interface widgets
-    RadioGroup modeSwitch;
+    // RadioGroup modeSwitch;
     int modeIdx;
 
-    RadioButton dabPadSelect, numberPadSelect;
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
@@ -75,9 +74,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         observerTextInput = findViewById(R.id.observerTextInput);
         sectionTextInput = findViewById(R.id.sectionTextInput);
         trialDetailView = findViewById(R.id.trialDetailView);
-        modeSwitch = findViewById(R.id.padViewGroup);
-        dabPadSelect = findViewById(R.id.dabPadSelect);
-        numberPadSelect = findViewById(R.id.numberPadSelect);
         resetCheckBox = findViewById(R.id.resetCheckBox);
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
@@ -305,8 +301,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         observerTextInput.setText(observer);
         sectionTextInput.setText(sectionNumber);
 
-        RadioButton selected = (RadioButton) modeSwitch.getChildAt(modeIdx);
-        selected.setChecked(true);
+     //   RadioButton selected = (RadioButton) modeSwitch.getChildAt(modeIdx);
+      //  selected.setChecked(true);
 /*
         if (showDabPad) {
             dabPadSelect.setChecked(true);
@@ -356,9 +352,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
         } else {
             // otherwise save values
-            int radioButtonID = modeSwitch.getCheckedRadioButtonId();
-            View radioButton = modeSwitch.findViewById(radioButtonID);
-            int idx = modeSwitch.indexOfChild(radioButton);
+//            int radioButtonID = modeSwitch.getCheckedRadioButtonId();
+//            View radioButton = modeSwitch.findViewById(radioButtonID);
+//            int idx = modeSwitch.indexOfChild(radioButton);
 
             localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
             SharedPreferences.Editor editor = localPrefs.edit();
@@ -371,7 +367,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             //editor.putBoolean("showDabPad", dabPadSelect.isChecked());
             //editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
             // editor.putLong("starttime", startTime);
-            editor.putInt("modeIndex", idx);
+  //          editor.putInt("modeIndex", idx);
 
             /* Moving time setting to TimerActivity
             if (startTime > 0) {

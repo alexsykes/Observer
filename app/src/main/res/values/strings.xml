@@ -46,6 +46,8 @@
     <string name="penalties">Penalties</string>
     <string name="name">Name</string>
     <string name="select_trial">Select trial</string>
+    <string name="number_of_laps">Number of laps</string>
+    <string name="number_of_sections">Number of sections</string>
     <string-array name="scores">
         <item>Clean</item>
         <item>One</item>

@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.alexsykes.observer.NumberPadFragment;
 import com.alexsykes.observer.R;
-import com.alexsykes.observer.ScorePadFragment;
 import com.alexsykes.observer.TouchFragment;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.alexsykes.observer.data.ScoreContract;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextView numberLabel, scoreLabel, statusLine;
     String riderNumber, status, theTrialName;
-    ScorePadFragment scorePadFragment;
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
     SharedPreferences localPrefs;
@@ -76,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.getMenu();
 
         // Add score and numberPad fragemnts
-        scorePadFragment = new ScorePadFragment();
         numberPadFragment = new NumberPadFragment();
         touchFragment = new TouchFragment();
         numberLabel = findViewById(R.id.numberLabel);
@@ -85,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.top, numberPadFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchFragment).commit();
 
         // Set up button to save scores
         Button saveButton = findViewById(R.id.saveButton);
@@ -113,19 +111,20 @@ public class MainActivity extends AppCompatActivity {
         clearScore();
         super.onStart();
         getPrefs();
-        switch (modeIndex) {
+
+/*        switch (modeIndex) {
             case 1:
                 getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
                 break;
             case 0:
-                getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
+                // getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
                 break;
-            /*case 2:
+            *//*case 2:
                 Intent intent = new Intent(this, TimerActivity.class);
                 intent.putExtra("trialid", trialid);
                 startActivityForResult(intent, TEXT_REQUEST);
-                break;*/
-        }
+                break;*//*
+        }*/
        /* if (showDabPad) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
         } else if (showNumberPad) {
