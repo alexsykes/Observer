@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.alexsykes.observer"
     android:versionCode="2"
-    android:versionName="0.0.2">
+    android:versionName="0.0.3">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />

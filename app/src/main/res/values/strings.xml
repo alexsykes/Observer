@@ -48,6 +48,7 @@
     <string name="select_trial">Select trial</string>
     <string name="number_of_laps">Number of laps</string>
     <string name="number_of_sections">Number of sections</string>
+    <string name="trial_name">Trial name</string>
     <string-array name="scores">
         <item>Clean</item>
         <item>One</item>

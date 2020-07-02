@@ -60,8 +60,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
-    TextView observerTextInput, sectionTextInput, trialDetailView;
-    TextInputLayout numLapsView, numSectionsView;
+    TextView observerTextInput, sectionTextInput, trialDetailView, numSectionsTextInput, numLapsTextInput, trialNameTextInput;
+    TextInputLayout numLapsView, numSectionsView, trialNameView;
     ImageView warningImageView;
     private Button button;
 
@@ -83,6 +83,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         numLapsView = findViewById(R.id.numLapsInput);
         numSectionsView = findViewById(R.id.numSectionsInput);
+        trialNameView = findViewById(R.id.trialNameInput);
+        numSectionsTextInput = findViewById(R.id.numSectionsTextInput);
+        numLapsTextInput = findViewById(R.id.numLapsTextInput);
+        trialNameTextInput = findViewById(R.id.trialNameTextInput);
 
         numLapsView.setVisibility(View.GONE);
         numSectionsView.setVisibility(View.GONE);
@@ -196,6 +200,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 // Setting the ArrayAdapter data on the Spinner
                 trialSelect.setAdapter(aa);
+                if (trialid == 0){
+                    theTrialName = "Manual Entry";
+                }
                 trialSelect.setSelection(aa.getPosition(theTrialName));
             }
 
@@ -329,6 +336,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         // Field validation routine
         boolean hasErrors = false;
 
+        // Common to all trials
         // Set errorMsg with initial message
         String errorMsg = "The following error(s) need to be corrected:";
 
@@ -339,8 +347,34 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             hasErrors = true;
             errorMsg += "\nThe observer field is empty";
         }
+        if (trialid == 0) {
 
-        // Check that section field is populated
+            // Check that trial name field is complete
+            theTrialName = trialNameTextInput.getText().toString();
+            if (theTrialName.equals("")) {
+                // If empty, then append message
+                hasErrors = true;
+                errorMsg += "\nThe trial name field is empty";
+            }
+
+            // Check number of laps validity
+            numlaps = Integer.parseInt(numLapsTextInput.getText().toString());
+            // If out of range, then append message
+            if (numlaps == 0) {
+                hasErrors = true;
+                errorMsg += "\nInvalid number of laps";
+            }
+
+            // Check number of laps validity
+            numsections = Integer.parseInt(numSectionsTextInput.getText().toString());
+            // If out of range, then append message
+            if (numsections == 0) {
+                hasErrors = true;
+                errorMsg += "\nInvalid number of sections";
+            }
+        }
+
+        // Check that section field is populated after manual data has been entered
         if (sectionTextInput.getText().toString().equals("")) {
             // If empty, then append message
             hasErrors = true;
@@ -354,6 +388,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 errorMsg += "\nInvalid section number";
             }
         }
+
 
         // Inform user if errors
         if (hasErrors) {
@@ -405,26 +440,29 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
 
         HashMap theTrial = theTrialList.get(position);
-        numsections = Integer.parseInt(theTrial.get("numsections").toString());
-        numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
         trialid = Integer.parseInt(theTrial.get("id").toString());
-        theTrialName = theTrial.get("name").toString();
-
-
-
-
-        detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
-        trialDetailView.setText(detail);
 
         if (trialid==0){
             numLapsView.setVisibility(View.VISIBLE);
             numSectionsView.setVisibility(View.VISIBLE);
+            trialNameView.setVisibility(View.VISIBLE);
             trialDetailView.setVisibility(View.GONE);
+
+            numLapsTextInput.setText(String.valueOf(numlaps));
+            numSectionsTextInput.setText(String.valueOf(numsections));
+            trialNameTextInput.setText(theTrialName);
         } else {
+            numsections = Integer.parseInt(theTrial.get("numsections").toString());
+            numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
+            trialid = Integer.parseInt(theTrial.get("id").toString());
+            theTrialName = theTrial.get("name").toString();
             numLapsView.setVisibility(View.INVISIBLE);
             numSectionsView.setVisibility(View.INVISIBLE);
+            trialNameView.setVisibility(View.INVISIBLE);
             trialDetailView.setVisibility(View.VISIBLE);
         }
+        detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
+        trialDetailView.setText(detail);
     }
 
     @Override
