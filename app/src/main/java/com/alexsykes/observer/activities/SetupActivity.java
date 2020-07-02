@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.alexsykes.observer.R;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.alexsykes.observer.data.ScoreDbHelper;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +61,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
     TextView observerTextInput, sectionTextInput, trialDetailView;
+    TextInputLayout numLapsView, numSectionsView;
     ImageView warningImageView;
     private Button button;
 
@@ -78,6 +80,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
         button = findViewById(R.id.button);
+
+        numLapsView = findViewById(R.id.numLapsInput);
+        numSectionsView = findViewById(R.id.numSectionsInput);
+
+        numLapsView.setVisibility(View.GONE);
+        numSectionsView.setVisibility(View.GONE);
 
         confirmCheckBox.setVisibility(View.GONE);
         warningImageView.setVisibility(View.GONE);
@@ -402,15 +410,21 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         trialid = Integer.parseInt(theTrial.get("id").toString());
         theTrialName = theTrial.get("name").toString();
 
-//         Moving startTime to TimerActivity
-//        try {
-//             startTime = Long.valueOf(theTrial.get("starttime").toString());
-//        } catch (Exception e) {
-//             startTime = -1;
-//         }
+
+
 
         detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
         trialDetailView.setText(detail);
+
+        if (trialid==0){
+            numLapsView.setVisibility(View.VISIBLE);
+            numSectionsView.setVisibility(View.VISIBLE);
+            trialDetailView.setVisibility(View.GONE);
+        } else {
+            numLapsView.setVisibility(View.INVISIBLE);
+            numSectionsView.setVisibility(View.INVISIBLE);
+            trialDetailView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
