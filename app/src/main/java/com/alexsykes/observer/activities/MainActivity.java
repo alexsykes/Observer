@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,11 +33,13 @@ import com.alexsykes.observer.data.ScoreContract;
 import com.alexsykes.observer.data.ScoreDbHelper;
 
 // TODO Important - move database setup method from ScoreDbHelper
+// TODO - check for Trial setup at start
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int TEXT_REQUEST = 1;
     public static final int NOT_SYNCED = -1;
+    MediaPlayer mediaPlayer;
 
     TextView numberLabel, scoreLabel, statusLine;
     String riderNumber, status, theTrialName;
@@ -327,7 +330,9 @@ public class MainActivity extends AppCompatActivity {
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SYNC, NOT_SYNCED);
 
             db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_CONFIRM, ToneGenerator.MAX_VOLUME);
+            // toneGen1.startTone(ToneGenerator.TONE_CDMA_CONFIRM, ToneGenerator.MAX_VOLUME);
+
+            playSoundFile(R.raw.ting);
             Toast.makeText(this, "Score saved", Toast.LENGTH_SHORT).show();
         }
     }
@@ -380,5 +385,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_LONG).show();
         }
         editor.apply();
+    }
+    //play a soundfile
+    public void playSoundFile(Integer fileName) {
+        mediaPlayer = MediaPlayer.create(this, fileName);
+        mediaPlayer.start();
     }
 }
