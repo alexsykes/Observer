@@ -12,6 +12,8 @@ import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = localPrefs.edit();
         editor.putBoolean("canConnect", isOnline());
-        editor.commit();
+        editor.apply();
 
 
         clearScore();
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(final Bundle outState) {
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Save the state of item position
@@ -183,18 +185,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-/*
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        SharedPreferences.Editor editor = localPrefs.edit();
-        editor.putBoolean("isStartTimeSet", false);
-        editor.putLong("startTime", 0);
-        //editor.commit();
-    }
-*/
 
     private void goTimingMode() {
         Intent intent = new Intent(this, TimerActivity.class);
@@ -357,10 +347,10 @@ public class MainActivity extends AppCompatActivity {
         trialid = localPrefs.getInt("trialid", 0);
         numlaps = localPrefs.getInt("numlaps", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
-        boolean showDabPad = localPrefs.getBoolean("showDabPad", true);
-        boolean showNumberPad = localPrefs.getBoolean("showNumberPad", true);
-        showDabPad = localPrefs.getBoolean("showDabPad", true);
-        showNumberPad = localPrefs.getBoolean("showNumberPad", true);
+//        boolean showDabPad = localPrefs.getBoolean("showDabPad", true);
+//        boolean showNumberPad = localPrefs.getBoolean("showNumberPad", true);
+//        showDabPad = localPrefs.getBoolean("showDabPad", true);
+//        showNumberPad = localPrefs.getBoolean("showNumberPad", true);
         modeIndex = localPrefs.getInt("modeIndex", 0);
 
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
@@ -389,6 +379,6 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("canConnect", false);
             Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_LONG).show();
         }
-        editor.commit();
+        editor.apply();
     }
 }
