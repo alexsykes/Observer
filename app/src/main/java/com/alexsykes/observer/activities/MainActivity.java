@@ -1,7 +1,6 @@
 package com.alexsykes.observer.activities;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -14,16 +13,16 @@ import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.alexsykes.observer.NumberPadFragment;
 import com.alexsykes.observer.R;
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
     SharedPreferences localPrefs;
-    MenuItem listItem;
 
     // Databases
     private ScoreDbHelper mDbHelper;
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private int trialid;
     private int numlaps;
     private int score;
-    int modeIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +90,13 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                save(this);
+                save();
                 return false;
             }
         });
 
         if (!getPrefs()) {
-            //  goSetup();
+              goSetup();
         }
     }
 
@@ -259,18 +256,7 @@ public class MainActivity extends AppCompatActivity {
         numberLabel.setText(riderNumber);
     }
 
-    public void enterScore(View view) {
-        scoreLabel = findViewById(R.id.scoreLabel);
-
-        // Get id from clicked button to get clicked digit
-        int intID = view.getId();
-        Button button = view.findViewById(intID);
-        String digit = button.getText().toString();
-
-        scoreLabel.setText(digit);
-    }
-
-    private void save(View.OnLongClickListener view) {
+    private void save() {
 
         ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
         // Get String values for rider and scoreLabel
@@ -286,9 +272,7 @@ public class MainActivity extends AppCompatActivity {
             // Otherwise enter scores
             int riderNumber = Integer.parseInt(rider);
             int scoreValue = Integer.parseInt(score);
-
             insertScore(riderNumber, scoreValue);
-
             clearScore();
         }
     }
@@ -317,7 +301,6 @@ public class MainActivity extends AppCompatActivity {
             values.put(ScoreContract.ScoreEntry.COLUMN_SCORE_SYNC, NOT_SYNCED);
 
             db.insert(ScoreContract.ScoreEntry.TABLE_NAME, null, values);
-            // toneGen1.startTone(ToneGenerator.TONE_CDMA_CONFIRM, ToneGenerator.MAX_VOLUME);
 
             playSoundFile(R.raw.ting);
             Toast.makeText(this, "Score saved", Toast.LENGTH_SHORT).show();
@@ -333,23 +316,14 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean getPrefs() {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-
         observer = localPrefs.getString("observer", "");
         section = localPrefs.getInt("section", 0);
         trialid = localPrefs.getInt("trialid", 0);
         numlaps = localPrefs.getInt("numlaps", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
-//        boolean showDabPad = localPrefs.getBoolean("showDabPad", true);
-//        boolean showNumberPad = localPrefs.getBoolean("showNumberPad", true);
-//        showDabPad = localPrefs.getBoolean("showDabPad", true);
-//        showNumberPad = localPrefs.getBoolean("showNumberPad", true);
-        modeIndex = localPrefs.getInt("modeIndex", 0);
-
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
-
         statusLine.setText(status);
-
-        return trialid != 0;
+        return !theTrialName.equals("None selected");
     }
 
     protected boolean isOnline() {
@@ -359,20 +333,6 @@ public class MainActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void checkConnection() {
-
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        SharedPreferences.Editor editor = localPrefs.edit();
-
-        if (isOnline()) {
-            editor.putBoolean("canConnect", true);
-            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-        } else {
-            editor.putBoolean("canConnect", false);
-            Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_LONG).show();
-        }
-        editor.apply();
-    }
     //play a soundfile
     public void playSoundFile(Integer fileName) {
         mediaPlayer = MediaPlayer.create(this, fileName);

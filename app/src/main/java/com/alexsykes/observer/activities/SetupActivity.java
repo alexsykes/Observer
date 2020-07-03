@@ -1,11 +1,13 @@
 package com.alexsykes.observer.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,11 +15,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.alexsykes.observer.R;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
@@ -53,10 +55,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ScoreDbHelper theScoreDB;
     FinishTimeDbHelper theFinishTimeDB;
 
-    // Interface widgets
-    // RadioGroup modeSwitch;
-    int modeIdx;
-
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
@@ -72,6 +70,21 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         theScoreDB = new ScoreDbHelper(this);
         theFinishTimeDB = new FinishTimeDbHelper(this);
+
+        setUp();
+        checkPrefs();
+
+        if (isOnline()) {        // Get trialList from server
+            String URL = BASE_URL + "getTrialList.php";
+            try {
+                getJSONDataset(URL);
+            } catch (NullPointerException e) {
+                Toast.makeText(SetupActivity.this, "Empty data", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void setUp() {
         // Set up activity fields
         observerTextInput = findViewById(R.id.observerTextInput);
         sectionTextInput = findViewById(R.id.sectionTextInput);
@@ -128,16 +141,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         // Set up spinner
         trialSelect = findViewById(R.id.trialSelect);
         trialSelect.setOnItemSelectedListener(this);
+    }
 
-        checkPrefs();
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        // Get trialList from server
-        String URL = BASE_URL + "getTrialList.php";
-        try {
-            getJSONDataset(URL);
-        } catch (NullPointerException e) {
-            Toast.makeText(SetupActivity.this, "Empty data", Toast.LENGTH_LONG).show();
-        }
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void getJSONDataset(final String urlWebService) {
@@ -294,8 +304,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void checkPrefs() {
-        // set error flag to true
-        boolean prefsSet = true;
         String sectionNumber;
         // Get localPrefs and read values
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
@@ -305,8 +313,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numlaps = localPrefs.getInt("numlaps", 0);
         observer = localPrefs.getString("observer", "");
         section = localPrefs.getInt("section", 0);
-        //showDabPad = localPrefs.getBoolean("showDabPad", false);
-        modeIdx = localPrefs.getInt("modeIndex", 0);
 
         if (section == 0) {
             sectionNumber = "";
@@ -317,21 +323,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         // Sync inputs to saved values
         observerTextInput.setText(observer);
         sectionTextInput.setText(sectionNumber);
-
-     //   RadioButton selected = (RadioButton) modeSwitch.getChildAt(modeIdx);
-      //  selected.setChecked(true);
-/*
-        if (showDabPad) {
-            dabPadSelect.setChecked(true);
-        } else {
-            numberPadSelect.setChecked(true);
-        }*/
-
-        // Check for missing values
-        if (observer.equals("") || section == 0 || trialid == 0 || numlaps == 0 || numsections == 0) {
-            // If incomplete, set flag to false
-            prefsSet = false;
-        }
     }
 
     public void setPrefs(View view) {
@@ -397,10 +388,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
         } else {
             // otherwise save values
-//            int radioButtonID = modeSwitch.getCheckedRadioButtonId();
-//            View radioButton = modeSwitch.findViewById(radioButtonID);
-//            int idx = modeSwitch.indexOfChild(radioButton);
-
             localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
             SharedPreferences.Editor editor = localPrefs.edit();
             editor.putString("theTrialName", theTrialName);
@@ -409,21 +396,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putInt("numlaps", numlaps);
             editor.putString("observer", observer);
             editor.putInt("section", section);
-            //editor.putBoolean("showDabPad", dabPadSelect.isChecked());
-            //editor.putBoolean("showNumberPad", numberPadSelect.isChecked());
-            // editor.putLong("starttime", startTime);
-  //          editor.putInt("modeIndex", idx);
-
-            /* Moving time setting to TimerActivity
-            if (startTime > 0) {
-                editor.putBoolean("isStartTimeSet", true);
-            } else {
-                editor.putBoolean("isStartTimeSet", false);
-            }
-
-             */
-
-            boolean success = editor.commit();
+            editor.commit();
 
 
             // Read resetCheckBox

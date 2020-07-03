@@ -7,13 +7,13 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.alexsykes.observer.R;
 
@@ -30,13 +30,10 @@ import java.util.Objects;
 
 public class SummaryScoreActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://android.trialmonster.uk/";
-    TableLayout resultTable;
     int trialid, numsections, numlaps;
     ArrayList<HashMap<String, String>> theResultList;
     ProgressDialog dialog = null;
     SharedPreferences localPrefs;
-    final int backgroundColor = Color.parseColor("#40bdc0d4");
-    final int white = Color.parseColor("#ffffff");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +175,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
         TableLayout resultTable;
         TableRow row;
         TextView cell;
-        String section, text, rider, total;
+        String section, rider, total;
         int numResults;
         HashMap<String, String> theResult;
 
@@ -268,7 +265,6 @@ public class SummaryScoreActivity extends AppCompatActivity {
         }
 
         // Prepare array of scores
-        String[][] theScoreArray = new String[numResults][numsections];
         String sectionList, scoreList;
         String theScore;
 
@@ -276,8 +272,10 @@ public class SummaryScoreActivity extends AppCompatActivity {
             theResult = theResultList.get(index);
             sectionList = theResult.get("sections");
             scoreList = theResult.get("scorelist");
-            String[] theSectionArray = sectionList.split(",");
-            String[] theSectionScoreArray = scoreList.split(",");
+            String[] theSectionArray;
+            theSectionArray = sectionList.split(",");
+            String[] theSectionScoreArray;
+            theSectionScoreArray = scoreList.split(",");
             int numItems = theSectionScoreArray.length;
 
             // Get row for result insertion
@@ -286,7 +284,7 @@ public class SummaryScoreActivity extends AppCompatActivity {
             // Populate row from result list
             for (int sec = 0; sec < numItems; sec++) {
 
-                int sectionNumber = Integer.valueOf(theSectionArray[sec]);
+                int sectionNumber = Integer.parseInt(theSectionArray[sec]);
                 theScore = theSectionScoreArray[sec];
                 cell = (TextView) row.getChildAt(sectionNumber);
                 cell.setText(theScore);
