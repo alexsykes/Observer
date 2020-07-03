@@ -1,6 +1,7 @@
 package com.alexsykes.observer.activities;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
     SharedPreferences localPrefs;
+    MenuItem listItem;
 
     // Databases
     private ScoreDbHelper mDbHelper;
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(myToolbar);
         myToolbar.getMenu();
+        // listItem = findViewById(R.id.list);
+       // listItem.setVisible(false);
 
         // Add score and numberPad fragemnts
         numberPadFragment = new NumberPadFragment();
@@ -107,34 +111,11 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("canConnect", isOnline());
         editor.apply();
 
+        invalidateOptionsMenu ();
 
         clearScore();
         super.onStart();
         getPrefs();
-
-/*        switch (modeIndex) {
-            case 1:
-                getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
-                break;
-            case 0:
-                // getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
-                break;
-            *//*case 2:
-                Intent intent = new Intent(this, TimerActivity.class);
-                intent.putExtra("trialid", trialid);
-                startActivityForResult(intent, TEXT_REQUEST);
-                break;*//*
-        }*/
-       /* if (showDabPad) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.bottom, touchFragment).commit();
-        } else if (showNumberPad) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.bottom, scorePadFragment).commit();
-        }
-       else if (timingModeSelect) {
-            Intent intent = new Intent(this, TimerActivity.class);
-            intent.putExtra("trialid", trialid);
-            startActivityForResult(intent, TEXT_REQUEST);
-        }*/
     }
 
     @Override
@@ -237,7 +218,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem menuItem;
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+
+        if (trialid == 0)
+        {
+            menuItem = menu.findItem(R.id.list);
+            menuItem.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

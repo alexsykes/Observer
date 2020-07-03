@@ -182,6 +182,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 dialog.dismiss();
+                String tempName = "Manual Entry";
 
                 // Populate ArrayList with JSON data
                 theTrialList = populateResultArrayList(s);
@@ -198,12 +199,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 ArrayAdapter aa = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, theTrials);
                 aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+                trialSelect.setSelection(aa.getPosition(theTrialName));
+
                 // Setting the ArrayAdapter data on the Spinner
                 trialSelect.setAdapter(aa);
                 if (trialid == 0){
-                    theTrialName = "Manual Entry";
+                    trialSelect.setSelection(aa.getPosition(tempName));
                 }
-                trialSelect.setSelection(aa.getPosition(theTrialName));
             }
 
             /*
