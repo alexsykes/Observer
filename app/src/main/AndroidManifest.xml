@@ -20,6 +20,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity
+            android:name=".activities.HelpActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity
             android:name="com.alexsykes.observer.activities.TimeSheetActivity"
             android:label="@string/timesheet"
             android:parentActivityName="com.alexsykes.observer.activities.TimerActivity" />

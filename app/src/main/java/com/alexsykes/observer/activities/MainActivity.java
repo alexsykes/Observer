@@ -137,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            // Show scores on remote server
+            case R.id.help:
+                goHelp();
+                return true;
+
             // Enter andinitialise section details
             case R.id.setup:
                 goSetup();
@@ -164,6 +169,11 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void goHelp() {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivityForResult(intent, TEXT_REQUEST);
     }
 
     private void goTimingMode() {
