@@ -192,7 +192,7 @@ public class SyncActivity extends AppCompatActivity {
     }
 
     private void saveToCSV() {
-        String id, observer, section, rider, lap, created, updated, edited, sync, score, thetrialid;
+        String id, observer, theSection, rider, lap, created, updated, edited, sync, score, thetrialid;
 
         // Get timestamp and add to filename
 
@@ -201,7 +201,7 @@ public class SyncActivity extends AppCompatActivity {
         long time = date.getTime();
         String ts = String.valueOf(time);
         filename = "scores_" + ts + ".csv";
-        filename = "scores.csv";
+       // filename = "scores.csv";
 
         try {
             exportDir = new File(getFilesDir(), filename);
@@ -217,11 +217,11 @@ public class SyncActivity extends AppCompatActivity {
 
             // Get current data
 
-            Cursor curChild = mDbHelper.getUnSynced(trialid);
+            Cursor curChild = mDbHelper.getScoreListForUpload(trialid, section);
             while (curChild.moveToNext()) {
                 id = curChild.getString(0);
                 observer = curChild.getString(1);
-                section = curChild.getString(2);
+                theSection = curChild.getString(2);
                 rider = curChild.getString(3);
                 lap = curChild.getString(4);
                 created = curChild.getString(5);
@@ -231,7 +231,7 @@ public class SyncActivity extends AppCompatActivity {
                 sync = curChild.getString(9);
                 score = curChild.getString(10);
 
-                String[] arrStr = {id, section, rider, lap, score, observer, created, updated, edited, thetrialid, sync
+                String[] arrStr = {id, theSection, rider, lap, score, observer, created, updated, edited, thetrialid, sync
                 };
 
                 csvWrite.writeNext(arrStr, false);

@@ -222,6 +222,11 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED + " AND trialid=" + id, new String[]{});
     }
 
+    public Cursor getScoreListForUpload(int id, int section) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT  * FROM scores WHERE trialid=" + id + " AND section = " + section, new String[]{});
+    }
+
     public void delete(int id) {
         // Unused
         SQLiteDatabase db = this.getReadableDatabase();
