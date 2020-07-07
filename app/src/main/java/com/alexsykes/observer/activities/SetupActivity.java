@@ -81,6 +81,16 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             } catch (NullPointerException e) {
                 Toast.makeText(SetupActivity.this, "Empty data", Toast.LENGTH_LONG).show();
             }
+        } else {
+            numLapsView.setVisibility(View.VISIBLE);
+            numSectionsView.setVisibility(View.VISIBLE);
+            trialNameView.setVisibility(View.VISIBLE);
+            trialDetailView.setVisibility(View.GONE);
+
+            numLapsTextInput.setText(String.valueOf(numlaps));
+            numSectionsTextInput.setText(String.valueOf(numsections));
+            trialNameTextInput.setText(theTrialName);
+            Toast.makeText(SetupActivity.this, "Cannot load trials list - no Internet connection", Toast.LENGTH_LONG).show();
         }
     }
 

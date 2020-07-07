@@ -2,6 +2,7 @@ package com.alexsykes.observer.activities;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -700,5 +703,13 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         // trialid = 999;
         // theTrialName ="None selected";
         //Toast.makeText(TimerActivity.this, theTrialName, Toast.LENGTH_LONG).show();
+    }
+
+    // Check for connectivity
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

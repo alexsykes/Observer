@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     // Databases
     private ScoreDbHelper mDbHelper;
 
+    // Trial detail
     private String observer;
     private int section;
     private int trialid;
@@ -71,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(myToolbar);
         myToolbar.getMenu();
-        // listItem = findViewById(R.id.list);
-       // listItem.setVisible(false);
 
         // Add score and numberPad fragemnts
         numberPadFragment = new NumberPadFragment();
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         numberLabel = findViewById(R.id.numberLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
-
 
         getSupportFragmentManager().beginTransaction().add(R.id.top, numberPadFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchFragment).commit();
@@ -108,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("canConnect", isOnline());
         editor.apply();
 
+        // Activity method
         invalidateOptionsMenu ();
 
         clearScore();
@@ -336,16 +335,17 @@ public class MainActivity extends AppCompatActivity {
         return !theTrialName.equals("None selected");
     }
 
+    //play a soundfile
+    public void playSoundFile(Integer fileName) {
+        mediaPlayer = MediaPlayer.create(this, fileName);
+        mediaPlayer.start();
+    }
+
+    // Check for connectivity
     protected boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-    //play a soundfile
-    public void playSoundFile(Integer fileName) {
-        mediaPlayer = MediaPlayer.create(this, fileName);
-        mediaPlayer.start();
     }
 }

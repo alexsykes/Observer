@@ -1,9 +1,12 @@
 package com.alexsykes.observer.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+// TODO Needs to be modifid to add timestamp
 public class SyncActivity extends AppCompatActivity {
     public static final int TEXT_REQUEST = 1;
 
@@ -79,30 +83,17 @@ public class SyncActivity extends AppCompatActivity {
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
         processURL = "http://www.trialmonster.uk/android/addCSVtodb.php";
 
-       /* uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog = ProgressDialog.show(SyncActivity.this, "Scoremonster", "Uploading scores...", true);
-
-                new Thread(new Runnable() {
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                            }
-                        });
-
-                        uploadFile(uploadFilePath + "" + uploadFileName);
-
-                    }
-                }).start();
-            }
-        }); */
-
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processCSV(processURL);
+                if(isOnline()) {
+                    processCSV(processURL);
+                }
+                else {
+
+                    Toast.makeText(SyncActivity.this, "Scores cannot be uploaded at this time - no Internet connection. Please try again later",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -442,5 +433,13 @@ public class SyncActivity extends AppCompatActivity {
             dialog.dismiss();
             return serverResponseCode;
         }
+    }
+
+    // Check for connectivity
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
