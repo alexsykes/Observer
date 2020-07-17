@@ -59,6 +59,7 @@ import java.util.HashMap;
 
 /* TODO Upload on close
     Add timeout / warning on upload failure
+    Check for trialid from Setup
  */
 
 
@@ -134,7 +135,12 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processCSV(processURL);
+                if (isOnline()) {
+                    processCSV(processURL);
+                } else {
+
+                    Toast.makeText(TimerActivity.this, "Cannot Upload - no Internet connection", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -150,8 +156,8 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         });
 
         // Set up spinner
-        trialSelect = findViewById(R.id.trialSelect);
-        trialSelect.setOnItemSelectedListener(this);
+      // trialSelect = findViewById(R.id.trialSelect);
+       // trialSelect.setOnItemSelectedListener(this);
 
         checkPrefs();
     }

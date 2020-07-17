@@ -1,8 +1,13 @@
 package com.alexsykes.observer.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,12 +38,19 @@ public class TimeSheetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_sheet);
-        llm = new LinearLayoutManager(this);
 
-        // Get trialid form Intent
-        trialid = getIntent().getExtras().getInt("trialid");
-        String URL = BASE_URL + "getTimes.php?id=" + trialid;
-        getJSONDataset(URL);
+        if (isOnline()) {
+            llm = new LinearLayoutManager(this);
+
+            // Get trialid form Intent
+            trialid = getIntent().getExtras().getInt("trialid");
+            String URL = BASE_URL + "getTimes.php?id=" + trialid;
+            getJSONDataset(URL);
+
+        } else {
+
+            Toast.makeText(TimeSheetActivity.this, "Cannot load time list - no Internet connection", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void getJSONDataset(final String urlWebService) {
@@ -146,5 +158,13 @@ public class TimeSheetActivity extends AppCompatActivity {
     private void initializeAdapter() {
         TimeListAdapter adapter = new TimeListAdapter(theTimeList);
         rvTimes.setAdapter(adapter);
+    }
+
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

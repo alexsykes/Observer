@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/help"
-        android:icon="@drawable/ic_baseline_help_48"
-        android:title="@string/help"
-        app:showAsAction="always" />
 
     <item
         android:id="@+id/timeMode"
@@ -17,7 +12,7 @@
         android:id="@+id/upload"
         android:icon="@drawable/ic_file_upload_white_48dp"
         android:title="@string/export"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <!-- item
         android:id="@+id/list"
@@ -29,5 +24,10 @@
         android:id="@+id/setup"
         android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/setup"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/help"
+        android:icon="@drawable/ic_baseline_help_48"
+        android:title="@string/help"
         app:showAsAction="ifRoom" />
 </menu>
