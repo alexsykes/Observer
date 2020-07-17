@@ -147,10 +147,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             // Show scores on remote server
+            /*
             case R.id.list:
+
                 // goShowScoresFromServer();
                 goShowSummaryScores();
                 return true;
+                */
+
 
             // Sync scores with remote db
             // Shows scores stored on device
@@ -229,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (trialid == 0)
         {
-            menuItem = menu.findItem(R.id.list);
-            menuItem.setVisible(false);
+           // menuItem = menu.findItem(R.id.list);
+           // menuItem.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }

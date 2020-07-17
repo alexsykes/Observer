@@ -43,7 +43,7 @@ public class SyncActivity extends AppCompatActivity {
 
     /**********  File Path *************/
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
-    final String uploadFileName = "scores.csv";
+   // final String uploadFileName = "scores.csv";
     // https://androidexample.com/Upload_File_To_Server_-_Android_Example/index.php?view=article_discription&aid=83
     RecyclerView scoreView;
     ArrayList<HashMap<String, String>> theScoreList;
@@ -280,7 +280,7 @@ public class SyncActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... voids) {
 
-                int response = uploadFile(uploadFilePath + uploadFileName);
+                int response = uploadFile(uploadFilePath + filename);
                 try {
                     //creating a URL
                     URL url = new URL(urlWebService);
@@ -304,7 +304,7 @@ public class SyncActivity extends AppCompatActivity {
         File sourceFile = new File(directory, filename);
 
 
-        String fileName = sourceFileUri;
+       // String fileName = sourceFileUri;
 
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
@@ -321,12 +321,12 @@ public class SyncActivity extends AppCompatActivity {
             dialog.dismiss();
 
             Log.e("uploadFile", "Source File not exist :"
-                    + uploadFilePath + "" + uploadFileName);
+                    + uploadFilePath + "" + filename);
 
             runOnUiThread(new Runnable() {
                 public void run() {
                     messageText.setText("Source File not exist :"
-                            + uploadFilePath + "" + uploadFileName);
+                            + uploadFilePath + "" + filename);
                 }
             });
 
@@ -347,13 +347,13 @@ public class SyncActivity extends AppCompatActivity {
                 conn.setRequestProperty("Connection", "Keep-Alive");
                 conn.setRequestProperty("ENCTYPE", "multipart/form-data");
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("uploaded_file", fileName);
+                conn.setRequestProperty("uploaded_file", filename);
 
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                        + fileName + "\"" + lineEnd);
+                        + filename + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
 
