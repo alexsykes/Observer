@@ -1,5 +1,6 @@
 package com.alexsykes.observer.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -196,13 +197,10 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
     private void updateList() {
         //theTimesCursor = mDbHelper.getFinishTimes();
         theFinishTimes = mDbHelper.getTimes();
-
         rv = findViewById(R.id.rvTimer);
-
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
-
         initializeAdapter();
     }
 
@@ -217,28 +215,37 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         // String finishTime  = dateFormat.format(finish);
 
 
-        // Get time to start the clock
-        long time = System.currentTimeMillis();
-        String finishTime = dateFormat.format(time);
-        long ridertime = time - starttime;
-
-        timeLabel.setText(finishTime);
         riderNumber = numberLabel.getText().toString();
+        if (riderNumber.equals("")) {
 
-        ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-        // Check for numberof completed laps
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+            toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
+             Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
+        } else {
 
-        ContentValues values = new ContentValues();
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+            // Get time to start the clock
+            long time = System.currentTimeMillis();
+            String finishTime = dateFormat.format(time);
+            long ridertime = time - starttime;
 
-        values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
+            timeLabel.setText(finishTime);
+            riderNumber = numberLabel.getText().toString();
 
-        long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
-        // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
-        numberLabel.setText("");
+            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+            // Check for numberof completed laps
+            // Gets the database in write mode
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
+
+            long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
+            // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
+            numberLabel.setText("");
+        }
     }
 
     // Check for startTime already set in preferences

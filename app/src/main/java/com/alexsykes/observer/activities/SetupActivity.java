@@ -43,8 +43,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     // Set up data fields
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     int trialid, section, numsections, numlaps;
-    boolean showDabPad;
-    String observer, theTrialName, detail;
+    String observer, theTrialName, detail, email;
     // long startTime;
     String[] theTrials, theIDs;
     ArrayList<HashMap<String, String>> theTrialList;
