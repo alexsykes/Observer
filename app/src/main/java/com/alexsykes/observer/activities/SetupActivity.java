@@ -42,7 +42,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     // Set up data fields
     private static final String BASE_URL = "https://android.trialmonster.uk/";
-    int trialid, section, numsections, numlaps;
+    int trialid, section,  numlaps;
     String observer, theTrialName, detail, email;
     // long startTime;
     String[] theTrials, theIDs;
@@ -57,8 +57,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
-    TextView observerTextInput, sectionTextInput, trialDetailView, numSectionsTextInput, numLapsTextInput, trialNameTextInput;
-    TextInputLayout numLapsView, numSectionsView, trialNameView;
+    TextView observerTextInput, sectionTextInput, trialDetailView, sectionNumberTextInput, numLapsTextInput, numSectionsTextInput, trialNameTextInput, emailTextInput;
+    TextInputLayout numLapsView, trialNameView;
     ImageView warningImageView;
     private Button button;
 
@@ -82,12 +82,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         } else {
             numLapsView.setVisibility(View.VISIBLE);
-            numSectionsView.setVisibility(View.VISIBLE);
+            sectionNumberTextInput.setVisibility(View.VISIBLE);
             trialNameView.setVisibility(View.VISIBLE);
             trialDetailView.setVisibility(View.GONE);
 
             numLapsTextInput.setText(String.valueOf(numlaps));
-            numSectionsTextInput.setText(String.valueOf(numsections));
+            sectionNumberTextInput.setText(String.valueOf(section));
             trialNameTextInput.setText(theTrialName);
             Toast.makeText(SetupActivity.this, "Cannot load trials list - no Internet connection", Toast.LENGTH_LONG).show();
         }
@@ -96,22 +96,25 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     private void setUp() {
         // Set up activity fields
         observerTextInput = findViewById(R.id.observerTextInput);
-        sectionTextInput = findViewById(R.id.sectionTextInput);
+        trialNameTextInput = findViewById(R.id.trialNameTextInput);
+        emailTextInput = findViewById(R.id.emailTextInput);
+        sectionNumberTextInput = findViewById(R.id.sectionNumberTextInput);
+        numSectionsTextInput = findViewById(R.id.numSectionsTextInput);
+        numLapsTextInput = findViewById(R.id.numLapsTextInput);
+
         trialDetailView = findViewById(R.id.trialDetailView);
         resetCheckBox = findViewById(R.id.resetCheckBox);
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
         button = findViewById(R.id.button);
 
-        numLapsView = findViewById(R.id.numLapsInput);
-        numSectionsView = findViewById(R.id.numSectionsInput);
-        trialNameView = findViewById(R.id.trialNameInput);
-        numSectionsTextInput = findViewById(R.id.numSectionsTextInput);
-        numLapsTextInput = findViewById(R.id.numLapsTextInput);
+       // numLapsView = findViewById(R.id.numLapsInput);
+       //  sectionView = findViewById(R.id.sectionNumberInput);
+        trialNameView = findViewById(R.id.trialNameTextInput);
         trialNameTextInput = findViewById(R.id.trialNameTextInput);
 
         numLapsView.setVisibility(View.GONE);
-        numSectionsView.setVisibility(View.GONE);
+        sectionNumberTextInput.setVisibility(View.GONE);
 
         confirmCheckBox.setVisibility(View.GONE);
         warningImageView.setVisibility(View.GONE);
@@ -318,7 +321,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 0);
         theTrialName = localPrefs.getString("theTrialName", null);
-        numsections = localPrefs.getInt("numsections", 0);
         numlaps = localPrefs.getInt("numlaps", 0);
         observer = localPrefs.getString("observer", "");
         section = localPrefs.getInt("section", 0);
@@ -368,12 +370,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
 
             // Check number of laps validity
-            numsections = Integer.parseInt(numSectionsTextInput.getText().toString());
+            section = Integer.parseInt(sectionNumberTextInput.getText().toString());
             // If out of range, then append message
-            if (numsections == 0) {
-                hasErrors = true;
-                errorMsg += "\nInvalid number of sections";
-            }
+
         }
 
         // Check that section field is populated after manual data has been entered
@@ -381,16 +380,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             // If empty, then append message
             hasErrors = true;
             errorMsg += "\nThe section field is empty";
-        } else {
-            // Check section number validity against numsections
-            section = Integer.parseInt(sectionTextInput.getText().toString());
-            // If out of range, then append message
-            if (section > numsections || section <= 0) {
-                hasErrors = true;
-                errorMsg += "\nInvalid section number";
-            }
         }
-
 
         // Inform user if errors
         if (hasErrors) {
@@ -401,7 +391,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             SharedPreferences.Editor editor = localPrefs.edit();
             editor.putString("theTrialName", theTrialName);
             editor.putInt("trialid", trialid);
-            editor.putInt("numsections", numsections);
             editor.putInt("numlaps", numlaps);
             editor.putString("observer", observer);
             editor.putInt("section", section);
@@ -428,24 +417,23 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         if (trialid==0){
             numLapsView.setVisibility(View.VISIBLE);
-            numSectionsView.setVisibility(View.VISIBLE);
+            sectionNumberTextInput.setVisibility(View.VISIBLE);
             trialNameView.setVisibility(View.VISIBLE);
             trialDetailView.setVisibility(View.GONE);
 
             numLapsTextInput.setText(String.valueOf(numlaps));
-            numSectionsTextInput.setText(String.valueOf(numsections));
+            sectionNumberTextInput.setText(String.valueOf(section));
             trialNameTextInput.setText(theTrialName);
         } else {
-            numsections = Integer.parseInt(theTrial.get("numsections").toString());
             numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
             trialid = Integer.parseInt(theTrial.get("id").toString());
             theTrialName = theTrial.get("name").toString();
             numLapsView.setVisibility(View.INVISIBLE);
-            numSectionsView.setVisibility(View.INVISIBLE);
+            sectionNumberTextInput.setVisibility(View.INVISIBLE);
             trialNameView.setVisibility(View.INVISIBLE);
             trialDetailView.setVisibility(View.VISIBLE);
         }
-        detail = theTrialName + "\n" + numlaps + " laps \n" + numsections + " sections";
+        detail = theTrialName + "\n" + numlaps + " laps \n" + section + " section";
         trialDetailView.setText(detail);
     }
 
