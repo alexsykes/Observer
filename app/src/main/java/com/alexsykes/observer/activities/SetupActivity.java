@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 // TODO Manual entry needs fields unhiding
+// TODO Cancel button does not work on spinner
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Set up data fields
@@ -57,8 +59,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     Spinner trialSelect;
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
-    TextView observerTextInput, sectionTextInput, trialDetailView, sectionNumberTextInput, numLapsTextInput, numSectionsTextInput, trialNameTextInput, emailTextInput;
-    TextInputLayout numLapsView, trialNameView;
+    LinearLayout scoreDetails, trialDetailsInput;
+    TextInputLayout observerView, sectionNumberView, trialNameView, emailView, numSectionsView, numLapsView;
+   TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
     ImageView warningImageView;
     private Button button;
 
@@ -81,11 +84,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 Toast.makeText(SetupActivity.this, "Empty data", Toast.LENGTH_LONG).show();
             }
         } else {
-            numLapsView.setVisibility(View.VISIBLE);
-            sectionNumberTextInput.setVisibility(View.VISIBLE);
-            trialNameView.setVisibility(View.VISIBLE);
-            trialDetailView.setVisibility(View.GONE);
-
+            trialDetailsInput.setVisibility(View.VISIBLE);
             numLapsTextInput.setText(String.valueOf(numlaps));
             sectionNumberTextInput.setText(String.valueOf(section));
             trialNameTextInput.setText(theTrialName);
@@ -94,6 +93,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void setUp() {
+        // Setup LinearLayouts
+        trialDetailsInput = findViewById(R.id.trialDetailsInput);
+        scoreDetails = findViewById(R.id.scoreDetails);
+
         // Set up activity fields
         observerTextInput = findViewById(R.id.observerTextInput);
         trialNameTextInput = findViewById(R.id.trialNameTextInput);
@@ -103,6 +106,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numLapsTextInput = findViewById(R.id.numLapsTextInput);
 
         trialDetailView = findViewById(R.id.trialDetailView);
+
         resetCheckBox = findViewById(R.id.resetCheckBox);
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
@@ -110,11 +114,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
        // numLapsView = findViewById(R.id.numLapsInput);
        //  sectionView = findViewById(R.id.sectionNumberInput);
-        trialNameView = findViewById(R.id.trialNameTextInput);
+        trialNameView = findViewById(R.id.trialNameView);
         trialNameTextInput = findViewById(R.id.trialNameTextInput);
 
-        numLapsView.setVisibility(View.GONE);
-        sectionNumberTextInput.setVisibility(View.GONE);
+//        numLapsView.setVisibility(View.GONE);
+//        sectionNumberTextInput.setVisibility(View.GONE);
 
         confirmCheckBox.setVisibility(View.GONE);
         warningImageView.setVisibility(View.GONE);
@@ -333,7 +337,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Sync inputs to saved values
         observerTextInput.setText(observer);
-        sectionTextInput.setText(sectionNumber);
+        sectionNumberTextInput.setText(sectionNumber);
     }
 
     public void setPrefs(View view) {
@@ -376,7 +380,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         }
 
         // Check that section field is populated after manual data has been entered
-        if (sectionTextInput.getText().toString().equals("")) {
+        if (sectionNumberTextInput.getText().toString().equals("")) {
             // If empty, then append message
             hasErrors = true;
             errorMsg += "\nThe section field is empty";
@@ -416,22 +420,20 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         trialid = Integer.parseInt(theTrial.get("id").toString());
 
         if (trialid==0){
-            numLapsView.setVisibility(View.VISIBLE);
-            sectionNumberTextInput.setVisibility(View.VISIBLE);
-            trialNameView.setVisibility(View.VISIBLE);
-            trialDetailView.setVisibility(View.GONE);
-
-            numLapsTextInput.setText(String.valueOf(numlaps));
-            sectionNumberTextInput.setText(String.valueOf(section));
-            trialNameTextInput.setText(theTrialName);
+//            numLapsView.setVisibility(View.VISIBLE);
+//            sectionNumberView.setVisibility(View.VISIBLE);
+//            trialNameView.setVisibility(View.VISIBLE);
+//
+//            numLapsTextInput.setText(String.valueOf(numlaps));
+//            sectionNumberTextInput.setText(String.valueOf(section));
+//            trialNameTextInput.setText(theTrialName);
         } else {
-            numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
-            trialid = Integer.parseInt(theTrial.get("id").toString());
-            theTrialName = theTrial.get("name").toString();
-            numLapsView.setVisibility(View.INVISIBLE);
-            sectionNumberTextInput.setVisibility(View.INVISIBLE);
-            trialNameView.setVisibility(View.INVISIBLE);
-            trialDetailView.setVisibility(View.VISIBLE);
+//            numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
+//            trialid = Integer.parseInt(theTrial.get("id").toString());
+//            theTrialName = theTrial.get("name").toString();
+//            numLapsView.setVisibility(View.INVISIBLE);
+//            sectionNumberTextInput.setVisibility(View.INVISIBLE);
+//            trialNameView.setVisibility(View.INVISIBLE);
         }
         detail = theTrialName + "\n" + numlaps + " laps \n" + section + " section";
         trialDetailView.setText(detail);
