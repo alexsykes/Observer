@@ -40,11 +40,12 @@ import java.util.HashMap;
 
 // TODO Manual entry needs fields unhiding
 // TODO Cancel button does not work on spinner
+// TODO Add check on sectionNumber
 public class SetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Set up data fields
     private static final String BASE_URL = "https://android.trialmonster.uk/";
-    int trialid, section,  numlaps;
+    int trialid, section, numLaps, numSections;
     String observer, theTrialName, detail, email;
     // long startTime;
     String[] theTrials, theIDs;
@@ -60,8 +61,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
     LinearLayout scoreDetails, trialDetailsInput;
-    TextInputLayout observerView, sectionNumberView, trialNameView, emailView, numSectionsView, numLapsView;
-   TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
+   // TextInputLayout observerView, sectionNumberView, trialNameView, emailView, numSectionsView, numLapsView;
+    TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
     ImageView warningImageView;
     private Button button;
 
@@ -73,19 +74,27 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         theScoreDB = new ScoreDbHelper(this);
         theFinishTimeDB = new FinishTimeDbHelper(this);
 
+        // Set up layout labels and fields
         setUp();
+        // Get saved values or defaults
         checkPrefs();
 
-        if (isOnline()) {        // Get trialList from server
+        // Check for online status
+        if (isOnline()) {
+            // Get trialList from server
             String URL = BASE_URL + "getTrialList.php";
+            scoreDetails.setVisibility(View.VISIBLE);
+            trialDetailsInput.setVisibility(View.GONE);
             try {
                 getJSONDataset(URL);
             } catch (NullPointerException e) {
                 Toast.makeText(SetupActivity.this, "Empty data", Toast.LENGTH_LONG).show();
             }
         } else {
+            // If no internet, use form with any known data
+            trialSelect.setVisibility(View.GONE);
             trialDetailsInput.setVisibility(View.VISIBLE);
-            numLapsTextInput.setText(String.valueOf(numlaps));
+            numLapsTextInput.setText(String.valueOf(numLaps));
             sectionNumberTextInput.setText(String.valueOf(section));
             trialNameTextInput.setText(theTrialName);
             Toast.makeText(SetupActivity.this, "Cannot load trials list - no Internet connection", Toast.LENGTH_LONG).show();
@@ -104,21 +113,21 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         sectionNumberTextInput = findViewById(R.id.sectionNumberTextInput);
         numSectionsTextInput = findViewById(R.id.numSectionsTextInput);
         numLapsTextInput = findViewById(R.id.numLapsTextInput);
+        trialNameTextInput = findViewById(R.id.trialNameTextInput);
 
+        // Label
         trialDetailView = findViewById(R.id.trialDetailView);
 
+        // Reset
         resetCheckBox = findViewById(R.id.resetCheckBox);
         confirmCheckBox = findViewById(R.id.confirmCheckBox);
         warningImageView = findViewById(R.id.warningImageView);
+
+        // Save button
         button = findViewById(R.id.button);
 
-       // numLapsView = findViewById(R.id.numLapsInput);
-       //  sectionView = findViewById(R.id.sectionNumberInput);
-        trialNameView = findViewById(R.id.trialNameView);
-        trialNameTextInput = findViewById(R.id.trialNameTextInput);
+        // trialNameView = findViewById(R.id.trialNameView);
 
-//        numLapsView.setVisibility(View.GONE);
-//        sectionNumberTextInput.setVisibility(View.GONE);
 
         confirmCheckBox.setVisibility(View.GONE);
         warningImageView.setVisibility(View.GONE);
@@ -157,6 +166,12 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         // Set up spinner
         trialSelect = findViewById(R.id.trialSelect);
         trialSelect.setOnItemSelectedListener(this);
+
+        // Sync inputs to saved values
+//        observerTextInput.setText(observer);
+//        sectionNumberTextInput.setText(String.valueOf(section));
+//        emailTextInput.setText(email);
+//        numSectionsTextInput.setText(String.valueOf(numSections));
     }
 
     protected boolean isOnline() {
@@ -229,7 +244,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 // Setting the ArrayAdapter data on the Spinner
                 trialSelect.setAdapter(aa);
-                if (trialid == 0){
+                if (trialid == 0) {
                     trialSelect.setSelection(aa.getPosition(tempName));
                 }
             }
@@ -240,7 +255,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
              */
             private ArrayList<HashMap<String, String>> populateResultArrayList(String json) {
                 ArrayList<HashMap<String, String>> theTrialList = new ArrayList<>();
-                String date, name, id, club, numsections, numlaps, starttime;
+                String date, name, id, club, numsections, numlaps, starttime, email;
 
                 try {
                     // Parse string data into JSON
@@ -255,6 +270,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         numsections = jsonArray.getJSONObject(index).getString("numsections");
                         numlaps = jsonArray.getJSONObject(index).getString("numlaps");
                         starttime = jsonArray.getJSONObject(index).getString("starttime");
+                        email = jsonArray.getJSONObject(index).getString("email");
 
                         // trial = club + " - " + name;
                         theTrial.put("id", id);
@@ -264,6 +280,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                         theTrial.put("numsections", numsections);
                         theTrial.put("numlaps", numlaps);
                         theTrial.put("starttime", starttime);
+                        theTrial.put("email", email);
                         theTrialList.add(theTrial);
                     }
 
@@ -320,24 +337,24 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void checkPrefs() {
-        String sectionNumber;
         // Get localPrefs and read values
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 0);
         theTrialName = localPrefs.getString("theTrialName", null);
-        numlaps = localPrefs.getInt("numlaps", 0);
+        numLaps = localPrefs.getInt("numLaps", 0);
         observer = localPrefs.getString("observer", "");
+        email = localPrefs.getString("email", "");
         section = localPrefs.getInt("section", 0);
+        numSections = localPrefs.getInt("numSections", 0);
 
-        if (section == 0) {
-            sectionNumber = "";
-        } else {
-            sectionNumber = String.valueOf(section);
-        }
-
-        // Sync inputs to saved values
+        // Put values into text fields
         observerTextInput.setText(observer);
-        sectionNumberTextInput.setText(sectionNumber);
+        numLapsTextInput.setText(String.valueOf(numLaps));
+        sectionNumberTextInput.setText(String.valueOf(section));
+        trialNameTextInput.setText(theTrialName);
+        emailTextInput.setText(email);
+        numLapsTextInput.setText(String.valueOf(numLaps));
+        numSectionsTextInput.setText(String.valueOf(numSections));
     }
 
     public void setPrefs(View view) {
@@ -365,10 +382,26 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 errorMsg += "\nThe trial name field is empty";
             }
 
+            // Check that email field is complete
+            email = emailTextInput.getText().toString();
+            if (email.equals("")) {
+                // If empty, then append message
+                hasErrors = true;
+                errorMsg += "\nThe email field is empty";
+            }
+
             // Check number of laps validity
-            numlaps = Integer.parseInt(numLapsTextInput.getText().toString());
+            numLaps = Integer.parseInt(numLapsTextInput.getText().toString());
             // If out of range, then append message
-            if (numlaps == 0) {
+            if (numLaps == 0) {
+                hasErrors = true;
+                errorMsg += "\nInvalid number of laps";
+            }
+
+            // Check number of laps validity
+            numSections = Integer.parseInt(numSectionsTextInput.getText().toString());
+            // If out of range, then append message
+            if (numSections == 0) {
                 hasErrors = true;
                 errorMsg += "\nInvalid number of laps";
             }
@@ -395,8 +428,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             SharedPreferences.Editor editor = localPrefs.edit();
             editor.putString("theTrialName", theTrialName);
             editor.putInt("trialid", trialid);
-            editor.putInt("numlaps", numlaps);
+            editor.putInt("numLaps", numLaps);
+            editor.putInt("numSections", numSections);
             editor.putString("observer", observer);
+            editor.putString("email", email);
             editor.putInt("section", section);
             editor.commit();
 
@@ -418,24 +453,32 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         HashMap theTrial = theTrialList.get(position);
         trialid = Integer.parseInt(theTrial.get("id").toString());
+        String message = "TrialID: " + trialid;
 
-        if (trialid==0){
+        if (trialid == 0) {
+            trialDetailsInput.setVisibility(View.VISIBLE);
 //            numLapsView.setVisibility(View.VISIBLE);
 //            sectionNumberView.setVisibility(View.VISIBLE);
 //            trialNameView.setVisibility(View.VISIBLE);
 //
-//            numLapsTextInput.setText(String.valueOf(numlaps));
+//            numLapsTextInput.setText(String.valueOf(numLaps));
 //            sectionNumberTextInput.setText(String.valueOf(section));
 //            trialNameTextInput.setText(theTrialName);
+//            emailTextInput.setText(email);
+//            numLapsTextInput.setText(String.valueOf(numLaps));
+//            numSectionsTextInput.setText(String.valueOf(numSections));
         } else {
-//            numlaps = Integer.parseInt(theTrial.get("numlaps").toString());
-//            trialid = Integer.parseInt(theTrial.get("id").toString());
-//            theTrialName = theTrial.get("name").toString();
+            trialDetailsInput.setVisibility(View.GONE);
+            numLaps = Integer.parseInt(theTrial.get("numlaps").toString());
+            numSections = Integer.parseInt(theTrial.get("numsections").toString());
+            trialid = Integer.parseInt(theTrial.get("id").toString());
+            theTrialName = theTrial.get("name").toString();
+            email = theTrial.get("email").toString();
 //            numLapsView.setVisibility(View.INVISIBLE);
 //            sectionNumberTextInput.setVisibility(View.INVISIBLE);
 //            trialNameView.setVisibility(View.INVISIBLE);
         }
-        detail = theTrialName + "\n" + numlaps + " laps \n" + section + " section";
+        detail = theTrialName + "\n" + numLaps + " laps \n" + numSections + " sections \nEmail: " + email;
         trialDetailView.setText(detail);
     }
 
