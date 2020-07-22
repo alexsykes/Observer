@@ -56,6 +56,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /* TODO Upload on close
@@ -69,7 +70,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
     public static final int TEXT_REQUEST = 1;
     private static final int NOT_SYNCED = -1;
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
-    final String uploadFileName = "times.csv";
+    String uploadFileName = "times.csv";
     File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
     // Layout components
     NumberPadFragment numberPadFragment;
@@ -272,7 +273,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
             // Get trialList from server
             String URL = getTrialsURL;
             try {
-                getJSONDataset(URL);
+               // getJSONDataset(URL);
             } catch (NullPointerException e) {
                 Toast.makeText(TimerActivity.this, "Empty data", Toast.LENGTH_LONG).show();
             }
@@ -314,6 +315,13 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         String number, finishtime;
 
         filename = "times.csv";
+        // Get timestamp and add to filename
+
+        Date date = new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        String ts = String.valueOf(time);
+        filename = "times_" + ts + ".csv";
 
         try {
             exportDir = new File(getFilesDir(), filename);

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private String observer;
     private int section;
     private int trialid;
-    private int numlaps;
+    private int numLaps;
     private int score;
 
     @Override
@@ -297,9 +297,9 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int lap = 1 + mDbHelper.getRiderLap(rider, section, trialid);
 
-        if (lap > numlaps) {
+        if (lap > numLaps) {
             toneGen1.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 150);
-            Toast.makeText(this, "Already completed " + numlaps + " laps", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Already completed " + numLaps + " laps", Toast.LENGTH_LONG).show();
         } else {
 
             // Create a ContentValues object where column names are the keys,
@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
         observer = localPrefs.getString("observer", "");
         section = localPrefs.getInt("section", 0);
         trialid = localPrefs.getInt("trialid", 0);
-        numlaps = localPrefs.getInt("numlaps", 0);
+        numLaps = localPrefs.getInt("numLaps", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
         statusLine.setText(status);

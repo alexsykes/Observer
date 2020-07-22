@@ -61,7 +61,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
     LinearLayout scoreDetails, trialDetailsInput;
-   // TextInputLayout observerView, sectionNumberView, trialNameView, emailView, numSectionsView, numLapsView;
+    // TextInputLayout observerView, sectionNumberView, trialNameView, emailView, numSectionsView, numLapsView;
     TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
     ImageView warningImageView;
     private Button button;
@@ -435,6 +435,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             if (reset) {
                 theScoreDB.clearResults();
                 theFinishTimeDB.clearTimes();
+               // editor.clear();
+                editor.remove("starttime");
+                editor.putBoolean("isStartTimeSet",false);
+                editor.commit();
             }
             finish();
         }

@@ -53,7 +53,6 @@ public class SyncActivity extends AppCompatActivity {
     ProgressDialog dialog = null;
     String upLoadServerUri = null;
     String processURL = null;
-    File datafile;
     File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
     private ScoreDbHelper mDbHelper;
     private String filename;
