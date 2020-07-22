@@ -126,12 +126,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         // Save button
         button = findViewById(R.id.button);
 
-        // trialNameView = findViewById(R.id.trialNameView);
-
-
+        // Set up reset fields
         confirmCheckBox.setVisibility(View.GONE);
         warningImageView.setVisibility(View.GONE);
 
+        // Add listeners
         resetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -148,7 +147,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-
         confirmCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -162,16 +160,9 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-
         // Set up spinner
         trialSelect = findViewById(R.id.trialSelect);
         trialSelect.setOnItemSelectedListener(this);
-
-        // Sync inputs to saved values
-//        observerTextInput.setText(observer);
-//        sectionNumberTextInput.setText(String.valueOf(section));
-//        emailTextInput.setText(email);
-//        numSectionsTextInput.setText(String.valueOf(numSections));
     }
 
     protected boolean isOnline() {
@@ -365,13 +356,16 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         // Set errorMsg with initial message
         String errorMsg = "The following error(s) need to be corrected:";
 
-        // Check that observer field is complete
+        // Check that observer and sectionNumber fields are complete
         observer = observerTextInput.getText().toString();
         if (observer.equals("")) {
             // If empty, then append message
             hasErrors = true;
             errorMsg += "\nThe observer field is empty";
         }
+
+        // Check number of sections validity
+        section = Integer.parseInt(sectionNumberTextInput.getText().toString());
         if (trialid == 0) {
 
             // Check that trial name field is complete
@@ -405,11 +399,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 hasErrors = true;
                 errorMsg += "\nInvalid number of laps";
             }
-
-            // Check number of laps validity
-            section = Integer.parseInt(sectionNumberTextInput.getText().toString());
-            // If out of range, then append message
-
         }
 
         // Check that section field is populated after manual data has been entered
@@ -417,6 +406,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             // If empty, then append message
             hasErrors = true;
             errorMsg += "\nThe section field is empty";
+        }
+        if (section > numSections  || section < 1){
+            hasErrors = true;
+            errorMsg += "\nThe section number must be between 1 and "+numSections;
         }
 
         // Inform user if errors
