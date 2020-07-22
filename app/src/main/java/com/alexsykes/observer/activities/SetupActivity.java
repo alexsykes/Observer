@@ -61,7 +61,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
     LinearLayout scoreDetails, trialDetailsInput;
-    // TextInputLayout observerView, sectionNumberView, trialNameView, emailView, numSectionsView, numLapsView;
     TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
     ImageView warningImageView;
     private Button button;
