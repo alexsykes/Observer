@@ -314,24 +314,23 @@ public class TimerActivity extends AppCompatActivity  {
     }
 
     private void saveToCSV() {
-        String number, finishtime;
+        String number, finishtime, humantime;
+        long dateValue;
+        Date timestamp;
 
-/*        Date date = new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        ts = String.valueOf(time);
-        filename = "times_" + ts + ".csv";*/
-        // Get timestamp and add to filename
 
         try {
             exportDir = new File(getFilesDir(), filename);
 
             exportDir.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(exportDir));
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yy HH:mm:ss.SS");
+            humantime = DATE_FORMAT.format(starttime);
 
-            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(starttime), email};
-
+            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(starttime), email, humantime};
+            String[] startData = {"0",String.valueOf(starttime), humantime };
             csvWrite.writeNext(header, false);
+            csvWrite.writeNext(startData, false);
 
             // Get current data
             Cursor cursor = mDbHelper.getTimesForUpload();
@@ -341,7 +340,10 @@ public class TimerActivity extends AppCompatActivity  {
                 // Check for accidental clicks (no rider number)
                 if (!number.isEmpty()) {
                     finishtime = cursor.getString(1);
-                    String[] arrStr = {number, finishtime
+                    dateValue = Long.valueOf(finishtime);
+                    timestamp = new Date(dateValue);
+                    humantime = DATE_FORMAT.format(timestamp);
+                    String[] arrStr = {number, finishtime, humantime
                     };
 
                     csvWrite.writeNext(arrStr, false);
@@ -422,12 +424,10 @@ public class TimerActivity extends AppCompatActivity  {
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
                 while (bytesRead > 0) {
-
                     dos.write(buffer, 0, bufferSize);
                     bytesAvailable = fileInputStream.available();
                     bufferSize = Math.min(bytesAvailable, maxBufferSize);
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
                 }
 
                 // send multipart form data necesssary after file data...
@@ -442,7 +442,6 @@ public class TimerActivity extends AppCompatActivity  {
                         + serverResponseMessage + ": " + serverResponseCode);
 
                 if (serverResponseCode == 200) {
-
                     runOnUiThread(new Runnable() {
                         public void run() {
                             // Toast.makeText(TimerActivity.this, "Score Upload Complete",Toast.LENGTH_SHORT).show();
@@ -537,6 +536,8 @@ public class TimerActivity extends AppCompatActivity  {
             protected String doInBackground(Void... voids) {
 
                 int response = uploadFile(uploadFilePath + filename);
+
+                // Email times for Manual Entry - trialid = 0
                 try {
                     if (trialid == 0 ){
                     processURL = "http://www.trialmonster.uk/android/emailTimes.php?ts=" + ts + "&email=" + email;
