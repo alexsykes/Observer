@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -69,8 +70,10 @@ public class TimerActivity extends AppCompatActivity  {
     // Constants
     public static final int TEXT_REQUEST = 1;
     private static final int NOT_SYNCED = -1;
+    MediaPlayer mediaPlayer;
+
     final String uploadFilePath = "mnt/sdcard/Documents/Scoremonster/";
-    String uploadFileName = "times.csv";
+    // String uploadFileName = "times.csv";
     File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
     // Layout components
     NumberPadFragment numberPadFragment;
@@ -129,12 +132,16 @@ public class TimerActivity extends AppCompatActivity  {
 
         /*  PHP script paths  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
-        processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
 
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isOnline()) {
+                    if (trialid == 0 ){
+                        processURL = "http://www.trialmonster.uk/android/emailTimes.php";
+                    } else {
+                        processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
+                    }
                     processCSV(processURL);
                 } else {
 
@@ -229,7 +236,7 @@ public class TimerActivity extends AppCompatActivity  {
             timeLabel.setText(finishTime);
             riderNumber = numberLabel.getText().toString();
 
-            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+            // ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
             // Check for numberof completed laps
             // Gets the database in write mode
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -243,6 +250,7 @@ public class TimerActivity extends AppCompatActivity  {
             long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
             // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
             numberLabel.setText("");
+            playSoundFile(R.raw.ting);
         }
     }
 
@@ -311,14 +319,12 @@ public class TimerActivity extends AppCompatActivity  {
     private void saveToCSV() {
         String number, finishtime;
 
-        filename = "times.csv";
-        // Get timestamp and add to filename
-
         Date date = new Date();
         //getTime() returns current time in milliseconds
         long time = date.getTime();
         String ts = String.valueOf(time);
         filename = "times_" + ts + ".csv";
+        // Get timestamp and add to filename
 
         try {
             exportDir = new File(getFilesDir(), filename);
@@ -356,7 +362,7 @@ public class TimerActivity extends AppCompatActivity  {
         File sourceFile = new File(directory, filename);
 
 
-        String fileName = sourceFileUri;
+      //  String fileName = sourceFileUri;
 
         HttpURLConnection conn;
         DataOutputStream dos;
@@ -373,12 +379,12 @@ public class TimerActivity extends AppCompatActivity  {
             dialog.dismiss();
 
             Log.e("uploadFile", "Source File not exist :"
-                    + uploadFilePath + "" + uploadFileName);
+                    + uploadFilePath + "" + filename);
 
             runOnUiThread(new Runnable() {
                 public void run() {
                     numberLabel.setText("Source File not exist :"
-                            + uploadFilePath + "" + uploadFileName);
+                            + uploadFilePath + "" + filename);
                 }
             });
 
@@ -399,13 +405,13 @@ public class TimerActivity extends AppCompatActivity  {
                 conn.setRequestProperty("Connection", "Keep-Alive");
                 conn.setRequestProperty("ENCTYPE", "multipart/form-data");
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("uploaded_file", fileName);
+                conn.setRequestProperty("uploaded_file", filename);
 
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                        + fileName + "\"" + lineEnd);
+                        + filename + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
 
@@ -517,6 +523,7 @@ public class TimerActivity extends AppCompatActivity  {
 
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                // TODO Handle error response
                 mDbHelper.markUploaded();
                 updateList();
                 dialog.dismiss();
@@ -526,7 +533,7 @@ public class TimerActivity extends AppCompatActivity  {
             @Override
             protected String doInBackground(Void... voids) {
 
-                int response = uploadFile(uploadFilePath + uploadFileName);
+                int response = uploadFile(uploadFilePath + filename);
                 try {
                     //creating a URL
                     URL url = new URL(urlWebService);
@@ -574,5 +581,11 @@ public class TimerActivity extends AppCompatActivity  {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    //play a soundfile
+    public void playSoundFile(Integer fileName) {
+        mediaPlayer = MediaPlayer.create(this, fileName);
+        mediaPlayer.start();
     }
 }
