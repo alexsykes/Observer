@@ -93,6 +93,8 @@ public class TimerActivity extends AppCompatActivity  {
     String getTrialsURL = null;
     String riderNumber;
     String theTrialName;
+    String email;
+    String ts = "Default";
     boolean isStartTimeSet;
     SharedPreferences localPrefs;
     ArrayList<HashMap<String, String>> theFinishTimes;
@@ -137,12 +139,12 @@ public class TimerActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 if (isOnline()) {
-                    if (trialid == 0 ){
-                        processURL = "http://www.trialmonster.uk/android/emailTimes.php";
+/*                    if (trialid == 0 ){
+                        processURL = "http://www.trialmonster.uk/android/emailTimes.php?ts=" + ts;
                     } else {
                         processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
-                    }
-                    processCSV(processURL);
+                    }*/
+                    processCSV();
                 } else {
 
                     Toast.makeText(TimerActivity.this, "Cannot Upload - no Internet connection", Toast.LENGTH_LONG).show();
@@ -160,11 +162,6 @@ public class TimerActivity extends AppCompatActivity  {
                 return false;
             }
         });
-
-        // Set up spinner
-      // trialSelect = findViewById(R.id.trialSelect);
-       // trialSelect.setOnItemSelectedListener(this);
-
         checkPrefs();
     }
 
@@ -173,6 +170,7 @@ public class TimerActivity extends AppCompatActivity  {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         trialid = localPrefs.getInt("trialid", 999);
         starttime = localPrefs.getLong("starttime", -1);
+        email = localPrefs.getString("email", "");
     }
 
     @Override
@@ -190,7 +188,6 @@ public class TimerActivity extends AppCompatActivity  {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -319,11 +316,11 @@ public class TimerActivity extends AppCompatActivity  {
     private void saveToCSV() {
         String number, finishtime;
 
-        Date date = new Date();
+/*        Date date = new Date();
         //getTime() returns current time in milliseconds
         long time = date.getTime();
-        String ts = String.valueOf(time);
-        filename = "times_" + ts + ".csv";
+        ts = String.valueOf(time);
+        filename = "times_" + ts + ".csv";*/
         // Get timestamp and add to filename
 
         try {
@@ -332,7 +329,7 @@ public class TimerActivity extends AppCompatActivity  {
             exportDir.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(exportDir));
 
-            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(starttime)};
+            String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(starttime), email};
 
             csvWrite.writeNext(header, false);
 
@@ -497,7 +494,7 @@ public class TimerActivity extends AppCompatActivity  {
         uploadFile(uploadFilePath + "" + uploadFileName);
     } */
 
-    private void processCSV(final String urlWebService) {
+    private void processCSV() {
         /*
          * Processing the CSV done online
          * so we need an AsyncTask
@@ -518,6 +515,12 @@ public class TimerActivity extends AppCompatActivity  {
                 dialog = ProgressDialog.show(TimerActivity.this, "Scoremonster",
                         "Processing scores… this make take some time!", true);
                 // Prepare CSV file
+
+                Date date = new Date();
+                //getTime() returns current time in milliseconds
+                long time = date.getTime();
+                ts = String.valueOf(time);
+                filename = "times_" + ts + ".csv";
                 saveToCSV();
             }
 
@@ -535,8 +538,13 @@ public class TimerActivity extends AppCompatActivity  {
 
                 int response = uploadFile(uploadFilePath + filename);
                 try {
+                    if (trialid == 0 ){
+                    processURL = "http://www.trialmonster.uk/android/emailTimes.php?ts=" + ts + "&email=" + email;
+                } else {
+                    processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
+                }
                     //creating a URL
-                    URL url = new URL(urlWebService);
+                    URL url = new URL(processURL);
 
                     //Opening the URL using HttpURLConnection
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
