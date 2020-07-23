@@ -84,7 +84,6 @@ public class TimerActivity extends AppCompatActivity  {
     ProgressDialog dialog = null;
 
     // Global variables
-    String[] theTrials, theIDs;
     int trialid;
     int serverResponseCode = 0;
     long starttime;
@@ -318,13 +317,12 @@ public class TimerActivity extends AppCompatActivity  {
         long dateValue;
         Date timestamp;
 
-
         try {
             exportDir = new File(getFilesDir(), filename);
 
             exportDir.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(exportDir));
-            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yy HH:mm:ss.SS");
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yy HH:mm:ss.S");
             humantime = DATE_FORMAT.format(starttime);
 
             String[] header = {"rider", "finishtime", String.valueOf(trialid), String.valueOf(starttime), email, humantime};
