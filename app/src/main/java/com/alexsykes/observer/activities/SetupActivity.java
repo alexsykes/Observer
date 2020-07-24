@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
     // Set up data fields
     private static final String BASE_URL = "https://android.trialmonster.uk/";
-    int trialid, section, numLaps, numSections;
+    int trialid, section, numLaps, numSections, mode;
     String observer, theTrialName, detail, email;
     // long startTime;
     String[] theTrials, theIDs;
@@ -62,8 +63,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     CheckBox resetCheckBox, confirmCheckBox;
     LinearLayout scoreDetails, trialDetailsInput;
     TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
+    TextInputLayout sectionNumberView;
     ImageView warningImageView;
     private Button button;
+    Switch modeSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +113,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         trialNameTextInput = findViewById(R.id.trialNameTextInput);
         emailTextInput = findViewById(R.id.emailTextInput);
         sectionNumberTextInput = findViewById(R.id.sectionNumberTextInput);
+        sectionNumberView = findViewById(R.id.sectionNumberView);
         numSectionsTextInput = findViewById(R.id.numSectionsTextInput);
         numLapsTextInput = findViewById(R.id.numLapsTextInput);
         trialNameTextInput = findViewById(R.id.trialNameTextInput);
+        modeSwitch = findViewById(R.id.modeSwitch);
 
         // Label
         trialDetailView = findViewById(R.id.trialDetailView);
@@ -155,6 +160,18 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 } else {
                     button.setEnabled(false);
+                }
+            }
+        });
+
+        modeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mode = 1;
+                    sectionNumberView.setVisibility(View.GONE);
+                } else {
+                    mode = 0;
+                    sectionNumberView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -336,6 +353,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         email = localPrefs.getString("email", "");
         section = localPrefs.getInt("section", 0);
         numSections = localPrefs.getInt("numSections", 0);
+        mode = localPrefs.getInt("mode", 0);
 
         // Put values into text fields
         observerTextInput.setText(observer);
@@ -345,6 +363,15 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         emailTextInput.setText(email);
         numLapsTextInput.setText(String.valueOf(numLaps));
         numSectionsTextInput.setText(String.valueOf(numSections));
+
+        if (mode == 0) {
+            modeSwitch.setChecked(false);
+            sectionNumberView.setVisibility(View.VISIBLE);
+        } else {
+            modeSwitch.setChecked(true);
+            section = 1;
+            sectionNumberView.setVisibility(View.GONE);
+        }
     }
 
     public void setPrefs(View view) {
@@ -362,9 +389,6 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             hasErrors = true;
             errorMsg += "\nThe observer field is empty";
         }
-
-        // Check number of sections validity
-        section = Integer.parseInt(sectionNumberTextInput.getText().toString());
         if (trialid == 0) {
 
             // Check that trial name field is complete
@@ -400,16 +424,19 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         }
 
-        // Check that section field is populated after manual data has been entered
-        if (sectionNumberTextInput.getText().toString().equals("")) {
-            // If empty, then append message
-            hasErrors = true;
-            errorMsg += "\nThe section field is empty";
-        }
-        if (section > numSections  || section < 1){
-            hasErrors = true;
-            errorMsg += "\nThe section number must be between 1 and "+numSections;
-        }
+
+        // Check number of sections validity - NOT in Timer mode
+        if (mode == 0) {
+            section = Integer.parseInt(sectionNumberTextInput.getText().toString());
+            if (section == 0 || section > numSections){
+                hasErrors = true;
+                errorMsg += "\nInvalid section number";
+            }
+        } else {  section = 0;}
+
+
+
+
 
         // Inform user if errors
         if (hasErrors) {
@@ -425,6 +452,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putString("observer", observer);
             editor.putString("email", email);
             editor.putInt("section", section);
+            editor.putInt("mode", mode);
             editor.commit();
 
 

@@ -143,4 +143,6 @@ To change a score, click on the list icon in the toolbar. This will display a li
     <string name="stop_permitted">Stop Permitted Rules</string>
     <string name="no_stop">Non Stop Rules</string>
     <string name="email">email</string>
+    <string name="trial">Trial</string>
+    <string name="timer_mode">Timer mode</string>
 </resources>

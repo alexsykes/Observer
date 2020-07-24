@@ -21,15 +21,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/trialLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:text="@string/trial"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectLabel" />
+
     <Spinner
         android:id="@+id/trialSelect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
         android:spinnerMode="dialog"
-        app:layout_constraintStart_toEndOf="@+id/selectLabel"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/trialLabel"
+        app:layout_constraintStart_toEndOf="@+id/trialLabel" />
 
     <TextView
         android:id="@+id/trialDetailView"
@@ -44,6 +57,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trialSelect" />
 
+    <Switch
+        android:id="@+id/modeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timer_mode"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/trialDetailView"/>
+
     <LinearLayout
         android:id="@+id/scoreDetails"
         android:layout_width="match_parent"
@@ -51,7 +77,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trialDetailView" >
+        app:layout_constraintTop_toBottomOf="@+id/modeSwitch" >
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -157,8 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:hint="@string/number_of_laps">
+            android:layout_marginEnd="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/numLapsTextInput"
