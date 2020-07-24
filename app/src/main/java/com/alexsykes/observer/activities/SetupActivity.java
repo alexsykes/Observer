@@ -47,6 +47,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     // Set up data fields
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     int trialid, section, numLaps, numSections, mode;
+    long startInterval;
     String observer, theTrialName, detail, email;
     // long startTime;
     String[] theTrials, theIDs;
@@ -62,8 +63,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     ProgressDialog dialog = null;
     CheckBox resetCheckBox, confirmCheckBox;
     LinearLayout scoreDetails, trialDetailsInput;
-    TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, trialDetailView;
-    TextInputLayout sectionNumberView;
+    TextView observerTextInput, sectionNumberTextInput, trialNameTextInput, emailTextInput, numSectionsTextInput, numLapsTextInput, startIntervalTextInput, trialDetailView;
+    TextInputLayout sectionNumberView, startIntervalView;
     ImageView warningImageView;
     private Button button;
     Switch modeSwitch;
@@ -118,6 +119,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         numLapsTextInput = findViewById(R.id.numLapsTextInput);
         trialNameTextInput = findViewById(R.id.trialNameTextInput);
         modeSwitch = findViewById(R.id.modeSwitch);
+        startIntervalTextInput = findViewById(R.id.startIntervalTextInput);
+        startIntervalView = findViewById(R.id.startIntervalView);
 
         // Label
         trialDetailView = findViewById(R.id.trialDetailView);
@@ -169,9 +172,11 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 if (isChecked) {
                     mode = 1;
                     sectionNumberView.setVisibility(View.GONE);
+                    startIntervalView.setVisibility(View.VISIBLE);
                 } else {
                     mode = 0;
                     sectionNumberView.setVisibility(View.VISIBLE);
+                    startIntervalView.setVisibility(View.GONE);
                 }
             }
         });
@@ -354,6 +359,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         section = localPrefs.getInt("section", 0);
         numSections = localPrefs.getInt("numSections", 0);
         mode = localPrefs.getInt("mode", 0);
+        startInterval = localPrefs.getLong("startInterval", 60);
 
         // Put values into text fields
         observerTextInput.setText(observer);
@@ -363,14 +369,18 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
         emailTextInput.setText(email);
         numLapsTextInput.setText(String.valueOf(numLaps));
         numSectionsTextInput.setText(String.valueOf(numSections));
+        startIntervalTextInput.setText(String.valueOf(startInterval));
 
         if (mode == 0) {
             modeSwitch.setChecked(false);
             sectionNumberView.setVisibility(View.VISIBLE);
+            startIntervalView.setVisibility(View.GONE);
+
         } else {
             modeSwitch.setChecked(true);
             section = 1;
             sectionNumberView.setVisibility(View.GONE);
+            startIntervalView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -434,7 +444,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         } else {  section = 0;}
 
-
+        startInterval = Long.parseLong(startIntervalTextInput.getText().toString());
 
 
 
@@ -453,6 +463,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putString("email", email);
             editor.putInt("section", section);
             editor.putInt("mode", mode);
+            editor.putLong("startInterval", startInterval);
             editor.commit();
 
 

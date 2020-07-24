@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     NumberPadFragment numberPadFragment;
     TouchFragment touchFragment;
     SharedPreferences localPrefs;
+    int mode;
 
     // Databases
     private ScoreDbHelper mDbHelper;
@@ -95,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (!getPrefs()) {
               goSetup();
+        }
+        if(mode == 1){
+           // goTimingMode();
         }
     }
 
@@ -224,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
     private void goSetup() {
         Intent intent = new Intent(this, SetupActivity.class);
         startActivityForResult(intent, TEXT_REQUEST);
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -333,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
         section = localPrefs.getInt("section", 0);
         trialid = localPrefs.getInt("trialid", 0);
         numLaps = localPrefs.getInt("numLaps", 0);
+        mode = localPrefs.getInt("mode", 0);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
         statusLine.setText(status);

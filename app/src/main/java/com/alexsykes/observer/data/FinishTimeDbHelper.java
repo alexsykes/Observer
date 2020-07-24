@@ -9,7 +9,7 @@ import com.alexsykes.observer.data.FinishTimeContract.FinishTimeEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+// TODO - Time list needs filtering for TrialID
 public class FinishTimeDbHelper extends SQLiteOpenHelper {
     /**
      * Name of the database file
@@ -102,5 +102,23 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         String clearAll = "DELETE FROM finishTimes; ";
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(clearAll);
+    }
+
+
+
+        public ArrayList<HashMap<String, String>> getRidersFinishTimes() {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
+            String query = "SELECT rider, finishtime FROM finishtimes ORDER BY finishtime ASC ";
+            Cursor cursor = db.rawQuery(query, null);
+            while (cursor.moveToNext()) {
+                HashMap<String, String> times = new HashMap<>();
+
+                times.put("number", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
+                times.put("finishTime", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+                timeList.add(times);
+            }
+            cursor.close();
+            return timeList;
     }
 }

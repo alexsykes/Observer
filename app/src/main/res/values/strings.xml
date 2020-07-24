@@ -145,4 +145,7 @@ To change a score, click on the list icon in the toolbar. This will display a li
     <string name="email">email</string>
     <string name="trial">Trial</string>
     <string name="timer_mode">Timer mode</string>
+    <string name="startIntervalHint">Start interval (seconds)</string>
+    <string name="elapsedtime">elapsedTime</string>
+    <string name="elapsed_time">Elapsed Time</string>
 </resources>

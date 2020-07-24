@@ -175,10 +175,17 @@ public class TimerActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             // Switch to timesheet Activity
             case R.id.timesheet:
-                Intent intent = new Intent(this, TimeSheetActivity.class);
+                Intent intent = new Intent(this, TimeListActivity.class);
+                intent.putExtra("trialid", trialid);
+                startActivityForResult(intent, TEXT_REQUEST);
+                return true;
+
+
+            // Switch to timesheet Activity
+            case R.id.setup:
+                intent = new Intent(this, SetupActivity.class);
                 intent.putExtra("trialid", trialid);
                 startActivityForResult(intent, TEXT_REQUEST);
                 return true;

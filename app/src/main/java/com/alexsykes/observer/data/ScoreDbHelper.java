@@ -243,4 +243,5 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         db.execSQL(query);
 
     }
+
 }
