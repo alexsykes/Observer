@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.alexsykes.observer.ElapsedTimeListAdapter;
@@ -20,16 +21,21 @@ public class TimeListActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> theSummaryTimes;
     FinishTimeDbHelper mDbHelper;
     RecyclerView rv;
+    SharedPreferences localPrefs;
+    long starttime, startInterval;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_list);
 
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        startInterval = localPrefs.getLong("startInterval", 0);
+        starttime = localPrefs.getLong("starttime", 0);
+
         // Create database connection
         mDbHelper = new FinishTimeDbHelper(this);
-
-        //
-        theSummaryTimes = mDbHelper.getRidersFinishTimes();
+        theSummaryTimes = mDbHelper.getRidersFinishTimes(starttime, startInterval);
 
         rv = findViewById(R.id.rv);
 

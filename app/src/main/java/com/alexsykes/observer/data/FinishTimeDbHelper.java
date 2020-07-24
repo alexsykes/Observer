@@ -1,14 +1,19 @@
 package com.alexsykes.observer.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.alexsykes.observer.data.FinishTimeContract.FinishTimeEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static android.content.Context.MODE_PRIVATE;
+
 // TODO - Time list needs filtering for TrialID
 public class FinishTimeDbHelper extends SQLiteOpenHelper {
     /**
@@ -18,7 +23,6 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private static final int SYNCED = 0;
     private static final int NOT_SYNCED = -1;
-
     public FinishTimeDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -106,16 +110,28 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
 
 
-        public ArrayList<HashMap<String, String>> getRidersFinishTimes() {
+        public ArrayList<HashMap<String, String>> getRidersFinishTimes(long starttime, long startInterval) {
+        long finishTime, elapsedTime, adjustedTime;
+        int number;
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
             String query = "SELECT rider, finishtime FROM finishtimes ORDER BY finishtime ASC ";
             Cursor cursor = db.rawQuery(query, null);
+
+
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.S");
+            String humantime ;
             while (cursor.moveToNext()) {
                 HashMap<String, String> times = new HashMap<>();
+                number = cursor.getInt(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER));
+                finishTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME));
+                elapsedTime = (finishTime - starttime); // Elapsed time in milliseconds
+                adjustedTime = (elapsedTime - ((number-1) * startInterval * 1000))/1000;
 
-                times.put("number", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
-                times.put("finishTime", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+                humantime = DATE_FORMAT.format(finishTime);
+                times.put("number", String.valueOf(number));
+                times.put("finishTime", humantime);
+                times.put("elapsedTime", String.valueOf(adjustedTime));
                 timeList.add(times);
             }
             cursor.close();
