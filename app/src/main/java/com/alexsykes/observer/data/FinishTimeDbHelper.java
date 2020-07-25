@@ -36,7 +36,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
                 + FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " TEXT NOT NULL);";
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " INTEGER NOT NULL);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
@@ -111,27 +111,35 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
 
         public ArrayList<HashMap<String, String>> getRidersFinishTimes(long starttime, long startInterval) {
-        long finishTime, elapsedTime, adjustedTime;
+        long finishTime, elapsedTime, elapsedTimeMinutes, elapsedTimeSeconds, elapsedTimeInSeconds, adjustedStartTime;
         int number;
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
-            String query = "SELECT rider, finishtime FROM finishtimes ORDER BY finishtime ASC ";
+            String query = "SELECT rider, finishtime FROM finishtimes ORDER BY rider ASC ";
             Cursor cursor = db.rawQuery(query, null);
 
 
             SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.S");
-            String humantime ;
+            SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+            String humantime, adjustedStartTimeHuman, elapsedTimeHuman;
             while (cursor.moveToNext()) {
                 HashMap<String, String> times = new HashMap<>();
                 number = cursor.getInt(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER));
                 finishTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME));
-                elapsedTime = (finishTime - starttime); // Elapsed time in milliseconds
-                adjustedTime = (elapsedTime - ((number-1) * startInterval * 1000))/1000;
+                adjustedStartTime = starttime + ((number - 1) * startInterval * 1000);
+                elapsedTime = (finishTime - adjustedStartTime); // Elapsed time in milliseconds
+                elapsedTimeInSeconds = elapsedTime/1000;
+                elapsedTimeMinutes = elapsedTimeInSeconds / 60;
+                elapsedTimeSeconds = elapsedTimeInSeconds % 60;
+                elapsedTimeHuman = String.valueOf(elapsedTimeMinutes) + ":" + String.valueOf(elapsedTimeSeconds);
 
-                humantime = DATE_FORMAT.format(finishTime);
+                humantime = SHORT_DATE_FORMAT.format(finishTime);
+                adjustedStartTimeHuman = SHORT_DATE_FORMAT.format(adjustedStartTime);
+
                 times.put("number", String.valueOf(number));
+                times.put("startTime", adjustedStartTimeHuman);
                 times.put("finishTime", humantime);
-                times.put("elapsedTime", String.valueOf(adjustedTime));
+                times.put("elapsedTime", elapsedTimeHuman);
                 timeList.add(times);
             }
             cursor.close();

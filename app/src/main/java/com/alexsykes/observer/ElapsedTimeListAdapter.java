@@ -38,6 +38,7 @@ public class ElapsedTimeListAdapter extends RecyclerView.Adapter<ElapsedTimeList
 
         // Populate TextViews with data
         holder.numberTextView.setText(theElapsedTimes.get(position).get("number"));
+        holder.startTimeView.setText(theElapsedTimes.get(position).get("startTime"));
         holder.finishTimeView.setText(theElapsedTimes.get(position).get("finishTime"));
         holder.elaspsedTimeView.setText(theElapsedTimes.get(position).get("elapsedTime"));
 
@@ -55,6 +56,7 @@ public class ElapsedTimeListAdapter extends RecyclerView.Adapter<ElapsedTimeList
 
     public static class ElapsedTimeHolder extends RecyclerView.ViewHolder{
         final TextView numberTextView;
+        final TextView startTimeView;
         final TextView finishTimeView;
         final TextView elaspsedTimeView;
 
@@ -63,6 +65,7 @@ public class ElapsedTimeListAdapter extends RecyclerView.Adapter<ElapsedTimeList
             super(itemView);
             // Instantiate fields to be populated
             numberTextView = itemView.findViewById(R.id.numberView);
+            startTimeView = itemView.findViewById(R.id.startTimeView);
             finishTimeView = itemView.findViewById(R.id.finishTimeView);
             elaspsedTimeView = itemView.findViewById(R.id.elapsedTimeView);
         }

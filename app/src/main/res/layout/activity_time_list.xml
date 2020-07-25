@@ -23,16 +23,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/rider_number"
+            android:text=""
             android:textColor="@color/colorButtonBlue"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/timeView"
+            android:id="@+id/startTimeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/time"
+            android:text="@string/start_time"
+            android:textAlignment="center"
+            android:textColor="@color/colorButtonBlue"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/finishTimeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/finish_time"
             android:textAlignment="center"
             android:textColor="@color/colorButtonBlue"
             android:textStyle="bold" />

@@ -148,4 +148,6 @@ To change a score, click on the list icon in the toolbar. This will display a li
     <string name="startIntervalHint">Start interval (seconds)</string>
     <string name="elapsedtime">elapsedTime</string>
     <string name="elapsed_time">Elapsed Time</string>
+    <string name="finish_time">Finish Time</string>
+    <string name="start_time">Start Time</string>
 </resources>
