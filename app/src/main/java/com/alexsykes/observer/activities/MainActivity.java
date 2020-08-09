@@ -33,6 +33,7 @@ import com.alexsykes.observer.data.ScoreDbHelper;
 
 // TODO Important - move database setup method from ScoreDbHelper
 // TODO - check for Trial setup at start
+// TODO Migrate to fragments
 
 public class MainActivity extends AppCompatActivity {
 
