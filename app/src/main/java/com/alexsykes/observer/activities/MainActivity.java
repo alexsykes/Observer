@@ -43,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     TextView numberLabel, scoreLabel, statusLine;
     String riderNumber, status, theTrialName;
-    NumberPadFragment numberPadFragment;
-    TouchFragment touchFragment;
+    NumberPadFragment numberPad;
+    TouchFragment touchPad;
     SharedPreferences localPrefs;
     int mode;
+    Button saveButton;
 
     // Databases
     private ScoreDbHelper mDbHelper;
@@ -76,23 +77,17 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.getMenu();
 
         // Add score and numberPad fragemnts
-        numberPadFragment = new NumberPadFragment();
-        touchFragment = new TouchFragment();
+        numberPad = new NumberPadFragment();
+        touchPad = new TouchFragment();
         numberLabel = findViewById(R.id.numberLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPadFragment).commit();
+        // Always show numberPad
+        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
 
-        // Set up button to save scores
-        Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                save();
-                return false;
-            }
-        });
+        // Set up button to save scores / times
+        saveButton = findViewById(R.id.saveButton);
 
         if (!getPrefs()) {
               goSetup();
@@ -119,16 +114,37 @@ public class MainActivity extends AppCompatActivity {
         // If in Timer mode
         if(mode == 1){
             // Hide Scoring fragment
-            if (touchFragment.isVisible()) {
-                getSupportFragmentManager().beginTransaction().remove(touchFragment).commit();
+            if (touchPad.isVisible()) {
+                // Hide touchPad
+                getSupportFragmentManager().beginTransaction().remove(touchPad).commit();
             }
+            saveButton.setText("Finish");
+            saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    saveTime();
+                    return false;
+                }
+            });
         } else
             // Observer mode
             {
-            if (touchFragment.isVisible()==false) {
-                getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchFragment).commit();
+                // Show touchPad
+            if (touchPad.isVisible()==false) {
+                getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
             }
+                saveButton.setText("Save");        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    saveScore();
+                    return false;
+                }
+            });
         }
+    }
+
+    private void saveTime() {
+        statusLine.setText("Save times");
     }
 
     @Override
@@ -271,24 +287,27 @@ public class MainActivity extends AppCompatActivity {
         numberLabel.setText(riderNumber);
     }
 
-    private void save() {
+    private void saveScore() {
+        if (mode == 0) {
+            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+            // Get String values for rider and scoreLabel
+            String rider = numberLabel.getText().toString();
+            String score = scoreLabel.getText().toString();
 
-        ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-        // Get String values for rider and scoreLabel
-        String rider = numberLabel.getText().toString();
-        String score = scoreLabel.getText().toString();
+            // NOTE Do NOT use null
 
-        // NOTE Do NOT use null
-
-        if (score.equals("") || rider.equals("")) {
-            toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
-            new AlertDialog.Builder(this).setTitle("Warning").setMessage("Missing rider number or score").setNeutralButton("Close", null).show();
+            if (score.equals("") || rider.equals("")) {
+                toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
+                new AlertDialog.Builder(this).setTitle("Warning").setMessage("Missing rider number or score").setNeutralButton("Close", null).show();
+            } else {
+                // Otherwise enter scores
+                int riderNumber = Integer.parseInt(rider);
+                int scoreValue = Integer.parseInt(score);
+                insertScore(riderNumber, scoreValue);
+                clearScore();
+            }
         } else {
-            // Otherwise enter scores
-            int riderNumber = Integer.parseInt(rider);
-            int scoreValue = Integer.parseInt(score);
-            insertScore(riderNumber, scoreValue);
-            clearScore();
+            // Timer mode finish
         }
     }
 

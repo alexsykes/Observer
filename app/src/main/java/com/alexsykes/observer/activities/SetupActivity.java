@@ -442,7 +442,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 hasErrors = true;
                 errorMsg += "\nInvalid section number";
             }
-        } else {  section = 0;}
+        } // else {  section = 0;}
 
         startInterval = Long.parseLong(startIntervalTextInput.getText().toString());
 
