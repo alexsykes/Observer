@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         statusLine = findViewById(R.id.statusLine);
 
         getSupportFragmentManager().beginTransaction().add(R.id.top, numberPadFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchFragment).commit();
 
         // Set up button to save scores
         Button saveButton = findViewById(R.id.saveButton);
@@ -97,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (!getPrefs()) {
               goSetup();
-        }
-        if(mode == 1){
-           // goTimingMode();
         }
     }
 
@@ -116,7 +112,23 @@ public class MainActivity extends AppCompatActivity {
 
         clearScore();
         super.onStart();
+        // Get prefs and see which mode
         getPrefs();
+
+
+        // If in Timer mode
+        if(mode == 1){
+            // Hide Scoring fragment
+            if (touchFragment.isVisible()) {
+                getSupportFragmentManager().beginTransaction().remove(touchFragment).commit();
+            }
+        } else
+            // Observer mode
+            {
+            if (touchFragment.isVisible()==false) {
+                getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchFragment).commit();
+            }
+        }
     }
 
     @Override
@@ -151,24 +163,10 @@ public class MainActivity extends AppCompatActivity {
                 goSetup();
                 return true;
 
-            // Show scores on remote server
-            /*
-            case R.id.list:
-
-                // goShowScoresFromServer();
-                goShowSummaryScores();
-                return true;
-                */
-
-
             // Sync scores with remote db
             // Shows scores stored on device
             case R.id.upload:
                 goSync();
-                return true;
-
-            case R.id.timeMode:
-                goTimingMode();
                 return true;
 
             default:
