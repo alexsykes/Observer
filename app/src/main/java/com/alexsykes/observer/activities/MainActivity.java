@@ -1,6 +1,7 @@
 package com.alexsykes.observer.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -27,9 +28,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.alexsykes.observer.NumberPadFragment;
 import com.alexsykes.observer.R;
 import com.alexsykes.observer.TouchFragment;
+import com.alexsykes.observer.data.FinishTimeContract;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.alexsykes.observer.data.ScoreContract;
 import com.alexsykes.observer.data.ScoreDbHelper;
+
+import java.text.SimpleDateFormat;
 
 // TODO Important - move database setup method from ScoreDbHelper
 // TODO - check for Trial setup at start
@@ -48,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences localPrefs;
     int mode;
     Button saveButton;
+    ProgressDialog dialog = null;
+    String ts = "Default";
+    long starttime;
 
     // Databases
-    private ScoreDbHelper mDbHelper;
+    ScoreDbHelper scoreDbHelper;
+    FinishTimeDbHelper finishTimeDbHelper;
 
     // Trial detail
     private String observer;
@@ -64,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create database connection
-        mDbHelper = new ScoreDbHelper(this);
-        mDbHelper.getWritableDatabase();
-        FinishTimeDbHelper timeDbHelper = new FinishTimeDbHelper(this);
-        timeDbHelper.getWritableDatabase();
+        // Create database connections
+        scoreDbHelper = new ScoreDbHelper(this);
+        scoreDbHelper.getWritableDatabase();
+        finishTimeDbHelper = new FinishTimeDbHelper(this);
+        finishTimeDbHelper.getWritableDatabase();
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
 
         if (!getPrefs()) {
-              goSetup();
+            goSetup();
         }
     }
 
@@ -122,18 +130,19 @@ public class MainActivity extends AppCompatActivity {
             saveButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    saveTime();
+                    saveFinishTime();
                     return false;
                 }
             });
         } else
-            // Observer mode
-            {
-                // Show touchPad
+        // Observer mode
+        {
+            // Show touchPad
             if (touchPad.isVisible()==false) {
                 getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
             }
-                saveButton.setText("Save");        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            saveButton.setText("Save");
+            saveButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     saveScore();
@@ -143,8 +152,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void saveTime() {
-        statusLine.setText("Save times");
+    private void saveFinishTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        // Date finish = new Date();
+        // String finishTime  = dateFormat.format(finish);
+
+
+        riderNumber = numberLabel.getText().toString();
+        if (riderNumber.equals("")) {
+
+            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+            toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
+            Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
+        } else {
+
+            // Get time to start the clock
+            long time = System.currentTimeMillis();
+            String finishTime = dateFormat.format(time);
+            long ridertime = time - starttime;
+
+            // scoreLabel.setText(finishTime);
+            riderNumber = numberLabel.getText().toString();
+
+            // ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+            // Check for numberof completed laps
+            // Gets the database in write mode
+            SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
+
+            long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
+            // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
+            numberLabel.setText("");
+            scoreLabel.setText(finishTime);
+            playSoundFile(R.raw.ting);
+        }
     }
 
     @Override
@@ -182,7 +228,11 @@ public class MainActivity extends AppCompatActivity {
             // Sync scores with remote db
             // Shows scores stored on device
             case R.id.upload:
-                goSync();
+                if (mode == 1){
+                    goTimeSync();
+                } else {
+                    goSync();
+                }
                 return true;
 
             default:
@@ -191,6 +241,13 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void goTimeSync() {
+        // Switch to timesheet Activity
+        Intent intent = new Intent(this, TimeListActivity.class);
+        intent.putExtra("trialid", trialid);
+        startActivityForResult(intent, TEXT_REQUEST);
     }
 
     private void goHelp() {
@@ -251,8 +308,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (trialid == 0)
         {
-           // menuItem = menu.findItem(R.id.list);
-           // menuItem.setVisible(false);
+            // menuItem = menu.findItem(R.id.list);
+            // menuItem.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -315,8 +372,8 @@ public class MainActivity extends AppCompatActivity {
         ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
         // Check for numberof completed laps
         // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        int lap = 1 + mDbHelper.getRiderLap(rider, section, trialid);
+        SQLiteDatabase db = scoreDbHelper.getWritableDatabase();
+        int lap = 1 + scoreDbHelper.getRiderLap(rider, section, trialid);
 
         if (lap > numLaps) {
             toneGen1.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 150);
@@ -346,6 +403,9 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         numberLabel.setText("");
         scoreLabel.setText("0");
+        if (mode==1) {
+            scoreLabel.setText("");
+        }
     }
 
     private boolean getPrefs() {

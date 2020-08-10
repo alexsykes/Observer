@@ -65,7 +65,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom"  />
+        app:layout_constraintTop_toBottomOf="@id/top"  />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottom"
