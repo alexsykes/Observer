@@ -1,10 +1,8 @@
 package com.alexsykes.observer.activities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -26,11 +24,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,19 +36,13 @@ import com.alexsykes.observer.data.FinishTimeContract;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.opencsv.CSVWriter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,7 +88,7 @@ public class TimerActivity extends AppCompatActivity  {
     ArrayList<HashMap<String, String>> theFinishTimes;
     private String filename;
     // Data handling
-    private FinishTimeDbHelper mDbHelper;
+    private FinishTimeDbHelper finishTimeDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +118,7 @@ public class TimerActivity extends AppCompatActivity  {
         dataEntry = findViewById(R.id.dataEntry);
         setUp = findViewById(R.id.setUp);
 
-        mDbHelper = new FinishTimeDbHelper(this);
+        finishTimeDbHelper = new FinishTimeDbHelper(this);
 
         /*  PHP script paths  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
@@ -143,7 +132,7 @@ public class TimerActivity extends AppCompatActivity  {
                     } else {
                         processURL = "http://www.trialmonster.uk/android/addTimestodb.php";
                     }*/
-                    processCSV();
+                    processTimes();
                 } else {
 
                     Toast.makeText(TimerActivity.this, "Cannot Upload - no Internet connection", Toast.LENGTH_LONG).show();
@@ -183,7 +172,7 @@ public class TimerActivity extends AppCompatActivity  {
                 return true;
 
 
-            // Switch to timesheet Activity
+            // Switch to setup Activity
             case R.id.setup:
                 intent = new Intent(this, SetupActivity.class);
                 intent.putExtra("trialid", trialid);
@@ -204,7 +193,7 @@ public class TimerActivity extends AppCompatActivity  {
 
     private void updateList() {
         //theTimesCursor = mDbHelper.getFinishTimes();
-        theFinishTimes = mDbHelper.getTimes();
+        theFinishTimes = finishTimeDbHelper.getTimes();
         rv = findViewById(R.id.rvTimer);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
@@ -242,7 +231,7 @@ public class TimerActivity extends AppCompatActivity  {
             // ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
             // Check for numberof completed laps
             // Gets the database in write mode
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
@@ -338,7 +327,7 @@ public class TimerActivity extends AppCompatActivity  {
             csvWrite.writeNext(startData, false);
 
             // Get current data
-            Cursor cursor = mDbHelper.getTimesForUpload();
+            Cursor cursor = finishTimeDbHelper.getTimesForUpload();
             while (cursor.moveToNext()) {
                 number = cursor.getString(0);
 
@@ -498,7 +487,7 @@ public class TimerActivity extends AppCompatActivity  {
         uploadFile(uploadFilePath + "" + uploadFileName);
     } */
 
-    private void processCSV() {
+    private void processTimes() {
         /*
          * Processing the CSV done online
          * so we need an AsyncTask
@@ -531,7 +520,7 @@ public class TimerActivity extends AppCompatActivity  {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 // TODO Handle error response
-                mDbHelper.markUploaded();
+                finishTimeDbHelper.markUploaded();
                 updateList();
                 dialog.dismiss();
             }
@@ -582,7 +571,7 @@ public class TimerActivity extends AppCompatActivity  {
         // Set up activity for data entry
         startButton.setEnabled(false);
         startButton.setVisibility(View.GONE);
-        mDbHelper.clearTimes();
+        finishTimeDbHelper.clearTimes();
         setUp.setVisibility(View.GONE);
         dataEntry.setVisibility(View.VISIBLE);
         processButton.setVisibility(View.VISIBLE);
