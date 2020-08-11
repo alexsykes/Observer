@@ -64,10 +64,11 @@ public class TimeListActivity extends AppCompatActivity {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         startInterval = localPrefs.getLong("startInterval", 0);
         starttime = localPrefs.getLong("starttime", 0);
+        trialid = localPrefs.getInt("trialid", 999);
 
         // Create database connection
         finishTimeDbHelper = new FinishTimeDbHelper(this);
-        theSummaryTimes = finishTimeDbHelper.getRidersFinishTimes(starttime, startInterval);
+        theSummaryTimes = finishTimeDbHelper.getRidersFinishTimes(starttime, startInterval, trialid);
 
         // uploadButton = findViewById(R.id.uploadButton);
         processButton = findViewById(R.id.processButton);
@@ -128,7 +129,7 @@ public class TimeListActivity extends AppCompatActivity {
             csvWrite.writeNext(startData, false);
 
             // Get current data
-            Cursor cursor = finishTimeDbHelper.getTimesForUpload();
+            Cursor cursor = finishTimeDbHelper.getTimesForUpload(trialid);
             while (cursor.moveToNext()) {
                 number = cursor.getString(0);
 
@@ -184,7 +185,7 @@ public class TimeListActivity extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 // TODO Handle error response
-                finishTimeDbHelper.markUploaded();
+                finishTimeDbHelper.markUploaded(trialid);
 //                updateList();
                 dialog.dismiss();
             }
@@ -359,7 +360,7 @@ public class TimeListActivity extends AppCompatActivity {
 
     private void updateList() {
         //theTimesCursor = mDbHelper.getFinishTimes();
-        theFinishTimes = finishTimeDbHelper.getTimes();
+        theFinishTimes = finishTimeDbHelper.getTimes(trialid);
         rv = findViewById(R.id.rvTimer);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);

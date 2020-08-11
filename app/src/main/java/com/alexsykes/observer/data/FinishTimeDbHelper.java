@@ -30,18 +30,16 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // New stuff going here
-
         // Create a String that contains the SQL statement to create the finishtimes table
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
-                + FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " INTEGER NOT NULL);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
-
-
         // Create a String that contains the SQL statement to create the scores table
         String SQL_CREATE_SCORES_TABLE = "CREATE TABLE " + ScoreContract.ScoreEntry.TABLE_NAME + " ("
                 + ScoreContract.ScoreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -78,6 +76,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
             times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
             times.put("sync", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_SYNC)));
+            times.put("trialid", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TRIALID)));
 
             theTimes.add(times);
         }
@@ -129,7 +128,12 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE finishTimes SET sync = " + SYNCED + " WHERE sync = " + NOT_SYNCED;
         db.execSQL(query);
+    }
 
+    public void markUploaded(int trialid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE finishTimes SET sync = " + SYNCED + " WHERE sync = " + NOT_SYNCED + " AND trialid = " + trialid ;
+        db.execSQL(query);
     }
 
     public void clearTimes() {
@@ -140,14 +144,14 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
 
 
-        public ArrayList<HashMap<String, String>> getRidersFinishTimes(long starttime, long startInterval) {
+        public ArrayList<HashMap<String, String>> getRidersFinishTimes(long starttime, long startInterval, int trialid) {
         long finishTime, elapsedTime, elapsedTimeMinutes, elapsedTimeSeconds, elapsedTimeInSeconds, adjustedStartTime;
         int number;
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
-            String query = "SELECT rider, finishtime FROM finishtimes ORDER BY rider ASC ";
+            // String query = "SELECT rider, finishtime FROM finishtimes ORDER BY rider ASC ";
+             String query = "SELECT rider, finishtime, trialid FROM finishtimes WHERE trialid = " + trialid + " ORDER BY rider ASC;";
             Cursor cursor = db.rawQuery(query, null);
-
 
             SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.S");
             SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
