@@ -16,5 +16,6 @@ public class FinishTimeContract extends AppCompatActivity {
         public final static String COLUMN_FINISHTIME_RIDE_TIME = "ridetime";
         public final static String COLUMN_FINISHTIME_SYNC = "sync";
         public final static String COLUMN_FINISHTIME_HUMANREADABLE = "finishtime_humanreadable";
+        public final static String COLUMN_FINISHTIME_TRIALID = "trialid";
     }
 }

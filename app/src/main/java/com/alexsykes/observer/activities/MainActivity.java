@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog dialog = null;
     String ts = "Default";
     long starttime;
+    boolean isStartTimeSet;
 
     // Databases
     ScoreDbHelper scoreDbHelper;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onStart() {
         // Check network connectivity and set Prefs
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         // Activity method
-        invalidateOptionsMenu ();
+        invalidateOptionsMenu();
 
         clearScore();
         super.onStart();
@@ -120,13 +122,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         // If in Timer mode
-        if(mode == 1){
+        if (mode == 1) {
             // Hide Scoring fragment
             if (touchPad.isVisible()) {
                 // Hide touchPad
                 getSupportFragmentManager().beginTransaction().remove(touchPad).commit();
             }
-            saveButton.setText("Finish");
+            if (isStartTimeSet) {
+                saveButton.setText("Finish");
+            } else {
+                saveButton.setText("Start Clock");
+            }
             saveButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         // Observer mode
         {
             // Show touchPad
-            if (touchPad.isVisible()==false) {
+            if (touchPad.isVisible() == false) {
                 getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
             }
             saveButton.setText("Save");
@@ -156,39 +162,52 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         // Date finish = new Date();
         // String finishTime  = dateFormat.format(finish);
+        if(isStartTimeSet) {
 
-        riderNumber = numberLabel.getText().toString();
-        if (riderNumber.equals("")) {
-
-            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-            toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
-            Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
-        } else {
-
-            // Get time to start the clock
-            long time = System.currentTimeMillis();
-            String finishTime = dateFormat.format(time);
-            long ridertime = time - starttime;
-
-            // scoreLabel.setText(finishTime);
             riderNumber = numberLabel.getText().toString();
+            if (riderNumber.equals("")) {
 
-            // ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-            // Check for numberof completed laps
-            // Gets the database in write mode
-            SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
+                ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+                toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
+                Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
+            } else {
 
-            ContentValues values = new ContentValues();
-            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
-            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+                // Get time to start the clock
+                long time = System.currentTimeMillis();
+                String finishTime = dateFormat.format(time);
+                long ridertime = time - starttime;
 
-            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
+                // scoreLabel.setText(finishTime);
+                riderNumber = numberLabel.getText().toString();
 
-            long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
-            // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
-            numberLabel.setText("");
-            scoreLabel.setText(finishTime);
+                // ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+                // Check for numberof completed laps
+                // Gets the database in write mode
+                SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
+
+                ContentValues values = new ContentValues();
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID, String.valueOf(trialid));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
+
+                long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
+                // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
+                numberLabel.setText("");
+                scoreLabel.setText(finishTime);
+                playSoundFile(R.raw.ting);
+            }
+        } else {
+            // Start clock
+            starttime = System.currentTimeMillis();
+            // Save in Prefs
+            localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+            SharedPreferences.Editor editor = localPrefs.edit();
+            editor.putLong("starttime", starttime);
+            editor.putBoolean("isStartTimeSet", true);
+            editor.commit();
             playSoundFile(R.raw.ting);
+            saveButton.setText("Finish");
         }
     }
 
@@ -227,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
             // Sync scores with remote db
             // Shows scores stored on device
             case R.id.upload:
-                if (mode == 1){
+                if (mode == 1) {
                     goTimeSync();
                 } else {
                     goSync();
@@ -305,8 +324,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem menuItem;
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
 
-        if (trialid == 0)
-        {
+        if (trialid == 0) {
             // menuItem = menu.findItem(R.id.list);
             // menuItem.setVisible(false);
         }
@@ -404,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         numberLabel.setText("");
         scoreLabel.setText("0");
-        if (mode==1) {
+        if (mode == 1) {
             scoreLabel.setText("");
         }
     }
@@ -416,6 +434,8 @@ public class MainActivity extends AppCompatActivity {
         trialid = localPrefs.getInt("trialid", 0);
         numLaps = localPrefs.getInt("numLaps", 0);
         mode = localPrefs.getInt("mode", 0);
+        isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
+        starttime = localPrefs.getLong("starttime", -1);
         theTrialName = localPrefs.getString("theTrialName", "None selected");
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
         statusLine.setText(status);
