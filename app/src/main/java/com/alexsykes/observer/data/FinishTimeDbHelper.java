@@ -65,11 +65,11 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<HashMap<String, String>> getTimes() {
+    public ArrayList<HashMap<String, String>> getTimes(int trialid) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
 
-        String query = "SELECT * FROM finishTimes ORDER BY _id DESC ";
+        String query = "SELECT * FROM finishTimes WHERE trialid = " + trialid + " ORDER BY _id DESC ";
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             HashMap<String, String> times = new HashMap<>();
@@ -91,6 +91,36 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
         String query = "SELECT rider, finishtime FROM finishTimes WHERE sync = " + NOT_SYNCED + " ORDER BY _id DESC ";
         query = "SELECT rider, finishtime FROM finishTimes ORDER BY _id DESC ";
+        cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+
+    public ArrayList<HashMap<String, String>> getTimes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
+
+        String query = "SELECT * FROM finishTimes ORDER BY _id DESC ";
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            HashMap<String, String> times = new HashMap<>();
+
+            times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
+            times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
+            times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+            times.put("sync", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_SYNC)));
+
+            theTimes.add(times);
+        }
+        cursor.close();
+        return theTimes;
+    }
+
+    public Cursor getTimesForUpload(int trialid) {
+        Cursor cursor;
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> theTimes = new ArrayList<>();
+        String query = "SELECT rider, finishtime FROM finishTimes WHERE sync = " + NOT_SYNCED + " ORDER BY _id DESC ";
+        query = "SELECT rider, finishtime FROM finishTimes WHERE trialid = " + trialid + " ORDER BY _id DESC ";
         cursor = db.rawQuery(query, null);
         return cursor;
     }

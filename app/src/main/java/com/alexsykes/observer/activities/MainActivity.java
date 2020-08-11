@@ -157,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         // Date finish = new Date();
         // String finishTime  = dateFormat.format(finish);
 
-
         riderNumber = numberLabel.getText().toString();
         if (riderNumber.equals("")) {
 
@@ -399,6 +398,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Reset the  rider/score values
+
+
     private void clearScore() {
         score = 0;
         numberLabel.setText("");
