@@ -157,7 +157,7 @@ public class SyncActivity extends AppCompatActivity {
 
                                 break;
                         }
-                        mDbHelper.update(scoreid, score);
+                        mDbHelper.updateScore(scoreid, score);
                         populateScoreList();
 
                     }
