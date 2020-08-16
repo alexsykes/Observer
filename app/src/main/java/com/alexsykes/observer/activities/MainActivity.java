@@ -35,7 +35,7 @@ import com.alexsykes.observer.data.ScoreDbHelper;
 
 import java.text.SimpleDateFormat;
 
-// TODO Important - move database setup method from ScoreDbHelper
+// TODO Important - move database setup method from ScoreDbHelper to MainActivity
 // TODO - check for Trial setup at start
 // TODO Migrate to fragments
 

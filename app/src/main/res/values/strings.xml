@@ -32,7 +32,7 @@
     <string name="dab">Dab</string>
     <string name="five">Five</string>
     <string name="ten">Ten</string>
-    <string name="leaderboard">Leaderboard</string>
+    <string name="finish_times">Finish Times</string>
     <string name="number_pad">Number Pad</string>
     <string name="dab_pad">Dab Pad</string>
     <string name="reset_scores">Reset</string>
