@@ -41,32 +41,6 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create a String that contains the SQL statement to create the finishtimes table
-        String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
-                + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " INTEGER NOT NULL);";
-
-        // Execute the SQL statement
-        db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
-        // Create a String that contains the SQL statement to create the scores table
-        String SQL_CREATE_SCORES_TABLE = "CREATE TABLE " + ScoreEntry.TABLE_NAME + " ("
-                + ScoreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ScoreEntry.COLUMN_SCORE_OBSERVER + " TEXT NOT NULL, "
-                + ScoreEntry.COLUMN_SCORE_SECTION + " INTEGER NOT NULL, "
-                + ScoreEntry.COLUMN_SCORE_RIDER + " INTEGER NOT NULL, "
-                + ScoreEntry.COLUMN_SCORE_LAP + " INTEGER NOT NULL DEFAULT 0, "
-                + ScoreEntry.COLUMN_SCORE_CREATED + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, "
-                + ScoreEntry.COLUMN_SCORE_UPDATED + " TEXT , "
-                + ScoreEntry.COLUMN_SCORE_EDITED + " INTEGER NOT NULL DEFAULT 0, "
-                + ScoreEntry.COLUMN_SCORE_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
-                + ScoreEntry.COLUMN_SCORE_SYNC + " INTEGER NOT NULL DEFAULT 1, "
-                + ScoreEntry.COLUMN_SCORE_SCORE + " INTEGER NOT NULL);";
-
-        // Execute the SQL statement
-        db.execSQL(SQL_CREATE_SCORES_TABLE);
     }
 
     /**
