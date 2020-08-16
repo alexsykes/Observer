@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbInit();
         setContentView(R.layout.activity_main);
 
         // Create database connections
@@ -454,5 +455,40 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    // Databaise initialisation
+    private void dbInit(){
+        // Database operations - https://www.tutorialspoint.com/android/android_sqlite_database.htm
+        // First, get your database
+        final String DATABASE_NAME = "monster.db";
+        SQLiteDatabase db = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+
+        // Create a String that contains the SQL statement to create the finishtimes table
+        String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE IF NOT EXISTS " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
+                + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " INTEGER NOT NULL);";
+
+        // Execute the SQL statement
+        db.execSQL(SQL_CREATE_FINISHTIMES_TABLE);
+        // Create a String that contains the SQL statement to create the scores table
+        String SQL_CREATE_SCORES_TABLE = "CREATE TABLE IF NOT EXISTS " + ScoreContract.ScoreEntry.TABLE_NAME + " ("
+                + ScoreContract.ScoreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_OBSERVER + " TEXT NOT NULL, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_SECTION + " INTEGER NOT NULL, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_RIDER + " INTEGER NOT NULL, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_LAP + " INTEGER NOT NULL DEFAULT 0, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_CREATED + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_UPDATED + " TEXT , "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_EDITED + " INTEGER NOT NULL DEFAULT 0, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_SYNC + " INTEGER NOT NULL DEFAULT 1, "
+                + ScoreContract.ScoreEntry.COLUMN_SCORE_SCORE + " INTEGER NOT NULL);";
+
+        // Execute the SQL statement
+       db.execSQL(SQL_CREATE_SCORES_TABLE);
     }
 }
