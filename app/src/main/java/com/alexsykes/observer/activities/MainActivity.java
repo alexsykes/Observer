@@ -13,7 +13,10 @@ import android.media.MediaPlayer;
 import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,9 +38,10 @@ import com.alexsykes.observer.data.ScoreDbHelper;
 
 import java.text.SimpleDateFormat;
 
-// TODO Important - move database setup method from ScoreDbHelper to MainActivity
-// TODO - check for Trial setup at start
-// TODO Migrate to fragments
+/*
+ TODO email scores if trialid is 0 (Manual Entry)
+ DEBUG timer not recording first entry
+*/
 
 public class MainActivity extends AppCompatActivity {
 
@@ -219,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         // Save the state of item position
         outState.putString("rider", numberLabel.getText().toString());
         outState.putString("score", scoreLabel.getText().toString());
+      //  outState.putInt("section", section);
     }
 
     @Override
@@ -228,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
         // Read the state of item position
         numberLabel.setText(savedInstanceState.getString("rider"));
         scoreLabel.setText(savedInstanceState.getString("score"));
+     //   section = savedInstanceState.getInt("section");
+
     }
 
     @Override
@@ -373,6 +380,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (score.equals("") || rider.equals("")) {
                 toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
+                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(500);
+                }
                 new AlertDialog.Builder(this).setTitle("Warning").setMessage("Missing rider number or score").setNeutralButton("Close", null).show();
             } else {
                 // Otherwise enter scores
@@ -397,7 +410,6 @@ public class MainActivity extends AppCompatActivity {
             toneGen1.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 150);
             Toast.makeText(this, "Already completed " + numLaps + " laps", Toast.LENGTH_LONG).show();
         } else {
-
             // Create a ContentValues object where column names are the keys,
             ContentValues values = new ContentValues();
             // String dateString = currentTimeStamp;
@@ -431,9 +443,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean getPrefs() {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         observer = localPrefs.getString("observer", "");
-        section = localPrefs.getInt("section", 0);
-        trialid = localPrefs.getInt("trialid", 0);
-        numLaps = localPrefs.getInt("numLaps", 0);
+        section = localPrefs.getInt("section", 1);
+        trialid = localPrefs.getInt("trialid", 1);
+        numLaps = localPrefs.getInt("numLaps", 1);
         mode = localPrefs.getInt("mode", 0);
         isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
         starttime = localPrefs.getLong("starttime", -1);
@@ -453,7 +465,6 @@ public class MainActivity extends AppCompatActivity {
     protected boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
