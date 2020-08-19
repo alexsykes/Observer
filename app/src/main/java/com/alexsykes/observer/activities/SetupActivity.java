@@ -363,12 +363,27 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Put values into text fields
         observerTextInput.setText(observer);
-        numLapsTextInput.setText(String.valueOf(numLaps));
-        sectionNumberTextInput.setText(String.valueOf(section));
+
+        // Fill data fields - check for zero values
+        if (numLaps > 0) {
+            numLapsTextInput.setText(String.valueOf(numLaps));
+        } else {
+            numLapsTextInput.setText("");
+        }
+        if (numSections > 0) {
+            numSectionsTextInput.setText(String.valueOf(numSections));
+        } else {
+            numSectionsTextInput.setText("");
+        }
+        if (section > 0) {
+            sectionNumberTextInput.setText(String.valueOf(section));
+        } else {
+            sectionNumberTextInput.setText("");
+        }
+
+
         trialNameTextInput.setText(theTrialName);
         emailTextInput.setText(email);
-        numLapsTextInput.setText(String.valueOf(numLaps));
-        numSectionsTextInput.setText(String.valueOf(numSections));
         startIntervalTextInput.setText(String.valueOf(startInterval));
 
         if (mode == 0) {
@@ -417,30 +432,48 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 errorMsg += "\nThe email field is empty";
             }
 
-            // Check number of laps validity
-            numLaps = Integer.parseInt(numLapsTextInput.getText().toString());
-            // If out of range, then append message
-            if (numLaps == 0) {
+            if (numLapsTextInput.getText().toString().equals("")) {
                 hasErrors = true;
-                errorMsg += "\nInvalid number of laps";
-            }
+                errorMsg += "\nMissing number of laps";
 
-            // Check number of laps validity
-            numSections = Integer.parseInt(numSectionsTextInput.getText().toString());
-            // If out of range, then append message
-            if (numSections == 0) {
+            } else {
+                // Check number of laps validity
+                numLaps = Integer.parseInt(numLapsTextInput.getText().toString());
+                // If out of range, then append message
+                if (numLaps == 0) {
+                    hasErrors = true;
+                    errorMsg += "\nInvalid number of laps";
+                }
+            }
+            if (numSectionsTextInput.getText().toString().equals("")) {
                 hasErrors = true;
-                errorMsg += "\nInvalid number of laps";
+                errorMsg += "\nMissing number of sections";
+
+            } else {
+                // Check number of laps validity
+                numSections = Integer.parseInt(numSectionsTextInput.getText().toString());
+                // If out of range, then append message
+                if (numSections == 0) {
+                    hasErrors = true;
+                    errorMsg += "\nInvalid number of sections";
+                }
             }
         }
 
 
         // Check number of sections validity - NOT in Timer mode
         if (mode == 0) {
-            section = Integer.parseInt(sectionNumberTextInput.getText().toString());
-            if (section == 0 || section > numSections){
+            if ( sectionNumberTextInput.getText().toString().equals("")) {
+
                 hasErrors = true;
-                errorMsg += "\nInvalid section number";
+                errorMsg += "\nMissing section number";
+            }
+            else {
+                section = Integer.parseInt(sectionNumberTextInput.getText().toString());
+                if (section == 0 || section > numSections) {
+                    hasErrors = true;
+                    errorMsg += "\nInvalid section number";
+                }
             }
         } // else {  section = 0;}
 
@@ -473,7 +506,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             if (reset) {
                 theScoreDB.clearResults();
                 theFinishTimeDB.clearTimes();
-               // editor.clear();
+                // editor.clear();
                 editor.remove("starttime");
                 editor.putBoolean("isStartTimeSet",false);
                 editor.commit();
@@ -492,16 +525,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
 
         if (trialid == 0) {
             trialDetailsInput.setVisibility(View.VISIBLE);
-//            numLapsView.setVisibility(View.VISIBLE);
-//            sectionNumberView.setVisibility(View.VISIBLE);
-//            trialNameView.setVisibility(View.VISIBLE);
-//
-//            numLapsTextInput.setText(String.valueOf(numLaps));
-//            sectionNumberTextInput.setText(String.valueOf(section));
-//            trialNameTextInput.setText(theTrialName);
-//            emailTextInput.setText(email);
-//            numLapsTextInput.setText(String.valueOf(numLaps));
-//            numSectionsTextInput.setText(String.valueOf(numSections));
+            trialDetailView.setVisibility(View.GONE);
         } else {
             trialDetailsInput.setVisibility(View.GONE);
             numLaps = Integer.parseInt(theTrial.get("numlaps").toString());
@@ -509,12 +533,10 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             trialid = Integer.parseInt(theTrial.get("id").toString());
             theTrialName = theTrial.get("name").toString();
             email = theTrial.get("email").toString();
-//            numLapsView.setVisibility(View.INVISIBLE);
-//            sectionNumberTextInput.setVisibility(View.INVISIBLE);
-//            trialNameView.setVisibility(View.INVISIBLE);
+            detail = theTrialName + "\n" + numLaps + " laps \n" + numSections + " sections \nEmail: " + email;
+            trialDetailView.setText(detail);
+            trialDetailView.setVisibility(View.VISIBLE);
         }
-        detail = theTrialName + "\n" + numLaps + " laps \n" + numSections + " sections \nEmail: " + email;
-        trialDetailView.setText(detail);
     }
 
     @Override
