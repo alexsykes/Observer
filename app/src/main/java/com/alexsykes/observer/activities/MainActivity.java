@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     String ts = "Default";
     long starttime;
     boolean isStartTimeSet;
+    int ridingNumber;
 
     // Databases
     ScoreDbHelper scoreDbHelper;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         numberLabel = findViewById(R.id.numberLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
+       // sectionNumber = findViewById(R.id.sectionNumber);
 
         // Always show numberPad
         getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
@@ -163,10 +165,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCurrentState();
+    }
+
+    private void saveCurrentState() {
+        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = localPrefs.edit();
+        if(mode == 1) {
+
+
+        } else {
+            int score = Integer.parseInt(scoreLabel.getText().toString());
+        }
+        String number = numberLabel.getText().toString();
+        int rider = 0;
+        if(!number.equals("")) {
+            rider = Integer.parseInt(numberLabel.getText().toString());
+            editor.putInt("score", score);
+        }
+        editor.putInt("section", section);
+        editor.putInt("ridingNumber", rider);
+        editor.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPrefs();
+        scoreLabel.setText(String.valueOf(score));
+       // sectionNumber.setText(String.valueOf(section));
+        if(ridingNumber>0) {
+            numberLabel.setText(String.valueOf(ridingNumber));
+        } else {
+            numberLabel.setText("");
+        }
+    }
+
     private void saveFinishTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        // Date finish = new Date();
-        // String finishTime  = dateFormat.format(finish);
         if(isStartTimeSet) {
 
             riderNumber = numberLabel.getText().toString();
@@ -446,6 +485,8 @@ public class MainActivity extends AppCompatActivity {
         section = localPrefs.getInt("section", 1);
         trialid = localPrefs.getInt("trialid", 1);
         numLaps = localPrefs.getInt("numLaps", 1);
+        ridingNumber = localPrefs.getInt("ridingNumber",0);
+        score = localPrefs.getInt("score",0);
         mode = localPrefs.getInt("mode", 0);
         isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
         starttime = localPrefs.getLong("starttime", -1);

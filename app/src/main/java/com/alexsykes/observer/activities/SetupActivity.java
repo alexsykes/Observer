@@ -100,7 +100,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             numLapsTextInput.setText(String.valueOf(numLaps));
             sectionNumberTextInput.setText(String.valueOf(section));
             trialNameTextInput.setText(theTrialName);
-            Toast.makeText(SetupActivity.this, "Cannot load trials list - no Internet connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, "Cannot load trials list - no Internet connection. Manual Entry only", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -402,6 +402,13 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     public void setPrefs(View view) {
         // Field validation routine
         boolean hasErrors = false;
+
+        // Set mode
+        if (modeSwitch.isChecked()){
+            mode = 1;
+        } else {
+            mode = 0;
+        }
 
         // Common to all trials
         // Set errorMsg with initial message
