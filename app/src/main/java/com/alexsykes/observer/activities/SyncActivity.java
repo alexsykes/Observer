@@ -56,6 +56,7 @@ public class SyncActivity extends AppCompatActivity {
     File exportDir = new File(Environment.getExternalStoragePublicDirectory("Documents/Scoremonster"), "");
     private ScoreDbHelper mDbHelper;
     private String filename;
+    boolean isOnline;
 
     SharedPreferences localPrefs;
 
@@ -70,6 +71,7 @@ public class SyncActivity extends AppCompatActivity {
 
         section = localPrefs.getInt("section", 0);
         trialid = localPrefs.getInt("trialid", 0);
+        isOnline = localPrefs.getBoolean("canConnect", false);
 
         // Create database connection
         mDbHelper = new ScoreDbHelper(this);
@@ -85,13 +87,19 @@ public class SyncActivity extends AppCompatActivity {
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isOnline()) {
+                isOnline = localPrefs.getBoolean("canConnect", false);
+                if(!isOnline) {
+                    // processButton.setEnabled(false);
+                    Toast.makeText(SyncActivity.this, "Scores cannot be sent at this time - no Internet connection.", Toast.LENGTH_LONG).show();
+                } else {
+                    // Get timestamp and add to filename
+                    Date date = new Date();
+                    // getTime() returns current time in milliseconds
+                    long time = date.getTime();
+                    String ts = String.valueOf(time);
+                    filename = "scores_" + ts + ".csv";
+                    processURL = "http://android.trialmonster.uk/addObsCsvtodb.php?id=" + ts;
                     processCSV(processURL);
-                }
-                else {
-
-                    Toast.makeText(SyncActivity.this, "Scores cannot be uploaded at this time - no Internet connection. Please try again later",
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -102,8 +110,6 @@ public class SyncActivity extends AppCompatActivity {
     }
 
     public void alertSingleChoiceItems(final String scoreid, final int score) {
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(SyncActivity.this);
 
         // Set the dialog title
@@ -195,12 +201,12 @@ public class SyncActivity extends AppCompatActivity {
         String id, observer, theSection, rider, lap, created, updated, edited, sync, score, thetrialid;
         // Get timestamp and add to filename
 
-        Date date = new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        String ts = String.valueOf(time);
-        filename = "scores_" + ts + ".csv";
-       // filename = "scores.csv";
+/*        Date date = new Date();
+       //        //getTime() returns current time in milliseconds
+       //        long time = date.getTime();
+       //        String ts = String.valueOf(time);
+       //        filename = "scores_" + ts + ".csv";
+       //       // filename = "scores.csv";*/
 
         try {
             exportDir = new File(getFilesDir(), filename);
@@ -266,8 +272,16 @@ public class SyncActivity extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 dialog.dismiss();
-                mDbHelper.markAsDone(trialid);
                 populateScoreList();
+                if (s.contentEquals("OK")){
+                    mDbHelper.markAsDone(trialid);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(SyncActivity.this, "Score Update Complete",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
 
             //in this method we are fetching the json string
@@ -281,7 +295,6 @@ public class SyncActivity extends AppCompatActivity {
 
                     //Opening the URL using HttpURLConnection
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
                     return con.getResponseMessage();
 
                 } catch (Exception e) {
