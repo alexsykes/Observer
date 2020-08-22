@@ -48,10 +48,6 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS " + ScoreContract.ScoreEntry.TABLE_NAME;
-        db.execSQL(sql);
-
-        onCreate(db);
     }
 
 
@@ -195,23 +191,14 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT  * FROM scores WHERE sync = " + NOT_SYNCED + " AND trialid=" + id, new String[]{});
     }
 
-    public Cursor getScoreListForUpload(int id, int section) {
+    public Cursor getScoreListForUpload(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT  * FROM scores WHERE trialid=" + id + " AND section = " + section, new String[]{});
-    }
-
-    public void delete(int id) {
-        // Unused
-        SQLiteDatabase db = this.getReadableDatabase();
-        //String query = "DELETE FROM scores WHERE _id = " + id;
-        String query = "UPDATE scores SET edited = 1 WHERE _id = " + id;
-        db.execSQL(query);
+        return db.rawQuery("SELECT  * FROM scores WHERE trialid=" + id, new String[]{});
     }
 
     public void updateScore(String scoreid, String score) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        // String query = "UPDATE scores SET score = " + score + ", edited = 1, updated = DATETIME('now','localtime'), sync = " + NOT_SYNCED + " WHERE _id = " + scoreid;
         String query = "UPDATE scores SET score = " + score + ", edited = 1, updated = DATETIME('now'), sync = " + NOT_SYNCED + " WHERE _id = " + scoreid;
         db.execSQL(query);
 

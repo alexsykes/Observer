@@ -33,10 +33,6 @@
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SummaryScoreActivity"
-            android:label="Scores"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
             android:name=".activities.SyncActivity"
             android:label="@string/scores"
             android:parentActivityName=".activities.MainActivity" />
