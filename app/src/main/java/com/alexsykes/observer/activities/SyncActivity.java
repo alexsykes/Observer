@@ -80,7 +80,7 @@ public class SyncActivity extends AppCompatActivity {
 
         /*  Php script path  */
         upLoadServerUri = "http://www.trialmonster.uk/android/UploadToServer.php";
-        processURL = "http://www.trialmonster.uk/android/addCSVtodb.php";
+        processURL = "http://www.trialmonster.uk/android/addObsCsvtodb.php";
 
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,8 +191,8 @@ public class SyncActivity extends AppCompatActivity {
     }
 
     private void saveToCSV() {
+      //  String id, observer, theSection, rider, lap, created, updated, edited, sync, score, thetrialid;
         String id, observer, theSection, rider, lap, created, updated, edited, sync, score, thetrialid;
-
         // Get timestamp and add to filename
 
         Date date = new Date();
@@ -208,15 +208,12 @@ public class SyncActivity extends AppCompatActivity {
             exportDir.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(exportDir));
 
-            String[] header = {"id", "section", "rider",
-                    "lap", "score", "observer", "created", "updated", "edited", "trialid",
-                    "sync"};
-
+            String[] header = {"id", "rider", "section",
+                    "lap", "score", "observer", "created", "updated", "edited", "trialid", "sync"};
             csvWrite.writeNext(header, false);
 
             // Get current data
-
-            Cursor curChild = mDbHelper.getScoreListForUpload(trialid, section);
+            Cursor curChild = mDbHelper.getScoreListForUpload(trialid);
             while (curChild.moveToNext()) {
                 id = curChild.getString(0);
                 observer = curChild.getString(1);
@@ -230,7 +227,7 @@ public class SyncActivity extends AppCompatActivity {
                 sync = curChild.getString(9);
                 score = curChild.getString(10);
 
-                String[] arrStr = {id, theSection, rider, lap, score, observer, created, updated, edited, thetrialid, sync
+                String[] arrStr = {id, rider, theSection, lap, score, observer, created, updated, edited, thetrialid, sync
                 };
 
                 csvWrite.writeNext(arrStr, false);
@@ -239,8 +236,6 @@ public class SyncActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             Log.e("Child", e.getMessage(), e);
-
-
         }
     }
 

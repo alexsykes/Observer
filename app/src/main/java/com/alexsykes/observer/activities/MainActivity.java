@@ -326,13 +326,13 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, TEXT_REQUEST);
     }
 
-    private void goShowSummaryScores() {
+/*    private void goShowSummaryScores() {
         Intent intent = new Intent(this, SummaryScoreActivity.class);
         intent.putExtra("trialid", trialid);
         intent.putExtra("section", section);
         startActivityForResult(intent, TEXT_REQUEST);
 
-    }
+    }*/
 
     public void countDabs(View view) {
         int intID = view.getId();
