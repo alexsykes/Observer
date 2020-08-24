@@ -1,7 +1,6 @@
 package com.alexsykes.observer.data;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,8 +10,6 @@ import com.alexsykes.observer.data.FinishTimeContract.FinishTimeEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static android.content.Context.MODE_PRIVATE;
 
 // TODO - Time list needs filtering for TrialID
 public class FinishTimeDbHelper extends SQLiteOpenHelper {
@@ -47,7 +44,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
             times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
-            times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+            times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME)));
             times.put("sync", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_SYNC)));
             times.put("trialid", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TRIALID)));
 
@@ -78,7 +75,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
             times.put("id", cursor.getString(cursor.getColumnIndex(FinishTimeEntry._ID)));
             times.put("rider", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER)));
-            times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME)));
+            times.put("time", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME)));
             times.put("sync", cursor.getString(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_SYNC)));
 
             theTimes.add(times);
@@ -117,39 +114,74 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
 
 
-        public ArrayList<HashMap<String, String>> getRidersFinishTimes(long starttime, long startInterval, int trialid) {
+/*    public ArrayList<HashMap<String, String>> getRidersFinishTimes(long starttime, long startInterval, int trialid) {
         long finishTime, elapsedTime, elapsedTimeMinutes, elapsedTimeSeconds, elapsedTimeInSeconds, adjustedStartTime;
         int number;
-            SQLiteDatabase db = this.getWritableDatabase();
-            ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
-            // String query = "SELECT rider, finishtime FROM finishtimes ORDER BY rider ASC ";
-             String query = "SELECT rider, finishtime, trialid FROM finishtimes WHERE trialid = " + trialid + " ORDER BY rider ASC;";
-            Cursor cursor = db.rawQuery(query, null);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
 
-            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.S");
-            SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
-            String humantime, adjustedStartTimeHuman, elapsedTimeHuman;
-            while (cursor.moveToNext()) {
-                HashMap<String, String> times = new HashMap<>();
-                number = cursor.getInt(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER));
-                finishTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME));
-                adjustedStartTime = starttime + ((number - 1) * startInterval * 1000);
-                elapsedTime = (finishTime - adjustedStartTime); // Elapsed time in milliseconds
-                elapsedTimeInSeconds = elapsedTime/1000;
-                elapsedTimeMinutes = elapsedTimeInSeconds / 60;
-                elapsedTimeSeconds = elapsedTimeInSeconds % 60;
-                elapsedTimeHuman = String.valueOf(elapsedTimeMinutes) + ":" + String.valueOf(elapsedTimeSeconds);
+        String query = "SELECT rider, finishtime, trialid, elapsedtime FROM finishtimes WHERE trialid = " + trialid + " ORDER BY rider ASC;";
+        Cursor cursor = db.rawQuery(query, null);
 
-                humantime = SHORT_DATE_FORMAT.format(finishTime);
-                adjustedStartTimeHuman = SHORT_DATE_FORMAT.format(adjustedStartTime);
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss.S");
+        SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+        String humantime, adjustedStartTimeHuman, elapsedTimeHuman;
+        while (cursor.moveToNext()) {
+            HashMap<String, String> times = new HashMap<>();
+            number = cursor.getInt(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER));
+            finishTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_TIME));
+            adjustedStartTime = starttime + ((number - 1) * startInterval * 1000);
+            elapsedTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_ElAPSED_TIME));
+            elapsedTimeInSeconds = elapsedTime/1000;
+            elapsedTimeMinutes = elapsedTimeInSeconds / 60;
+            elapsedTimeSeconds = elapsedTimeInSeconds % 60;
+            elapsedTimeHuman = String.valueOf(elapsedTimeMinutes) + ":" + String.valueOf(elapsedTimeSeconds);
 
-                times.put("number", String.valueOf(number));
-                times.put("startTime", adjustedStartTimeHuman);
-                times.put("finishTime", humantime);
-                times.put("elapsedTime", elapsedTimeHuman);
-                timeList.add(times);
-            }
-            cursor.close();
-            return timeList;
+            humantime = SHORT_DATE_FORMAT.format(finishTime);
+            elapsedTimeHuman = SHORT_DATE_FORMAT.format(elapsedTime);
+            adjustedStartTimeHuman = SHORT_DATE_FORMAT.format(adjustedStartTime);
+
+            times.put("number", String.valueOf(number));
+            times.put("startTime", adjustedStartTimeHuman);
+            times.put("finishTime", humantime);
+            times.put("elapsedTime", elapsedTimeHuman);
+            timeList.add(times);
+        }
+        cursor.close();
+        return timeList;
+    }*/
+
+
+    public ArrayList<HashMap<String, String>> getRidersFinishTimes( long startInterval, int trialid) {
+        long finishTime, elapsedTime, startTime;
+        int number;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
+
+        String query = "SELECT rider, starttime, finishtime, trialid, elapsedtime FROM finishtimes WHERE trialid = " + trialid + " ORDER BY rider ASC;";
+        Cursor cursor = db.rawQuery(query, null);
+
+        SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+        String finishTimeHuman, startTimeHuman, elapsedTimeHuman;
+
+        while (cursor.moveToNext()) {
+            HashMap<String, String> times = new HashMap<>();
+            number = cursor.getInt(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_RIDER));
+            startTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_STARTTIME));
+            finishTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME));
+            elapsedTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_ELAPSED_TIME));
+
+            finishTimeHuman = SHORT_DATE_FORMAT.format(finishTime);
+            elapsedTimeHuman = SHORT_DATE_FORMAT.format(elapsedTime);
+            startTimeHuman = SHORT_DATE_FORMAT.format((startTime));
+
+            times.put("number", String.valueOf(number));
+            times.put("startTime", startTimeHuman);
+            times.put("finishTime", finishTimeHuman);
+            times.put("elapsedTime", elapsedTimeHuman);
+            timeList.add(times);
+        }
+        cursor.close();
+        return timeList;
     }
 }

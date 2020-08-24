@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +41,7 @@ import java.text.SimpleDateFormat;
 
 /*
  TODO email scores if trialid is 0 (Manual Entry)
- DEBUG timer not recording first entry
+ TODO DEBUG timer not recording first entry
 */
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
 
     TextView numberLabel, scoreLabel, statusLine;
-    String riderNumber, status, theTrialName;
+    String riderNumber, status, theTrialName, currentTime;
     NumberPadFragment numberPad;
     TouchFragment touchPad;
     SharedPreferences localPrefs;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     Button saveButton;
     ProgressDialog dialog = null;
     String ts = "Default";
-    long starttime;
+    long starttime, startInterval;
     boolean isStartTimeSet;
     int ridingNumber;
 
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbInit();
+
+        Log.d("Observer", "dbinit() completed");
         setContentView(R.layout.activity_main);
 
         // Create database connections
@@ -175,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
         localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = localPrefs.edit();
         if(mode == 1) {
-
+            currentTime = scoreLabel.getText().toString();
+            editor.putString("currentTime", currentTime);
 
         } else {
             int score = Integer.parseInt(scoreLabel.getText().toString());
@@ -195,12 +199,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getPrefs();
-        scoreLabel.setText(String.valueOf(score));
-       // sectionNumber.setText(String.valueOf(section));
-        if(ridingNumber>0) {
-            numberLabel.setText(String.valueOf(ridingNumber));
+
+        if (mode == 1){
+            scoreLabel.setText(currentTime);
+
         } else {
-            numberLabel.setText("");
+            scoreLabel.setText(String.valueOf(score));
+            // sectionNumber.setText(String.valueOf(section));
+            if (ridingNumber > 0) {
+                numberLabel.setText(String.valueOf(ridingNumber));
+            } else {
+                numberLabel.setText("");
+            }
         }
     }
 
@@ -209,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
         if(isStartTimeSet) {
 
             riderNumber = numberLabel.getText().toString();
+            ridingNumber = Integer.valueOf(riderNumber);
             if (riderNumber.equals("")) {
 
                 ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
@@ -219,8 +230,10 @@ public class MainActivity extends AppCompatActivity {
                 // Get time to start the clock
                 long time = System.currentTimeMillis();
                 String finishTime = dateFormat.format(time);
-                long ridertime = time - starttime;
-
+                // long elapsedTime;
+                long offset = (ridingNumber - 1) * startInterval;
+                long riderStartTime = starttime  + offset;
+                long elapsedTime = time - riderStartTime;
                 // scoreLabel.setText(finishTime);
                 riderNumber = numberLabel.getText().toString();
 
@@ -231,7 +244,9 @@ public class MainActivity extends AppCompatActivity {
 
                 ContentValues values = new ContentValues();
                 values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME, String.valueOf(time));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_STARTTIME, String.valueOf(riderStartTime));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_ELAPSED_TIME, String.valueOf(elapsedTime));
                 values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID, String.valueOf(trialid));
                 values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
 
@@ -249,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = localPrefs.edit();
             editor.putLong("starttime", starttime);
             editor.putBoolean("isStartTimeSet", true);
+            isStartTimeSet = true;
             editor.commit();
             playSoundFile(R.raw.ting);
             saveButton.setText("Finish");
@@ -486,6 +502,7 @@ public class MainActivity extends AppCompatActivity {
         trialid = localPrefs.getInt("trialid", 1);
         numLaps = localPrefs.getInt("numLaps", 1);
         ridingNumber = localPrefs.getInt("ridingNumber",0);
+        startInterval = localPrefs.getLong("startInterval", 0);
         score = localPrefs.getInt("score",0);
         mode = localPrefs.getInt("mode", 0);
         isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
@@ -519,7 +536,9 @@ public class MainActivity extends AppCompatActivity {
         // Create a String that contains the SQL statement to create the finishtimes table
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE IF NOT EXISTS " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
                 + FinishTimeContract.FinishTimeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME + " TEXT NOT NULL, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_STARTTIME + " TEXT NOT NULL, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME + " TEXT NOT NULL, "
+                + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_ELAPSED_TIME + " TEXT NOT NULL, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC + " INTEGER NOT NULL DEFAULT 1, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID + " INTEGER NOT NULL DEFAULT 0, "
                 + FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER + " INTEGER NOT NULL);";
