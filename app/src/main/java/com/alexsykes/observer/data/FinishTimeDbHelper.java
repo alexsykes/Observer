@@ -170,6 +170,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
             startTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_STARTTIME));
             finishTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME));
             elapsedTime = cursor.getLong(cursor.getColumnIndex(FinishTimeEntry.COLUMN_FINISHTIME_ELAPSED_TIME));
+            elapsedTime = finishTime - startTime;
 
             finishTimeHuman = SHORT_DATE_FORMAT.format(finishTime);
             elapsedTimeHuman = SHORT_DATE_FORMAT.format(elapsedTime);
