@@ -235,7 +235,7 @@ public class TimerActivity extends AppCompatActivity  {
 
             ContentValues values = new ContentValues();
             values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
-            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TIME, String.valueOf(time));
+            values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME, String.valueOf(time));
 
             values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
 

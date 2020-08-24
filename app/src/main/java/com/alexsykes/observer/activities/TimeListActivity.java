@@ -68,7 +68,7 @@ public class TimeListActivity extends AppCompatActivity {
 
         // Create database connection
         finishTimeDbHelper = new FinishTimeDbHelper(this);
-        theSummaryTimes = finishTimeDbHelper.getRidersFinishTimes(starttime, startInterval, trialid);
+        theSummaryTimes = finishTimeDbHelper.getRidersFinishTimes(startInterval, trialid);
 
         // uploadButton = findViewById(R.id.uploadButton);
         processButton = findViewById(R.id.processButton);
