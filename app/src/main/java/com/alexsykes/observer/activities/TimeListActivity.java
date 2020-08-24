@@ -358,16 +358,6 @@ public class TimeListActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 
-    private void updateList() {
-        //theTimesCursor = mDbHelper.getFinishTimes();
-        theFinishTimes = finishTimeDbHelper.getTimes(trialid);
-        rv = findViewById(R.id.rvTimer);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
-        initializeAdapter();
-    }
-
     // Check for connectivity
     protected boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

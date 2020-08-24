@@ -21,17 +21,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity android:name=".activities.TimeListActivity"
-            android:parentActivityName=".activities.TimerActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:label="@string/finish_times"
             />
         <activity
             android:name=".activities.HelpActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name=".activities.TimerActivity"
-            android:label="@string/timer_mode"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SyncActivity"
             android:label="@string/scores"

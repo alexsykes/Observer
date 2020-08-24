@@ -237,8 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 // scoreLabel.setText(finishTime);
                 riderNumber = numberLabel.getText().toString();
 
-                // ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-                // Check for numberof completed laps
+                // Check for number of completed laps
                 // Gets the database in write mode
                 SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
 
@@ -336,13 +335,14 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, TEXT_REQUEST);
     }
 
+    /*
     private void goTimingMode() {
         Intent intent = new Intent(this, TimerActivity.class);
         intent.putExtra("trialid", trialid);
         startActivityForResult(intent, TEXT_REQUEST);
     }
 
-/*    private void goShowSummaryScores() {
+    private void goShowSummaryScores() {
         Intent intent = new Intent(this, SummaryScoreActivity.class);
         intent.putExtra("trialid", trialid);
         intent.putExtra("section", section);
