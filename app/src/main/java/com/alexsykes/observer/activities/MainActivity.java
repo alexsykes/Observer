@@ -219,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
         if(isStartTimeSet) {
 
             riderNumber = numberLabel.getText().toString();
-            ridingNumber = Integer.valueOf(riderNumber);
             if (riderNumber.equals("")) {
 
                 ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
@@ -227,11 +226,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
             } else {
 
+                ridingNumber = Integer.valueOf(riderNumber);
                 // Get time to start the clock
                 long time = System.currentTimeMillis();
                 String finishTime = dateFormat.format(time);
                 // long elapsedTime;
-                long offset = (ridingNumber - 1) * startInterval;
+                long offset = (ridingNumber - 1) * startInterval * 1000;
                 long riderStartTime = starttime  + offset;
                 long elapsedTime = time - riderStartTime;
                 // scoreLabel.setText(finishTime);
