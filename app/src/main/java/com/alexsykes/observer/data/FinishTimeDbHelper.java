@@ -17,9 +17,10 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
      * Name of the database file
      */
     private static final String DATABASE_NAME = "monster.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final int SYNCED = 0;
     private static final int NOT_SYNCED = -1;
+
     public FinishTimeDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -30,6 +31,10 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String sql = "DROP TABLE IF EXISTS " + FinishTimeContract.FinishTimeEntry.TABLE_NAME;
+        db.execSQL(sql);
+
+        onCreate(db);
     }
 
 
@@ -158,7 +163,7 @@ public class FinishTimeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> timeList = new ArrayList<>();
 
-        String query = "SELECT rider, starttime, finishtime, trialid, elapsedtime FROM finishtimes WHERE trialid = " + trialid + " ORDER BY rider ASC;";
+        String query = "SELECT rider, starttime, finishtime, trialid, elapsedtime FROM finishtimes WHERE trialid = " + trialid + " ORDER BY finishtime DESC;";
         Cursor cursor = db.rawQuery(query, null);
 
         SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");

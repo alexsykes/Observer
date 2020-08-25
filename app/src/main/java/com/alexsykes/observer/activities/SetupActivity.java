@@ -503,7 +503,7 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putString("email", email);
             editor.putInt("section", section);
             editor.putInt("mode", mode);
-            editor.putLong("startInterval", startInterval * 1000);
+            editor.putLong("startInterval", startInterval);
             editor.commit();
 
 

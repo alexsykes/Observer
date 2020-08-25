@@ -24,7 +24,7 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
     /**
      * Database version. If you change the database schema, you must increment the database version.
      */
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     /**
      * Constructs a new instance of {@link ScoreDbHelper}.
@@ -48,6 +48,9 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String sql = "DROP TABLE IF EXISTS " + ScoreContract.ScoreEntry.TABLE_NAME;
+        db.execSQL(sql);
+        onCreate(db);
     }
 
 

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.alexsykes.observer"
         minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 10
-        versionName "0.0.10"
+        targetSdkVersion 29
+        versionCode 11
+        versionName "0.0.11"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
     }
