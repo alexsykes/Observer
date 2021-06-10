@@ -150,4 +150,28 @@ To change a score, click on the list icon in the toolbar. This will display a li
     <string name="elapsed_time">Elapsed Time</string>
     <string name="finish_time">Finish Time</string>
     <string name="start_time">Start Time</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="mode_title">Scoring mode</string>
+    <string name="observer_name">Observer name</string>
+    <string name="observer_header">Observer</string>
+    <string name="trial_header">Trial details</string>
+    <string name="top_header">Basic details</string>
+    <string name="manual_setup">Manual setup</string>
 </resources>

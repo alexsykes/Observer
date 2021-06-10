@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goSetup() {
-        Intent intent = new Intent(this, SetupActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, TEXT_REQUEST);
     }
 
