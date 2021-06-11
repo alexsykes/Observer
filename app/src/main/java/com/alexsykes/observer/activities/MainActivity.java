@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     String riderNumber, status, theTrialName, currentTime;
     NumberPadFragment numberPad;
     TouchFragment touchPad;
-    // SharedPreferences localPrefs;
     SharedPreferences prefs;
     int mode;
     Button saveButton;
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private String observer, observer_name;
     private int section;
     private int trialid;
-    private int numLaps;
+    private int numLaps, numSections;
     private int score;
 
     @Override
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
 
         // Check network connectivity and set Prefs
-        // localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("canConnect", isOnline());
         editor.apply();
@@ -181,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveCurrentState() {
-       // localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         if(mode == 1) {
             currentTime = scoreLabel.getText().toString();
@@ -265,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             // Start clock
             starttime = System.currentTimeMillis();
             // Save in Prefs
-           //localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putLong("starttime", starttime);
             editor.putBoolean("isStartTimeSet", true);
@@ -502,20 +498,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean getPrefs() {
-         observer_name = prefs.getString("observer_name", "");
-
-       //localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        // Get saved data from Settings
         observer = prefs.getString("observer_name", "");
         section = Integer.valueOf(prefs.getString("section_number", "1"));
         trialid = Integer.valueOf(prefs.getString("trialid","999"));
-        numLaps = prefs.getInt("numLaps", 1);
+        numLaps = Integer.valueOf(prefs.getString("numlaps", "1"));
+        numSections = Integer.valueOf(prefs.getString("numsections", "1"));
+        mode = Integer.valueOf(prefs.getString("mode", "0"));
+        theTrialName = prefs.getString("trial_name", "None selected");
+
+        // Other data
         ridingNumber = prefs.getInt("ridingNumber",0);
-        startInterval = prefs.getLong("startInterval", 0);
         score = prefs.getInt("score",0);
-        String mode = prefs.getString("mode", "0");
+
+
+        startInterval = prefs.getLong("startInterval", 0);
         isStartTimeSet = prefs.getBoolean("isStartTimeSet", false);
         starttime = prefs.getLong("starttime", -1);
-        theTrialName = prefs.getString("trial_name", "None selected");
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
         statusLine.setText(status);
         return !theTrialName.equals("None selected");

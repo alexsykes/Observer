@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -58,7 +59,7 @@ public class SyncActivity extends AppCompatActivity {
     private String filename;
     boolean isOnline;
 
-    SharedPreferences localPrefs;
+    SharedPreferences  prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +67,12 @@ public class SyncActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync);
 
-        // Get shared preferences for trialid, section
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        // Get preferences for trialid, section
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        section = localPrefs.getInt("section", 0);
-        trialid = localPrefs.getInt("trialid", 0);
-        isOnline = localPrefs.getBoolean("canConnect", false);
+        section = Integer.valueOf(prefs.getString("section_number","0"));
+        trialid = Integer.valueOf(prefs.getString("trialid","999"));
+        isOnline = prefs.getBoolean("canConnect", false);
 
         // Create database connection
         mDbHelper = new ScoreDbHelper(this);
@@ -87,7 +88,7 @@ public class SyncActivity extends AppCompatActivity {
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isOnline = localPrefs.getBoolean("canConnect", false);
+                isOnline = prefs.getBoolean("canConnect", false);
                 if(!isOnline) {
                     // processButton.setEnabled(false);
                     Toast.makeText(SyncActivity.this, "Scores cannot be sent at this time - no Internet connection.", Toast.LENGTH_LONG).show();

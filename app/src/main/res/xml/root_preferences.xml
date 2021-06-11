@@ -13,7 +13,7 @@
             app:key="mode"
             app:title="@string/mode_title"
             app:entries="@array/modes"
-            app:entryValues="@array/modes"
+            app:entryValues="@array/mode_values"
             app:useSimpleSummaryProvider="true"
             app:dialogTitle="@string/mode_title"
             android:defaultValue="Observer"/>
@@ -40,7 +40,21 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            android:defaultValue="999"
+            android:defaultValue="1"
+            app:dependency="manual_setup"
+            app:key="numlaps"
+            app:title="@string/number_of_laps"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="10"
+            app:dependency="manual_setup"
+            app:key="numsections"
+            app:title="@string/number_of_sections"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="-999"
             app:dependency="manual_setup"
             app:key="trialid"
             app:title="@string/trialid"

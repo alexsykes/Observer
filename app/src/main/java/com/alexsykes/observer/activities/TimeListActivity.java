@@ -1,6 +1,7 @@
 package com.alexsykes.observer.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +42,7 @@ public class TimeListActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> theSummaryTimes;
     FinishTimeDbHelper finishTimeDbHelper;
     RecyclerView rv;
-    SharedPreferences localPrefs;
+    SharedPreferences prefs;
     long starttime, startInterval;
     Button  processButton;
     ProgressDialog dialog = null;
@@ -61,10 +62,10 @@ public class TimeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_list);
 
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        startInterval = localPrefs.getLong("startInterval", 0);
-        starttime = localPrefs.getLong("starttime", 0);
-        trialid = localPrefs.getInt("trialid", 999);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        startInterval = prefs.getLong("startInterval", 0);
+        starttime = prefs.getLong("starttime", 0);
+        trialid = Integer.valueOf(prefs.getString("trialid","999"));
 
         // Create database connection
         finishTimeDbHelper = new FinishTimeDbHelper(this);
@@ -104,10 +105,10 @@ public class TimeListActivity extends AppCompatActivity {
     }
     private void checkPrefs() {
         // Get localPrefs and read values
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        trialid = localPrefs.getInt("trialid", 999);
-        starttime = localPrefs.getLong("starttime", -1);
-        email = localPrefs.getString("email", "");
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        trialid = prefs.getInt("trialid", 999);
+        starttime = prefs.getLong("starttime", -1);
+        email = prefs.getString("email", "");
     }
 
     private void saveToCSV() {
