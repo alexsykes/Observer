@@ -24,8 +24,6 @@
             android:name=".activities.SettingsActivity"
             android:label="Settings"
             android:parentActivityName=".activities.MainActivity" />
-
-
         <activity
             android:name=".activities.TimeListActivity"
             android:label="@string/finish_times"

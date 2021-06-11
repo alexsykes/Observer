@@ -44,6 +44,7 @@ import java.util.prefs.PreferenceChangeEvent;
 /*
  TODO email scores if trialid is 0 (Manual Entry)
  TODO DEBUG timer not recording first entry
+ TODO Check correct mode selected
 */
 // Settings - https://developer.android.com/guide/topics/ui/settings
 

@@ -2,7 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/top_header">
-
         <EditTextPreference
             app:key="observer_name"
             app:title="@string/observer_name"
@@ -60,6 +59,11 @@
             app:title="@string/trialid"
             app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+            android:defaultValue=""
+            app:dependency="manual_setup"
+            app:key="email"
+            app:title="@string/email"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
-
 </PreferenceScreen>
