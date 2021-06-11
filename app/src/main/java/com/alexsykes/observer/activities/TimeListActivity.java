@@ -296,7 +296,7 @@ public class TimeListActivity extends AppCompatActivity {
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
                 }
 
-                // send multipart form data necesssary after file data...
+                // send multipart form data necessary after file data...
                 dos.writeBytes(lineEnd);
                 dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
