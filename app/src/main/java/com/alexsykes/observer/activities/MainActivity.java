@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import com.alexsykes.observer.NumberPadFragment;
 import com.alexsykes.observer.R;
@@ -38,11 +39,13 @@ import com.alexsykes.observer.data.ScoreContract;
 import com.alexsykes.observer.data.ScoreDbHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.prefs.PreferenceChangeEvent;
 
 /*
  TODO email scores if trialid is 0 (Manual Entry)
  TODO DEBUG timer not recording first entry
 */
+// Settings - https://developer.android.com/guide/topics/ui/settings
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     String riderNumber, status, theTrialName, currentTime;
     NumberPadFragment numberPad;
     TouchFragment touchPad;
-    SharedPreferences localPrefs;
+    // SharedPreferences localPrefs;
+    SharedPreferences prefs;
     int mode;
     Button saveButton;
     ProgressDialog dialog = null;
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     FinishTimeDbHelper finishTimeDbHelper;
 
     // Trial detail
-    private String observer;
+    private String observer, observer_name;
     private int section;
     private int trialid;
     private int numLaps;
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dbInit();
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Log.d("Observer", "dbinit() completed");
         setContentView(R.layout.activity_main);
 
@@ -109,16 +114,17 @@ public class MainActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
 
         if (!getPrefs()) {
-            goSetup();
+          //  goSetup();
         }
     }
 
 
     @Override
     protected void onStart() {
+
         // Check network connectivity and set Prefs
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        SharedPreferences.Editor editor = localPrefs.edit();
+        // localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("canConnect", isOnline());
         editor.apply();
 
@@ -175,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveCurrentState() {
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        SharedPreferences.Editor editor = localPrefs.edit();
+       // localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         if(mode == 1) {
             currentTime = scoreLabel.getText().toString();
             editor.putString("currentTime", currentTime);
@@ -259,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
             // Start clock
             starttime = System.currentTimeMillis();
             // Save in Prefs
-            localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-            SharedPreferences.Editor editor = localPrefs.edit();
+           //localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
             editor.putLong("starttime", starttime);
             editor.putBoolean("isStartTimeSet", true);
             isStartTimeSet = true;
@@ -496,18 +502,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean getPrefs() {
-        localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
-        observer = localPrefs.getString("observer", "");
-        section = localPrefs.getInt("section", 1);
-        trialid = localPrefs.getInt("trialid", 1);
-        numLaps = localPrefs.getInt("numLaps", 1);
-        ridingNumber = localPrefs.getInt("ridingNumber",0);
-        startInterval = localPrefs.getLong("startInterval", 0);
-        score = localPrefs.getInt("score",0);
-        mode = localPrefs.getInt("mode", 0);
-        isStartTimeSet = localPrefs.getBoolean("isStartTimeSet", false);
-        starttime = localPrefs.getLong("starttime", -1);
-        theTrialName = localPrefs.getString("theTrialName", "None selected");
+         observer_name = prefs.getString("observer_name", "");
+
+       //localPrefs = getSharedPreferences("monster", MODE_PRIVATE);
+        observer = prefs.getString("observer_name", "");
+        section = Integer.valueOf(prefs.getString("section_number", "1"));
+        trialid = Integer.valueOf(prefs.getString("trialid","999"));
+        numLaps = prefs.getInt("numLaps", 1);
+        ridingNumber = prefs.getInt("ridingNumber",0);
+        startInterval = prefs.getLong("startInterval", 0);
+        score = prefs.getInt("score",0);
+        String mode = prefs.getString("mode", "0");
+        isStartTimeSet = prefs.getBoolean("isStartTimeSet", false);
+        starttime = prefs.getLong("starttime", -1);
+        theTrialName = prefs.getString("trial_name", "None selected");
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
         statusLine.setText(status);
         return !theTrialName.equals("None selected");

@@ -22,7 +22,10 @@
         tools:targetApi="n">
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="Settings"
+            android:parentActivityName=".activities.MainActivity" />
+
+
         <activity
             android:name=".activities.TimeListActivity"
             android:label="@string/finish_times"

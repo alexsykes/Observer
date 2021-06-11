@@ -6,17 +6,17 @@
         <EditTextPreference
             app:key="observer_name"
             app:title="@string/observer_name"
+            android:defaultValue=""
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/modes"
-            app:defaultValue="true"
-            app:entries="@array/modes"
-            app:entryValues="@array/mode_values"
             app:key="mode"
             app:title="@string/mode_title"
-            app:useSimpleSummaryProvider="true" />
+            app:entries="@array/modes"
+            app:entryValues="@array/modes"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="@string/mode_title"
+            android:defaultValue="Observer"/>
 
         <EditTextPreference
             android:defaultValue="1"
@@ -25,9 +25,6 @@
             app:key="section_number"
             app:title="@string/section_number"
             app:useSimpleSummaryProvider="true" />
-
-
-
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/trial_header">
@@ -43,6 +40,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
+            android:defaultValue="999"
             app:dependency="manual_setup"
             app:key="trialid"
             app:title="@string/trialid"

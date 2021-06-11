@@ -174,4 +174,5 @@ To change a score, click on the list icon in the toolbar. This will display a li
     <string name="trial_header">Trial details</string>
     <string name="top_header">Basic details</string>
     <string name="manual_setup">Manual setup</string>
+    <string name="dialog_title_preference">Dialog title preference</string>
 </resources>
