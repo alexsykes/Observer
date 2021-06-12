@@ -45,6 +45,7 @@ import java.util.prefs.PreferenceChangeEvent;
  TODO email scores if trialid is 0 (Manual Entry)
  TODO DEBUG timer not recording first entry
  TODO Check correct mode selected
+ TODO Update to show TimeList Activity
 */
 // Settings - https://developer.android.com/guide/topics/ui/settings
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
        // sectionNumber = findViewById(R.id.sectionNumber);
 
         // Always show numberPad
-        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
+        //  getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
 
         // Set up button to save scores / times
         saveButton = findViewById(R.id.saveButton);
@@ -127,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("canConnect", isOnline());
         editor.apply();
 
-        // Activity method
+        // Activity method - Declare that the options menu has changed, so should be recreated.
+        // The onCreateOptionsMenu(android.view.Menu) method will be called the next time it needs to be displayed.
         invalidateOptionsMenu();
 
         clearScore();
@@ -136,41 +138,56 @@ public class MainActivity extends AppCompatActivity {
         getPrefs();
 
 
-        // If in Timer mode
-        if (mode == 1) {
-            // Hide Scoring fragment
-            if (touchPad.isVisible()) {
-                // Hide touchPad
-                getSupportFragmentManager().beginTransaction().remove(touchPad).commit();
-            }
-            if (isStartTimeSet) {
-                saveButton.setText("Finish");
-            } else {
-                saveButton.setText("Start Clock");
-            }
-            saveButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    saveFinishTime();
-                    return false;
-                }
-            });
-        } else
-        // Observer mode
-        {
-            // Show touchPad
-            if (touchPad.isVisible() == false) {
-                getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
-            }
-            saveButton.setText("Save");
-            saveButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    saveScore();
-                    return false;
-                }
-            });
+        switch (mode) {
+            case 0 :
+                goObserverMode();
+            break;
+            case 1 :
+                goGroupMode();
+                break;
+            case 2 :
+                goSingleUserMode();
+                break;
+            case 3 :
+                goTimingMode();
+                break;
+            default:
+                break;
         }
+    }
+
+    private void goGroupMode() {
+        // Group
+        Log.i("Mode", "Group mode");
+    }
+
+    private void goSingleUserMode() {
+        // Single User
+        Log.i("Mode", "Single User mode");
+    }
+
+    private void goTimingMode() {
+        // Timing mode
+        Log.i("Mode", "Timing mode");
+        // Always show numberPad
+        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
+        // Hide Scoring fragment
+        if (touchPad.isVisible()) {
+            // Hide touchPad
+            getSupportFragmentManager().beginTransaction().remove(touchPad).commit();
+        }
+        if (isStartTimeSet) {
+            saveButton.setText("Finish");
+        } else {
+            saveButton.setText("Start Clock");
+        }
+        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                saveFinishTime();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -216,6 +233,26 @@ public class MainActivity extends AppCompatActivity {
                 numberLabel.setText("");
             }
         }
+    }
+
+    private void goObserverMode(){
+        // Observer
+        Log.i("Mode", "Observer mode");
+        // Always show numberPad
+        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
+
+        // Show touchPad
+        if (touchPad.isVisible() == false) {
+            getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
+        }
+        saveButton.setText("Save");
+        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                saveScore();
+                return false;
+            }
+        });
     }
 
     private void saveFinishTime() {
