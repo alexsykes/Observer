@@ -39,7 +39,6 @@ import com.alexsykes.observer.data.ScoreContract;
 import com.alexsykes.observer.data.ScoreDbHelper;
 
 import java.text.SimpleDateFormat;
-import java.util.prefs.PreferenceChangeEvent;
 
 /*
  TODO email scores if trialid is 0 (Manual Entry)
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         numberLabel = findViewById(R.id.numberLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
-       // sectionNumber = findViewById(R.id.sectionNumber);
+        // sectionNumber = findViewById(R.id.sectionNumber);
 
         // Always show numberPad
         //  getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
 
         if (!getPrefs()) {
-          //  goSetup();
+            //  goSetup();
         }
     }
 
@@ -138,16 +137,16 @@ public class MainActivity extends AppCompatActivity {
         // Get prefs and switch mode
         getPrefs();
         switch (mode) {
-            case 0 :
+            case 0:
                 goObserverMode();
-            break;
-            case 1 :
+                break;
+            case 1:
                 goGroupMode();
                 break;
-            case 2 :
+            case 2:
                 goSingleUserMode();
                 break;
-            case 3 :
+            case 3:
                 goTimingMode();
                 break;
             default:
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveCurrentState() {
         SharedPreferences.Editor editor = prefs.edit();
-        if(mode == 1) {
+        if (mode == 1) {
             currentTime = scoreLabel.getText().toString();
             editor.putString("currentTime", currentTime);
 
@@ -208,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String number = numberLabel.getText().toString();
         int rider = 0;
-        if(!number.equals("")) {
+        if (!number.equals("")) {
             rider = Integer.parseInt(numberLabel.getText().toString());
             editor.putInt("score", score);
         }
@@ -222,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         getPrefs();
 
-        if (mode == 1){
+        if (mode == 1) {
             scoreLabel.setText(currentTime);
 
         } else {
@@ -236,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void goObserverMode(){
+    private void goObserverMode() {
         // Observer
         Log.i("Mode", "Observer mode");
         // Always show numberPad
@@ -258,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveFinishTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        if(isStartTimeSet) {
+        if (isStartTimeSet) {
 
             riderNumber = numberLabel.getText().toString();
             if (riderNumber.equals("")) {
@@ -274,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
                 String finishTime = dateFormat.format(time);
                 // long elapsedTime;
                 long offset = (ridingNumber - 1) * startInterval * 1000;
-                long riderStartTime = starttime  + offset;
+                long riderStartTime = starttime + offset;
                 long elapsedTime = time - riderStartTime;
                 // scoreLabel.setText(finishTime);
                 riderNumber = numberLabel.getText().toString();
@@ -318,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
         // Save the state of item position
         outState.putString("rider", numberLabel.getText().toString());
         outState.putString("score", scoreLabel.getText().toString());
-      //  outState.putInt("section", section);
+        //  outState.putInt("section", section);
     }
 
     @Override
@@ -328,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
         // Read the state of item position
         numberLabel.setText(savedInstanceState.getString("rider"));
         scoreLabel.setText(savedInstanceState.getString("score"));
-     //   section = savedInstanceState.getInt("section");
+        //   section = savedInstanceState.getInt("section");
 
     }
 
@@ -356,16 +355,16 @@ public class MainActivity extends AppCompatActivity {
 //                }
 
                 switch (mode) {
-                    case 0 :
+                    case 0:
                         goSync();
                         break;
-                    case 1 :
-                     //   goGroupMode();
+                    case 1:
+                        //   goGroupMode();
                         break;
-                    case 2 :
-                     //   goSingleUserMode();
+                    case 2:
+                        //   goSingleUserMode();
                         break;
-                    case 3 :
+                    case 3:
                         goTimeSync();
                         break;
                     default:
@@ -540,15 +539,15 @@ public class MainActivity extends AppCompatActivity {
         // Get saved data from Settings
         observer = prefs.getString("observer_name", "");
         section = Integer.valueOf(prefs.getString("section_number", "1"));
-        trialid = Integer.valueOf(prefs.getString("trialid","999"));
+        trialid = Integer.valueOf(prefs.getString("trialid", "999"));
         numLaps = Integer.valueOf(prefs.getString("numlaps", "1"));
         numSections = Integer.valueOf(prefs.getString("numsections", "1"));
         mode = Integer.valueOf(prefs.getString("mode", "0"));
         theTrialName = prefs.getString("trial_name", "None selected");
 
         // Other data
-        ridingNumber = prefs.getInt("ridingNumber",0);
-        score = prefs.getInt("score",0);
+        ridingNumber = prefs.getInt("ridingNumber", 0);
+        score = prefs.getInt("score", 0);
 
 
         startInterval = prefs.getLong("startInterval", 0);
@@ -569,6 +568,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("section", section);
         editor.apply();
     }
+
     public void increment(View view) {
         section = SectionPickerFragment.increment(section, numSections);
         sectionLabel = findViewById(R.id.sectionNumberLabel);
@@ -594,11 +594,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Databaise initialisation
-    private void dbInit(){
+    private void dbInit() {
         // Database operations - https://www.tutorialspoint.com/android/android_sqlite_database.htm
         // First, get your database
         final String DATABASE_NAME = "monster.db";
-        SQLiteDatabase db = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        SQLiteDatabase db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         // Create a String that contains the SQL statement to create the finishtimes table
         String SQL_CREATE_FINISHTIMES_TABLE = "CREATE TABLE IF NOT EXISTS " + FinishTimeContract.FinishTimeEntry.TABLE_NAME + " ("
@@ -627,6 +627,6 @@ public class MainActivity extends AppCompatActivity {
                 + ScoreContract.ScoreEntry.COLUMN_SCORE_SCORE + " INTEGER NOT NULL);";
 
         // Execute the SQL statement
-       db.execSQL(SQL_CREATE_SCORES_TABLE);
+        db.execSQL(SQL_CREATE_SCORES_TABLE);
     }
 }
