@@ -7,9 +7,9 @@
         android:title="@string/help"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/upload"
+        android:id="@+id/list"
         android:icon="@drawable/ic_list_white_48dp"
-        android:title="@string/export"
+        android:title="@string/list"
         app:showAsAction="always" />
 
     <item

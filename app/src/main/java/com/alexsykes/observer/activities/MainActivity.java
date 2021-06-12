@@ -44,8 +44,7 @@ import java.util.prefs.PreferenceChangeEvent;
 /*
  TODO email scores if trialid is 0 (Manual Entry)
  TODO DEBUG timer not recording first entry
- TODO Check correct mode selected
- TODO Update to show TimeList Activity
+ TODO Crash of start from background
 */
 // Settings - https://developer.android.com/guide/topics/ui/settings
 
@@ -55,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
     public static final int NOT_SYNCED = -1;
     MediaPlayer mediaPlayer;
 
-    TextView numberLabel, scoreLabel, statusLine;
+    TextView numberLabel, scoreLabel, statusLine, sectionLabel;
     String riderNumber, status, theTrialName, currentTime;
     NumberPadFragment numberPad;
     TouchFragment touchPad;
+    SectionPickerFragment sectionPickerFragment;
     SharedPreferences prefs;
     int mode;
     Button saveButton;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         // Add score and numberPad fragemnts
         numberPad = new NumberPadFragment();
         touchPad = new TouchFragment();
+        sectionPickerFragment = new SectionPickerFragment();
         numberLabel = findViewById(R.id.numberLabel);
         scoreLabel = findViewById(R.id.scoreLabel);
         statusLine = findViewById(R.id.statusLine);
@@ -134,10 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
         clearScore();
         super.onStart();
-        // Get prefs and see which mode
+        // Get prefs and switch mode
         getPrefs();
-
-
         switch (mode) {
             case 0 :
                 goObserverMode();
@@ -159,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
     private void goGroupMode() {
         // Group
         Log.i("Mode", "Group mode");
+        getSupportFragmentManager().beginTransaction().add(R.id.top, sectionPickerFragment).commit();
+        sectionLabel = findViewById(R.id.sectionNumberLabel);
     }
 
     private void goSingleUserMode() {
@@ -347,11 +348,28 @@ public class MainActivity extends AppCompatActivity {
 
             // Sync scores with remote db
             // Shows scores stored on device
-            case R.id.upload:
-                if (mode == 1) {
-                    goTimeSync();
-                } else {
-                    goSync();
+            case R.id.list:
+//                if (mode == 3) {
+//                    goTimeSync();
+//                } else {
+//                    goSync();
+//                }
+
+                switch (mode) {
+                    case 0 :
+                        goSync();
+                        break;
+                    case 1 :
+                     //   goGroupMode();
+                        break;
+                    case 2 :
+                     //   goSingleUserMode();
+                        break;
+                    case 3 :
+                        goTimeSync();
+                        break;
+                    default:
+                        break;
                 }
                 return true;
 
@@ -359,7 +377,6 @@ public class MainActivity extends AppCompatActivity {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -374,21 +391,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HelpActivity.class);
         startActivityForResult(intent, TEXT_REQUEST);
     }
-
-    /*
-    private void goTimingMode() {
-        Intent intent = new Intent(this, TimerActivity.class);
-        intent.putExtra("trialid", trialid);
-        startActivityForResult(intent, TEXT_REQUEST);
-    }
-
-    private void goShowSummaryScores() {
-        Intent intent = new Intent(this, SummaryScoreActivity.class);
-        intent.putExtra("trialid", trialid);
-        intent.putExtra("section", section);
-        startActivityForResult(intent, TEXT_REQUEST);
-
-    }*/
 
     public void countDabs(View view) {
         int intID = view.getId();
@@ -472,7 +474,6 @@ public class MainActivity extends AppCompatActivity {
             String score = scoreLabel.getText().toString();
 
             // NOTE Do NOT use null
-
             if (score.equals("") || rider.equals("")) {
                 toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
                 Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -556,6 +557,27 @@ public class MainActivity extends AppCompatActivity {
         status = theTrialName + " - Section: " + section + " - Observer: " + observer;
         statusLine.setText(status);
         return !theTrialName.equals("None selected");
+    }
+
+    public void decrement(View view) {
+        section = SectionPickerFragment.decrement(section, numSections);
+        sectionLabel = findViewById(R.id.sectionNumberLabel);
+        sectionLabel.setText(String.valueOf(section));
+
+        // Update prefs
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("section", section);
+        editor.apply();
+    }
+    public void increment(View view) {
+        section = SectionPickerFragment.increment(section, numSections);
+        sectionLabel = findViewById(R.id.sectionNumberLabel);
+        sectionLabel.setText(String.valueOf(section));
+
+        // Update prefs
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("section", section);
+        editor.apply();
     }
 
     //play a soundfile

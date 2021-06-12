@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+// TODO - note that times are only recorded for valid entries
+
 public class TimeListActivity extends AppCompatActivity {
     // List theScores;
     ArrayList<HashMap<String, String>> theSummaryTimes;
@@ -106,7 +108,7 @@ public class TimeListActivity extends AppCompatActivity {
     private void checkPrefs() {
         // Get localPrefs and read values
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        trialid = prefs.getInt("trialid", 999);
+        trialid = Integer.valueOf(prefs.getString("trialid", "999"));
         starttime = prefs.getLong("starttime", -1);
         email = prefs.getString("email", "");
     }
