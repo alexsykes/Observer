@@ -25,15 +25,15 @@
 
     <TextView
         android:id="@+id/sectionNumberLabel"
-        android:layout_width="100dp"
+        android:layout_width="104dp"
         android:layout_height="wrap_content"
         android:text="@string/_1"
         android:textAlignment="center"
         android:textColor="@color/colorButtonBlue"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/decrement"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/decrement" />
 
     <Button
         android:id="@+id/increment"

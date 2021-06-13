@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
     private void goGroupMode() {
         // Group
         Log.i("Mode", "Group mode");
+        numberLabel.setVisibility(View.GONE);
         getSupportFragmentManager().beginTransaction().add(R.id.top, sectionPickerFragment).commit();
         sectionLabel = findViewById(R.id.sectionNumberLabel);
     }
