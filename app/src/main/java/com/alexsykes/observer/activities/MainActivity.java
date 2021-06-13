@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onStart() {
 
@@ -154,67 +153,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void goGroupMode() {
-        // Group
-        Log.i("Mode", "Group mode");
-        numberLabel.setVisibility(View.GONE);
-        getSupportFragmentManager().beginTransaction().add(R.id.top, sectionPickerFragment).commit();
-        sectionLabel = findViewById(R.id.sectionNumberLabel);
-    }
-
-    private void goSingleUserMode() {
-        // Single User
-        Log.i("Mode", "Single User mode");
-    }
-
-    private void goTimingMode() {
-        // Timing mode
-        Log.i("Mode", "Timing mode");
-        // Always show numberPad
-        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
-        // Hide Scoring fragment
-        if (touchPad.isVisible()) {
-            // Hide touchPad
-            getSupportFragmentManager().beginTransaction().remove(touchPad).commit();
-        }
-        if (isStartTimeSet) {
-            saveButton.setText("Finish");
-        } else {
-            saveButton.setText("Start Clock");
-        }
-        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                saveFinishTime();
-                return false;
-            }
-        });
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
         saveCurrentState();
-    }
-
-    private void saveCurrentState() {
-        SharedPreferences.Editor editor = prefs.edit();
-        if (mode == 1) {
-            currentTime = scoreLabel.getText().toString();
-            editor.putString("currentTime", currentTime);
-
-        } else {
-            int score = Integer.parseInt(scoreLabel.getText().toString());
-        }
-        String number = numberLabel.getText().toString();
-        int rider = 0;
-        if (!number.equals("")) {
-            rider = Integer.parseInt(numberLabel.getText().toString());
-            editor.putInt("score", score);
-        }
-        editor.putInt("section", section);
-        editor.putInt("ridingNumber", rider);
-        editor.apply();
     }
 
     @Override
@@ -236,79 +178,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void goObserverMode() {
-        // Observer
-        Log.i("Mode", "Observer mode");
-        // Always show numberPad
-        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
+    private void saveCurrentState() {
+        SharedPreferences.Editor editor = prefs.edit();
+        if (mode == 1) {
+            currentTime = scoreLabel.getText().toString();
+            editor.putString("currentTime", currentTime);
 
-        // Show touchPad
-        if (touchPad.isVisible() == false) {
-            getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
-        }
-        saveButton.setText("Save");
-        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                saveScore();
-                return false;
-            }
-        });
-    }
-
-    private void saveFinishTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        if (isStartTimeSet) {
-
-            riderNumber = numberLabel.getText().toString();
-            if (riderNumber.equals("")) {
-
-                ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-                toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
-                Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
-            } else {
-
-                ridingNumber = Integer.valueOf(riderNumber);
-                // Get time to start the clock
-                long time = System.currentTimeMillis();
-                String finishTime = dateFormat.format(time);
-                // long elapsedTime;
-                long offset = (ridingNumber - 1) * startInterval * 1000;
-                long riderStartTime = starttime + offset;
-                long elapsedTime = time - riderStartTime;
-                // scoreLabel.setText(finishTime);
-                riderNumber = numberLabel.getText().toString();
-
-                // Check for number of completed laps
-                // Gets the database in write mode
-                SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
-
-                ContentValues values = new ContentValues();
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME, String.valueOf(time));
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_STARTTIME, String.valueOf(riderStartTime));
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_ELAPSED_TIME, String.valueOf(elapsedTime));
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID, String.valueOf(trialid));
-                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
-
-                long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
-                // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
-                numberLabel.setText("");
-                scoreLabel.setText(finishTime);
-                playSoundFile(R.raw.ting);
-            }
         } else {
-            // Start clock
-            starttime = System.currentTimeMillis();
-            // Save in Prefs
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putLong("starttime", starttime);
-            editor.putBoolean("isStartTimeSet", true);
-            isStartTimeSet = true;
-            editor.commit();
-            playSoundFile(R.raw.ting);
-            saveButton.setText("Finish");
+            int score = Integer.parseInt(scoreLabel.getText().toString());
         }
+        String number = numberLabel.getText().toString();
+        int rider = 0;
+        if (!number.equals("")) {
+            rider = Integer.parseInt(numberLabel.getText().toString());
+            editor.putInt("score", score);
+        }
+        editor.putInt("section", section);
+        editor.putInt("ridingNumber", rider);
+        editor.apply();
     }
 
     @Override
@@ -380,6 +267,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void goObserverMode() {
+        // Observer
+        Log.i("Mode", "Observer mode");
+        // Always show numberPad
+        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
+
+        // Show touchPad
+        if (touchPad.isVisible() == false) {
+            getSupportFragmentManager().beginTransaction().add(R.id.bottom, touchPad).commit();
+        }
+        saveButton.setText("Save");
+        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                saveScore();
+                return false;
+            }
+        });
+    }
+
     private void goTimeSync() {
         // Switch to timesheet Activity
         Intent intent = new Intent(this, TimeListActivity.class);
@@ -392,29 +299,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, TEXT_REQUEST);
     }
 
-    public void countDabs(View view) {
-        int intID = view.getId();
-        Button button = view.findViewById(intID);
-        String digit = button.getText().toString();
-
-        switch (digit) {
-            case "Clean":
-                score = 0;
-                break;
-            case "Ten":
-                score = 10;
-                break;
-            case "Five":
-                score = 5;
-                break;
-            case "Dab":
-                if (score < 3)
-                    score++;
-                break;
-        }
-        scoreLabel.setText(String.valueOf(score));
-    }
-
     private void goSync() {
         Intent intent = new Intent(this, SyncActivity.class);
         startActivityForResult(intent, TEXT_REQUEST);
@@ -423,6 +307,43 @@ public class MainActivity extends AppCompatActivity {
     private void goSetup() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, TEXT_REQUEST);
+    }
+
+    private void goGroupMode() {
+        // Group
+        Log.i("Mode", "Group mode");
+        numberLabel.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().add(R.id.top, sectionPickerFragment).commit();
+        sectionLabel = findViewById(R.id.sectionNumberLabel);
+    }
+
+    private void goSingleUserMode() {
+        // Single User
+        Log.i("Mode", "Single User mode");
+    }
+
+    private void goTimingMode() {
+        // Timing mode
+        Log.i("Mode", "Timing mode");
+        // Always show numberPad
+        getSupportFragmentManager().beginTransaction().add(R.id.top, numberPad).commit();
+        // Hide Scoring fragment
+        if (touchPad.isVisible()) {
+            // Hide touchPad
+            getSupportFragmentManager().beginTransaction().remove(touchPad).commit();
+        }
+        if (isStartTimeSet) {
+            saveButton.setText("Finish");
+        } else {
+            saveButton.setText("Start Clock");
+        }
+        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                saveFinishTime();
+                return false;
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -466,6 +387,29 @@ public class MainActivity extends AppCompatActivity {
         numberLabel.setText(riderNumber);
     }
 
+    public void countDabs(View view) {
+        int intID = view.getId();
+        Button button = view.findViewById(intID);
+        String digit = button.getText().toString();
+
+        switch (digit) {
+            case "Clean":
+                score = 0;
+                break;
+            case "Ten":
+                score = 10;
+                break;
+            case "Five":
+                score = 5;
+                break;
+            case "Dab":
+                if (score < 3)
+                    score++;
+                break;
+        }
+        scoreLabel.setText(String.valueOf(score));
+    }
+
     private void saveScore() {
         if (mode == 0) {
             ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
@@ -492,6 +436,61 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             // Timer mode finish
+        }
+    }
+
+    private void saveFinishTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        if (isStartTimeSet) {
+
+            riderNumber = numberLabel.getText().toString();
+            if (riderNumber.equals("")) {
+
+                ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+                toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
+                Toast.makeText(this, "Missing rider number", Toast.LENGTH_SHORT).show();
+            } else {
+
+                ridingNumber = Integer.valueOf(riderNumber);
+                // Get time to start the clock
+                long time = System.currentTimeMillis();
+                String finishTime = dateFormat.format(time);
+                // long elapsedTime;
+                long offset = (ridingNumber - 1) * startInterval * 1000;
+                long riderStartTime = starttime + offset;
+                long elapsedTime = time - riderStartTime;
+                // scoreLabel.setText(finishTime);
+                riderNumber = numberLabel.getText().toString();
+
+                // Check for number of completed laps
+                // Gets the database in write mode
+                SQLiteDatabase db = finishTimeDbHelper.getWritableDatabase();
+
+                ContentValues values = new ContentValues();
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_RIDER, riderNumber);
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_FINISHTIME, String.valueOf(time));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_STARTTIME, String.valueOf(riderStartTime));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_ELAPSED_TIME, String.valueOf(elapsedTime));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_TRIALID, String.valueOf(trialid));
+                values.put(FinishTimeContract.FinishTimeEntry.COLUMN_FINISHTIME_SYNC, NOT_SYNCED);
+
+                long newRowId = db.insert(FinishTimeContract.FinishTimeEntry.TABLE_NAME, null, values);
+                // Toast.makeText(this, "Time saved", Toast.LENGTH_LONG).show();
+                numberLabel.setText("");
+                scoreLabel.setText(finishTime);
+                playSoundFile(R.raw.ting);
+            }
+        } else {
+            // Start clock
+            starttime = System.currentTimeMillis();
+            // Save in Prefs
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putLong("starttime", starttime);
+            editor.putBoolean("isStartTimeSet", true);
+            isStartTimeSet = true;
+            editor.commit();
+            playSoundFile(R.raw.ting);
+            saveButton.setText("Finish");
         }
     }
 
@@ -525,8 +524,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Reset the  rider/score values
-
-
     private void clearScore() {
         score = 0;
         numberLabel.setText("");

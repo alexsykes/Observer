@@ -8,6 +8,12 @@
     tools:context=".activities.SectionPickerFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        >
     <Button
         android:id="@+id/decrement"
         android:layout_width="wrap_content"
@@ -15,7 +21,6 @@
         android:background="#00FFFFFF"
         android:onClick="decrement"
         android:text="@string/prev"
-        android:textAlignment="textEnd"
         android:textColor="@color/colorButtonBlue"
         android:textSize="32sp"
         android:textStyle="normal"
@@ -25,21 +30,20 @@
 
     <TextView
         android:id="@+id/sectionNumberLabel"
-        android:layout_width="104dp"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:text="@string/_1"
         android:textAlignment="center"
         android:textColor="@color/colorButtonBlue"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/decrement" />
+        app:layout_constraintStart_toEndOf="@+id/decrement"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/increment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:background="#00FFFFFF"
         android:onClick="increment"
         android:text="@string/next"
@@ -51,5 +55,6 @@
         app:layout_constraintStart_toEndOf="@+id/sectionNumberLabel"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="OnClick" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
