@@ -19,37 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme1"
-        tools:targetApi="n">
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="Settings"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name=".activities.TimeListActivity"
-            android:label="@string/finish_times"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name=".activities.HelpActivity"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name=".activities.SyncActivity"
-            android:label="@string/scores"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name=".activities.SetupActivity"
-            android:label="Set up"
-            android:parentActivityName=".activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1" />
-        <activity
-            android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+        tools:targetApi="n"></application>
 
 </manifest>
