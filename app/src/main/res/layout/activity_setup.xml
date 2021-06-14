@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     android:theme="@style/AppTheme"
     tools:context=".activities.SetupActivity">
 
@@ -17,7 +16,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/setup"
-                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +29,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/select_trial"
-                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selectLabel" />
@@ -52,7 +49,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +63,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/trialDetailView"/>
 
@@ -95,8 +90,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/observer"
                         android:inputType="textCapWords"
-                        android:singleLine="true"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -113,8 +107,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/startIntervalHint"
                         android:inputType="numberDecimal"
-                        android:singleLine="true"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -131,8 +124,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/section_number"
                         android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -159,8 +151,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/trial_name"
-                        android:inputType="textCapWords"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:inputType="textCapWords" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -176,8 +167,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -193,8 +183,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/number_of_sections"
                         android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -210,8 +199,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/number_of_laps"
                         android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -220,7 +208,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_scores"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@id/confirmCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.02"
@@ -245,7 +232,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/warning"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toStartOf="@+id/warningImageView"
         app:layout_constraintHorizontal_bias="0.0"
@@ -260,7 +246,6 @@
         android:layout_marginBottom="16dp"
         android:onClick="setPrefs"
         android:text="@string/save"
-        android:textColor="@color/colorButtonBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

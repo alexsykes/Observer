@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add custom ActionBar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        myToolbar.setTitleTextColor(Color.WHITE);
+        // myToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(myToolbar);
         myToolbar.getMenu();
 
@@ -236,12 +236,6 @@ public class MainActivity extends AppCompatActivity {
             // Sync scores with remote db
             // Shows scores stored on device
             case R.id.list:
-//                if (mode == 3) {
-//                    goTimeSync();
-//                } else {
-//                    goSync();
-//                }
-
                 switch (mode) {
                     case 0:
                         goSync();

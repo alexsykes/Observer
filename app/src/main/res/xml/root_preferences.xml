@@ -5,7 +5,7 @@
         <EditTextPreference
             app:key="observer_name"
             app:title="@string/observer_name"
-            android:defaultValue=""
+            android:defaultValue="Name"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
@@ -15,7 +15,7 @@
             app:entryValues="@array/mode_values"
             app:useSimpleSummaryProvider="true"
             app:dialogTitle="@string/mode_title"
-            android:defaultValue="Observer"/>
+            android:defaultValue= "0"/>
 
         <EditTextPreference
             android:defaultValue="1"
@@ -34,6 +34,7 @@
 
         <EditTextPreference
             app:dependency="manual_setup"
+            android:defaultValue="Trial Name"
             app:key="trial_name"
             app:title="@string/trial_name"
             app:useSimpleSummaryProvider="true" />
@@ -60,10 +61,10 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            android:defaultValue=""
             app:dependency="manual_setup"
             app:key="email"
             app:title="@string/email"
+            android:defaultValue="name@domain.com"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>

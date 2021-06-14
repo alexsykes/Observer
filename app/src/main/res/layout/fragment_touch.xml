@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:onClick="countDabs"
         android:text="@string/clean"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +25,6 @@
         android:layout_height="wrap_content"
         android:onClick="countDabs"
         android:text="@string/dab"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/cleanButton"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +37,6 @@
         android:layout_height="wrap_content"
         android:onClick="countDabs"
         android:text="@string/five"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/dabButton"
         app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +49,6 @@
         android:layout_height="wrap_content"
         android:onClick="countDabs"
         android:text="@string/ten"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/fiveButton"
         app:layout_constraintTop_toTopOf="parent" />

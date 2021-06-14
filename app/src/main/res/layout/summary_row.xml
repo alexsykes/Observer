@@ -14,7 +14,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="end"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +27,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@+id/lapsView"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +39,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center_horizontal"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@+id/totalView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,7 +50,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:gravity="end"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

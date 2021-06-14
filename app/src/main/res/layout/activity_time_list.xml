@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     tools:context=".activities.TimeListActivity">
 
 
@@ -24,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textColor="@color/colorButtonBlue"
             android:textStyle="bold" />
 
         <TextView
@@ -34,7 +32,6 @@
             android:layout_weight="1"
             android:text="@string/start_time"
             android:textAlignment="center"
-            android:textColor="@color/colorButtonBlue"
             android:textStyle="bold" />
 
         <TextView
@@ -44,7 +41,6 @@
             android:layout_weight="1"
             android:text="@string/finish_time"
             android:textAlignment="center"
-            android:textColor="@color/colorButtonBlue"
             android:textStyle="bold" />
 
         <TextView
@@ -54,7 +50,6 @@
             android:layout_weight="1"
             android:text="@string/elapsed_time"
             android:textAlignment="textEnd"
-            android:textColor="@color/colorButtonBlue"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -76,7 +71,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorButtonBlue"
         style="@android:style/Widget.Button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

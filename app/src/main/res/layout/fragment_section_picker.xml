@@ -9,6 +9,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -21,7 +22,6 @@
         android:background="#00FFFFFF"
         android:onClick="decrement"
         android:text="@string/prev"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="32sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,6 @@
         android:layout_height="wrap_content"
         android:text="@string/_1"
         android:textAlignment="center"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/decrement"
@@ -48,7 +47,6 @@
         android:onClick="increment"
         android:text="@string/next"
         android:textAlignment="textStart"
-        android:textColor="@color/colorButtonBlue"
         android:textSize="32sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
