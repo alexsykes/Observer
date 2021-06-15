@@ -37,7 +37,7 @@ public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdap
     @Override
     public GroupScoreHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         // Point to data holder layout
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.group_score_row, viewGroup, false);
         GroupScoreHolder scoreHolder = new GroupScoreHolder(v);
         return scoreHolder;
     }
@@ -59,8 +59,7 @@ public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdap
         scoreHolder.score.setText(theScore.get("score"));
         scoreHolder.lap.setText(theScore.get("lap"));
         scoreHolder.rider.setText(theScore.get("rider"));
-        // scoreHolder.section.setText(theScore.get("section"));
-        // scoreHolder.trial.setText("trial");
+        scoreHolder.section.setText(theScore.get("section"));
         scoreHolder.sync.setText(syncState);
         scoreHolder.bind(theScore, listener);
 
