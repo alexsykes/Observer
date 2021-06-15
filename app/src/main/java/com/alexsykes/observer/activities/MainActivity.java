@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.ToneGenerator;
@@ -222,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             // Show scores on remote server
             case R.id.help:
                 goHelp();
@@ -241,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                         goSync();
                         break;
                     case 1:
-                        //   goGroupMode();
+                        goTrialSync();
                         break;
                     case 2:
                         //   goSingleUserMode();
@@ -259,6 +257,11 @@ public class MainActivity extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void goTrialSync() {
+        Intent intent = new Intent(this, TrialSyncActivity.class);
+        startActivityForResult(intent, TEXT_REQUEST);
     }
 
     private void goObserverMode() {

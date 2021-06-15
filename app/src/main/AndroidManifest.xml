@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme1"
         tools:targetApi="n">
+        <activity android:name=".activities.TrialSyncActivity"
+            android:label="Trial scores"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.SettingsActivity"
             android:label="Settings"

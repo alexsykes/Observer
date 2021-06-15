@@ -83,6 +83,28 @@ public class ScoreDbHelper extends SQLiteOpenHelper {
         return scoreList;
     }
 
+
+    // Get Score Details for trial
+    public ArrayList<HashMap<String, String>> getScoreList(int trialid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String, String>> scoreList = new ArrayList<>();
+        String query = "SELECT * FROM scores WHERE trialid =" + trialid  + " ORDER BY rider, lap ASC";
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            HashMap<String, String> scores = new HashMap<>();
+            scores.put("id", cursor.getString(cursor.getColumnIndex(ScoreEntry._ID)));
+            scores.put("rider", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_RIDER)));
+            scores.put("lap", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_LAP)));
+            scores.put("section", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_SECTION)));
+            scores.put("score", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_SCORE)));
+            scores.put("trialid", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_TRIALID)));
+            scores.put("sync", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_SYNC)));
+            scores.put("edited", cursor.getString(cursor.getColumnIndex(ScoreEntry.COLUMN_SCORE_EDITED)));
+            scoreList.add(scores);
+        }
+        cursor.close();
+        return scoreList;
+    }
     // Used in RecyclerView Score List
 
     public ArrayList getScores() {
