@@ -1,6 +1,5 @@
 package com.alexsykes.observer.activities;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-// TODO Needs to be modifid to add timestamp
 public class SyncActivity extends AppCompatActivity {
     public static final int TEXT_REQUEST = 1;
 

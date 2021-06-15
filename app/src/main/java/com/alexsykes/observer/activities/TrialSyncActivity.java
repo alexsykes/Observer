@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexsykes.observer.R;
-import com.alexsykes.observer.ScoreListSyncAdapter;
 import com.alexsykes.observer.TrialListSyncAdapter;
 import com.alexsykes.observer.data.ScoreDbHelper;
 import com.opencsv.CSVWriter;
@@ -65,7 +64,7 @@ public class TrialSyncActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sync);
+        setContentView(R.layout.activity_trial_sync);
 
         // Get preferences for trialid, section
         prefs = PreferenceManager.getDefaultSharedPreferences(this);

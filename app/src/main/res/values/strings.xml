@@ -19,6 +19,7 @@
     <string name="rider_number">Riding number</string>
     <string name="setup">Settings</string>
     <string name="section_number">Section number</string>
+    <string name="section">Section</string>
     <string name="observer">Observer name</string>
     <string name="export">Upload scores</string>
     <string name="process_data">Upload Data</string>

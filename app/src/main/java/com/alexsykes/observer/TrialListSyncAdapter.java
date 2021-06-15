@@ -14,7 +14,7 @@ import com.alexsykes.observer.activities.SyncActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdapter.ScoreHolder> {
+public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdapter.GroupScoreHolder> {
     final ArrayList<HashMap<String, String>> theScores;
     HashMap<String, String> theScore;
     OnItemClickListener listener;
@@ -35,15 +35,15 @@ public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdap
 
     @NonNull
     @Override
-    public ScoreHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public GroupScoreHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         // Point to data holder layout
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
-        ScoreHolder scoreHolder = new ScoreHolder(v);
+        GroupScoreHolder scoreHolder = new GroupScoreHolder(v);
         return scoreHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ScoreHolder scoreHolder, final int i) {
+    public void onBindViewHolder(@NonNull GroupScoreHolder scoreHolder, final int i) {
         // Populate TextViews with data
         theScore = theScores.get(i);
         String syncState;
@@ -59,8 +59,7 @@ public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdap
         scoreHolder.score.setText(theScore.get("score"));
         scoreHolder.lap.setText(theScore.get("lap"));
         scoreHolder.rider.setText(theScore.get("rider"));
-        scoreHolder.rider.setText(theScore.get("rider"));
-        scoreHolder.trial.setText(theScore.get("trialid"));
+        // scoreHolder.section.setText(theScore.get("section"));
         // scoreHolder.trial.setText("trial");
         scoreHolder.sync.setText(syncState);
         scoreHolder.bind(theScore, listener);
@@ -81,20 +80,20 @@ public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdap
         void onItemClick(HashMap<String, String> theScores);
     }
 
-    public static class ScoreHolder extends RecyclerView.ViewHolder {
+    public static class GroupScoreHolder extends RecyclerView.ViewHolder {
         final TextView rider;
         final TextView lap;
         final TextView score;
         final TextView sync;
-        final TextView trial;
+        final TextView section;
 
-        public ScoreHolder(@NonNull View itemView) {
+        public GroupScoreHolder(@NonNull View itemView) {
             super(itemView);
             score = itemView.findViewById(R.id.score);
             lap = itemView.findViewById(R.id.lap);
             rider = itemView.findViewById(R.id.rider);
             sync = itemView.findViewById(R.id.sync);
-            trial = itemView.findViewById(R.id.trial);
+            section = itemView.findViewById(R.id.section);
         }
 
         public void bind(final HashMap<String, String> theScore, final OnItemClickListener listener) {
