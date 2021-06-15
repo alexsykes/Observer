@@ -56,9 +56,9 @@ public class TrialListSyncAdapter extends RecyclerView.Adapter<TrialListSyncAdap
         int backgroundColor = Color.parseColor("#40bdc0d4");
         int white = Color.parseColor("#ffffff");
 
-        scoreHolder.score.setText(theScore.get("score"));
-        scoreHolder.lap.setText(theScore.get("lap"));
         scoreHolder.rider.setText(theScore.get("rider"));
+        scoreHolder.lap.setText(theScore.get("lap"));
+        scoreHolder.score.setText(theScore.get("score"));
         scoreHolder.section.setText(theScore.get("section"));
         scoreHolder.sync.setText(syncState);
         scoreHolder.bind(theScore, listener);

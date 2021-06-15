@@ -6,11 +6,11 @@
 
     <TextView
         android:id="@+id/rider"
-        android:layout_width="0dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text=""
+        android:gravity="end"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/lap"
@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/section"
-        android:layout_width="0dp"
+        android:id="@+id/lap"
+        android:layout_width="60dp"
+        android:gravity="end"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text=""
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/score"
         app:layout_constraintHorizontal_bias="0.5"
@@ -33,22 +33,25 @@
 
     <TextView
         android:id="@+id/score"
-        android:layout_width="0dp"
+        android:layout_width="70dp"
+        android:gravity="end"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/lap"
+        app:layout_constraintStart_toEndOf="@+id/lap"
+        app:layout_constraintEnd_toStartOf="@+id/section"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/section"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
-        android:id="@+id/lap"
-        android:layout_width="0dp"
+        android:id="@+id/section"
+        android:layout_width="80dp"
+        android:gravity="end"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text=""
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/sync"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/score"
         app:layout_constraintTop_toTopOf="parent" />

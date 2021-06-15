@@ -186,7 +186,6 @@ public class TrialSyncActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         scoreView.setLayoutManager(llm);
         scoreView.setHasFixedSize(true);
-
         initializeAdapter();
     }
 
