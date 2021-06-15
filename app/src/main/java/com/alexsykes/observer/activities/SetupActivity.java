@@ -249,7 +249,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
 
                 // Set up Spinner
-                ArrayAdapter aa = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, theTrials);
+                ArrayAdapter aa;
+                aa = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, theTrials);
                 aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 trialSelect.setSelection(aa.getPosition(theTrialName));
@@ -526,7 +527,8 @@ public class SetupActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
 
-        HashMap theTrial = theTrialList.get(position);
+        HashMap theTrial;
+        theTrial = theTrialList.get(position);
         trialid = Integer.parseInt(theTrial.get("id").toString());
         String message = "TrialID: " + trialid;
 

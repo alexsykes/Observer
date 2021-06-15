@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/cleanButton"
-        style="@android:style/Widget.Button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="countDabs"
@@ -20,7 +20,7 @@
 
     <Button
         android:id="@+id/dabButton"
-        style="@android:style/Widget.Button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="countDabs"
@@ -32,7 +32,7 @@
 
     <Button
         android:id="@+id/fiveButton"
-        style="@android:style/Widget.Button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="countDabs"
@@ -44,7 +44,7 @@
 
     <Button
         android:id="@+id/tenButton"
-        style="@android:style/Widget.Button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="countDabs"
