@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat;
  TODO Crash of start from background
 */
 // Settings - https://developer.android.com/guide/topics/ui/settings
+// Night mode - https://stackoverflow.com/questions/44170028/android-how-to-detect-if-night-mode-is-on-when-using-appcompatdelegate-mode-ni#44170179
 
 public class MainActivity extends AppCompatActivity {
 

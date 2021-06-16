@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -65,6 +66,23 @@ public class TrialSyncActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trial_sync);
+
+//        int nightModeFlags =
+//                this.getResources().getConfiguration().uiMode &
+//                        Configuration.UI_MODE_NIGHT_MASK;
+//        switch (nightModeFlags) {
+//            case Configuration.UI_MODE_NIGHT_YES:
+//                Log.i("MODE", "Night");
+//                break;
+//
+//            case Configuration.UI_MODE_NIGHT_NO:
+//                Log.i("MODE", "Day");
+//                break;
+//
+//            case Configuration.UI_MODE_NIGHT_UNDEFINED:
+//                Log.i("MODE", "Not set");
+//                break;
+//        }
 
         // Get preferences for trialid, section
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
