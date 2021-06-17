@@ -29,9 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
-import com.alexsykes.observer.NumberPadFragment;
+import com.alexsykes.observer.scripts.NumberPadFragment;
 import com.alexsykes.observer.R;
-import com.alexsykes.observer.TouchFragment;
+import com.alexsykes.observer.scripts.SectionPickerFragment;
+import com.alexsykes.observer.scripts.TouchFragment;
 import com.alexsykes.observer.data.FinishTimeContract;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.alexsykes.observer.data.ScoreContract;

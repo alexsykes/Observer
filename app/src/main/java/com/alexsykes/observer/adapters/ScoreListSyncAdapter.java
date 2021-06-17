@@ -1,4 +1,4 @@
-package com.alexsykes.observer;
+package com.alexsykes.observer.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alexsykes.observer.R;
 import com.alexsykes.observer.activities.SyncActivity;
 
 import java.util.ArrayList;

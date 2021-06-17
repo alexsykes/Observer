@@ -1,17 +1,15 @@
-package com.alexsykes.observer;
+package com.alexsykes.observer.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alexsykes.observer.activities.SyncActivity;
+import com.alexsykes.observer.R;
 import com.alexsykes.observer.activities.TrialSyncActivity;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.alexsykes.observer;
+package com.alexsykes.observer.adapters;
 
 import android.graphics.Color;
 import androidx.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.alexsykes.observer.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

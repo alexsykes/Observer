@@ -1,4 +1,4 @@
-package com.alexsykes.observer.activities;
+package com.alexsykes.observer.scripts;
 
 import androidx.fragment.app.Fragment;
 

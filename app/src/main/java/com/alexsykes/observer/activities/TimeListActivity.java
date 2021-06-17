@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.alexsykes.observer.ElapsedTimeListAdapter;
+import com.alexsykes.observer.adapters.ElapsedTimeListAdapter;
 import com.alexsykes.observer.R;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.opencsv.CSVWriter;

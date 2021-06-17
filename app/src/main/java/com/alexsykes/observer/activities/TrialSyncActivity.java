@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexsykes.observer.R;
-import com.alexsykes.observer.TrialListSyncAdapter;
+import com.alexsykes.observer.adapters.TrialListSyncAdapter;
 import com.alexsykes.observer.data.ScoreDbHelper;
 import com.opencsv.CSVWriter;
 

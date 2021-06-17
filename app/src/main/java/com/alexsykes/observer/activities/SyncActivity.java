@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexsykes.observer.R;
-import com.alexsykes.observer.ScoreListSyncAdapter;
+import com.alexsykes.observer.adapters.ScoreListSyncAdapter;
 import com.alexsykes.observer.data.ScoreDbHelper;
 import com.opencsv.CSVWriter;
 
