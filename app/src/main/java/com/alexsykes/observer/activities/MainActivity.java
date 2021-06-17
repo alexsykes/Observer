@@ -29,10 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
-import com.alexsykes.observer.scripts.NumberPadFragment;
+import com.alexsykes.observer.fragments.NumberPadFragment;
 import com.alexsykes.observer.R;
-import com.alexsykes.observer.scripts.SectionPickerFragment;
-import com.alexsykes.observer.scripts.TouchFragment;
+import com.alexsykes.observer.fragments.SectionPickerFragment;
+import com.alexsykes.observer.fragments.TouchFragment;
 import com.alexsykes.observer.data.FinishTimeContract;
 import com.alexsykes.observer.data.FinishTimeDbHelper;
 import com.alexsykes.observer.data.ScoreContract;
@@ -314,6 +314,8 @@ public class MainActivity extends AppCompatActivity {
         numberLabel.setVisibility(View.GONE);
         getSupportFragmentManager().beginTransaction().add(R.id.top, sectionPickerFragment).commit();
         sectionLabel = findViewById(R.id.sectionNumberLabel);
+       // sectionLabel.setText(String.valueOf(section));
+        sectionLabel.setText("Start");
     }
 
     private void goSingleUserMode() {
@@ -535,11 +537,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean getPrefs() {
         // Get saved data from Settings
         observer = prefs.getString("observer_name", "");
-        section = Integer.valueOf(prefs.getString("section_number", "1"));
-        trialid = Integer.valueOf(prefs.getString("trialid", "999"));
-        numLaps = Integer.valueOf(prefs.getString("numlaps", "1"));
-        numSections = Integer.valueOf(prefs.getString("numsections", "1"));
-        mode = Integer.valueOf(prefs.getString("mode", "0"));
+        section = Integer.parseInt(prefs.getString("section_number", "1"));
+        trialid = Integer.parseInt(prefs.getString("trialid", "999"));
+        numLaps = Integer.parseInt(prefs.getString("numlaps", "1"));
+        numSections = Integer.parseInt(prefs.getString("numsections", "1"));
+        mode = Integer.parseInt(prefs.getString("mode", "0"));
         theTrialName = prefs.getString("trial_name", "None selected");
 
         // Other data
@@ -555,25 +557,25 @@ public class MainActivity extends AppCompatActivity {
         return !theTrialName.equals("None selected");
     }
 
-    public void decrement(View view) {
+    public void sectionNumberDecrement(View view) {
         section = SectionPickerFragment.decrement(section, numSections);
         sectionLabel = findViewById(R.id.sectionNumberLabel);
         sectionLabel.setText(String.valueOf(section));
 
         // Update prefs
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("section", section);
+        editor.putString("section_number", String.valueOf(section));
         editor.apply();
     }
 
-    public void increment(View view) {
+    public void sectionNumberIecrement(View view) {
         section = SectionPickerFragment.increment(section, numSections);
         sectionLabel = findViewById(R.id.sectionNumberLabel);
         sectionLabel.setText(String.valueOf(section));
 
         // Update prefs
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("section", section);
+        editor.putString("section_number", String.valueOf(section));
         editor.apply();
     }
 

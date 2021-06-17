@@ -1,6 +1,10 @@
-package com.alexsykes.observer.scripts;
+package com.alexsykes.observer.fragments;
+
+import android.content.SharedPreferences;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.alexsykes.observer.R;
 

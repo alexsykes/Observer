@@ -1,4 +1,4 @@
-package com.alexsykes.observer.scripts;
+package com.alexsykes.observer.fragments;
 
 
 import android.os.Bundle;
